@@ -266,6 +266,7 @@ const actions = {
         return API.savePreset(preset)
         .then((response) => {
             commit('setPreset', response.data)
+            return response
         })
     },
 

@@ -1,13 +1,13 @@
 <template>
 <div>
-    <mg-toolbar :title="preset.id == 'new' ? 'New Preset' : preset.name || 'Unnamed'">
+    <mg-toolbar :title="!preset.id ? 'New Preset' : preset.name || 'Unnamed'">
         <v-btn slot="icon" icon :to="{name: 'preset-list'}" exact>
             <v-icon>arrow_back</v-icon>
         </v-btn>
 
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="deletePreset">
+            <v-btn v-if="preset.id" flat :icon="$vuetify.breakpoint.xs" @click="deletePreset">
                <v-icon left>delete</v-icon><span class="hidden-xs-only">Delete</span>
             </v-btn>
             <v-btn flat :icon="$vuetify.breakpoint.xs" @click="savePreset">
@@ -44,8 +44,9 @@ const methods = {
     savePreset () {
         this.errors = {}
         this.$store.dispatch('savePreset', this.preset)
-            .then(() => {
+            .then((response) => {
                 this.$store.dispatch('snacks/add', {message: 'Preset saved successfully'})
+                this.$router.push({name: 'preset-edit', params: {presetId: response.data.id}})
             })
             .catch(({ response }) => {
                 if (response.data.errors) {
