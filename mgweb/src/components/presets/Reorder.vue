@@ -39,9 +39,15 @@ function data () {
     }
 }
 
+const watch = {
+    storePresets (presets) {
+        this.presets = presets
+    }
+}
+
 const computed = {
-    presets () {
-        return this.$store.state.presets.map((preset, idx) => {
+    storePresets () {
+        return this.$store.getters.getPresets.map((preset, idx) => {
             return {
                 id: preset.id,
                 name: preset.name,
@@ -57,16 +63,6 @@ const methods = {
         .then(() => {
             this.$router.push({name: 'preset-list'})
         })
-    },
-
-    loadOrder () {
-        this.presets = this.$store.state.presets.map((preset) => {
-            return {
-                id: preset.id,
-                name: preset.name,
-                number: preset.number
-            }
-        })
     }
 }
 
@@ -78,8 +74,9 @@ export default {
     computed,
     data,
     methods,
-    mounted () {
-        this.loadOrder()
+    watch,
+    created () {
+        this.presets = this.storePresets
     }
 }
 </script>

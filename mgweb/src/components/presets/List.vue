@@ -4,11 +4,11 @@
     <mg-toolbar title="Presets">
         <v-spacer/>
         <v-toolbar-items>
+            <v-btn v-if="presets.length" flat :icon="$vuetify.breakpoint.xs" :to="{name: 'presets-reorder'}">
+                <v-icon>format_line_spacing</v-icon> <span class="hidden-xs-only">Reorder</span>
+            </v-btn>
             <v-btn flat :icon="$vuetify.breakpoint.xs" :to="{name: 'preset-edit', params: {presetId: 'new'}}">
                 <v-icon>add</v-icon> <span class="hidden-xs-only">Add Preset</span>
-            </v-btn>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" :to="{name: 'presets-reorder'}">
-                <v-icon>format_line_spacing</v-icon> <span class="hidden-xs-only">Reorder</span>
             </v-btn>
         </v-toolbar-items>
     </mg-toolbar>

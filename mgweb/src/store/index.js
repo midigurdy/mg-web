@@ -43,6 +43,10 @@ const state = {
 }
 
 const getters = {
+    getPresets (state) {
+        return state.presets
+    },
+
     getNotifications (state) {
         return state.ui.notifications
     },
