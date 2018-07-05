@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Help from '@/components/Help'
 import ConfigMapping from '@/components/config/Mapping'
 import ConfigKeyCalibration from '@/components/config/KeyCalibration'
+import WheelCalibrate from '@/components/config/WheelCalibrate'
 
 import Visualization from '@/components/Visualization'
 
@@ -41,6 +42,11 @@ export default new Router({
             path: '/key-calibration',
             component: ConfigKeyCalibration,
             name: 'key-calibration'
+        },
+        {
+            path: '/wheel-calibration',
+            component: WheelCalibrate,
+            name: 'wheel-calibration'
         },
         {
             path: '/mapping/:mapname',

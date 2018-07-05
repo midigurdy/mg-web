@@ -224,6 +224,10 @@ export default {
         return API.get('info', {silent: true})
     },
 
+    fetchWheelGain () {
+        return API.get('calibrate/wheel')
+    },
+
     getKeyCalibration () {
         return API.get('calibrate/keyboard')
     },
