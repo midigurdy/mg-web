@@ -137,6 +137,20 @@ const mapConfig = {
             packetSize: 5,
             packetIndex: 3
         }
+    },
+    keyvel_to_tangent: {
+        websocket: {
+            name: 'keys',
+            packetSize: 5,
+            packetIndex: 3
+        }
+    },
+    keyvel_to_keynoise: {
+        websocket: {
+            name: 'keys',
+            packetSize: 5,
+            packetIndex: 3
+        }
     }
 }
 
@@ -193,10 +207,12 @@ const computed = {
             {
                 name: 'Key Pressure',
                 links: [
+                    /*
                     {
                         'id': 'pressure_to_poly',
                         'name': 'Aftertouch'
                     },
+                    */
                     {
                         'id': 'pressure_to_pitch',
                         'name': 'Pitch Bend'
@@ -207,8 +223,16 @@ const computed = {
                 name: 'Key Velocity',
                 links: [
                     {
+                        'id': 'keyvel_to_tangent',
+                        'name': 'Tangent Hit Volume'
+                    },
+                    {
+                        'id': 'keyvel_to_keynoise',
+                        'name': 'Keynoise Volume'
+                    },
+                    {
                         'id': 'keyvel_to_notevel',
-                        'name': 'MIDI Note Velocity'
+                        'name': 'Keyboard Mode Volume'
                     }
                 ]
             }
