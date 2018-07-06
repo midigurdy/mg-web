@@ -117,7 +117,7 @@ const mapConfig = {
             packetIndex: 1
         }
     },
-    speed_to_chien_volume: {
+    speed_to_trompette_volume: {
         websocket: {
             name: 'wheel',
             packetSize: 4,
