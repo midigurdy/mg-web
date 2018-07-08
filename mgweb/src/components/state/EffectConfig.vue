@@ -26,7 +26,7 @@ import SoundSelect from '@/components/sounds/SoundSelect'
 
 const computed = {
     soundfontTree () {
-        return this.$store.getters.soundFontTree
+        return this.$store.getters.typedSoundFontTree('keynoise')
     }
 }
 

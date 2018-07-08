@@ -92,6 +92,28 @@ const getters = {
         return tree
     },
 
+    typedSoundFontTree: (state) => (type) => {
+        var typedFonts = getters.sortedSoundFonts(state).filter((sf) => {
+            if (sf.mode !== 'midigurdy') return false
+            return !!sf.sounds.find((snd) => {
+                return snd.type === type
+            })
+        })
+        return typedFonts.map(function (sf) {
+            return {
+                id: sf.id,
+                label: sf.name,
+                children: sf.sounds.filter((snd) => snd.type === type).map(function (snd) {
+                    return {
+                        id: snd.id,
+                        label: snd.name + ' (' + sf.name + ')',
+                        list_label: snd.name
+                    }
+                })
+            }
+        })
+    },
+
     getSoundAndFont: (state) => (id) => {
         const sfid = id.split(':')[0]
         var soundfont = state.soundfonts.find((sf) => { return sf.id === sfid })

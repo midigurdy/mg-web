@@ -168,7 +168,11 @@ const computed = {
     },
 
     soundfontTree () {
-        return this.$store.getters.soundFontTree
+        if (this.type === 'trompette') {
+            return this.$store.getters.typedSoundFontTree('trompette')
+        } else {
+            return this.$store.getters.soundFontTree
+        }
     }
 }
 
