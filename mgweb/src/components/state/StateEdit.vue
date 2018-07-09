@@ -81,7 +81,7 @@
                         @update:volume="preset.keynoise.volume = $event; stateChanged()"
                         :balance="preset.keynoise.panning"
                         @update:balance="preset.keynoise.panning = $event; stateChanged()"
-                        :disabled="!hasSound(preset.keynoise)"
+                        :disabled="!preset.keynoise.soundfont"
                         />
                     <voice-mixer title="Reverb"
                         :showBalance="true"
