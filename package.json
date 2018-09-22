@@ -22,7 +22,7 @@
     "vue-router": "^2.5.3",
     "vue-template-compiler": "^2.5.16",
     "vuedraggable": "^2.14.0",
-    "vuetify": "^1.0.19",
+    "vuetify": "1.0.19",
     "vuex": "^2.3.1"
   },
   "devDependencies": {
