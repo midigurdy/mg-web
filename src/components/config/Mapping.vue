@@ -282,6 +282,29 @@ const computed = {
                 this.ranges[i]['src'] = this.updateValue(i, 'src', parseInt(rx, 10))
                 this.ranges[i]['dst'] = this.updateValue(i, 'dst', parseInt(ry, 10))
             })
+    },
+
+    colors () {
+        // setup theme colors
+        if (this.$store.state.ui.darkTheme) {
+            return {
+                mapLine: 'white',
+                circleStoke: 'rgb(25, 118, 210)',
+                circleFill: 'rgba(25, 118, 210, 0.5)',
+                axisText: 'lightgrey',
+                zeroLine: 'grey',
+                rawLine: 'red'
+            }
+        } else {
+            return {
+                mapLine: 'steelblue',
+                circleStoke: 'blue',
+                circleFill: 'rgba(0, 0, 255, 0.5)',
+                axisText: 'darkgrey',
+                zeroLine: 'grey',
+                rawLine: 'red'
+            }
+        }
     }
 }
 
@@ -433,12 +456,15 @@ const methods = {
         g.append('g')
             .attr('transform', 'translate(0,' + height + ')')
             .call(d3.axisBottom(scale.x))
+            .attr('stroke', this.colors.axisText)
 
         g.append('g')
             .call(d3.axisLeft(scale.y))
+            .attr('stroke', this.colors.axisText)
 
         g.append('text')
             .attr('transform', 'translate(' + (this.chartWidth / 2) + ',' + (height + (margin.bottom / 1.2)) + ')')
+            .attr('fill', this.colors.axisText)
             .text(this.mapping.src.name)
 
         g.append('text')
@@ -446,6 +472,7 @@ const methods = {
             .attr('y', 0 - margin.left)
             .attr('x', 0 - (height / 2))
             .attr('dy', '1em')
+            .attr('fill', this.colors.axisText)
             .style('text-anchor', 'middle')
             .text(this.mapping.dst.name)
 
@@ -454,7 +481,7 @@ const methods = {
             g.append('path')
                 .attr('class', 'zeroline')
                 .attr('fill', 'none')
-                .attr('stroke', 'grey')
+                .attr('stroke', this.colors.zeroLine)
                 .attr('stroke-linejoin', 'round')
                 .attr('stroke-linecap', 'round')
                 .attr('stroke-dasharray', '5')
@@ -466,7 +493,7 @@ const methods = {
         g.append('path')
             .attr('class', 'srcline')
             .attr('fill', 'none')
-            .attr('stroke', 'red')
+            .attr('stroke', this.colors.rawLine)
             .attr('stroke-linejoin', 'round')
             .attr('stroke-linecap', 'round')
             .attr('stroke-width', 2)
@@ -476,7 +503,7 @@ const methods = {
         g.append('path')
             .attr('class', 'mapline')
             .attr('fill', 'none')
-            .attr('stroke', 'steelblue')
+            .attr('stroke', this.colors.mapLine)
             .attr('stroke-linejoin', 'round')
             .attr('stroke-linecap', 'round')
             .attr('stroke-width', 2)
@@ -498,8 +525,8 @@ const methods = {
         circles.enter()
             .append('circle')
             .attr('class', 'point')
-            .attr('fill', 'rgba(0, 0, 255, 0.5)')
-            .attr('stroke', 'blue')
+            .attr('fill', this.colors.circleFill)
+            .attr('stroke', this.colors.circleStoke)
             .attr('stroke-width', 3)
             .attr('r', 20)
             .attr('cx', function (d) { return scale.x(d.src) })
@@ -593,6 +620,10 @@ svg {
 
 table tr:hover td {
     background-color: #eee;
+}
+
+.theme--dark table tr:hover td {
+    background-color: #505050;
 }
 
 .table tbody td:first-child {

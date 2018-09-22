@@ -38,4 +38,58 @@ export default {
 }
 </script>
 
+<style>
+.theme--dark .vue-treeselect__control {
+    background: #626262;
+    border-color: #303030;
+}
+
+.theme--dark .vue-treeselect:not(.vue-treeselect--disabled):not(.vue-treeselect--focused) .vue-treeselect__control:hover {
+  border-color: #727272;
+}
+
+.theme--dark .vue-treeselect--open .vue-treeselect__control,
+.theme--dark .vue-treeselect__control:hover {
+  border-color: #727272;
+}
+
+.theme--dark .vue-treeselect__menu {
+    background: #626262;
+    border-color: #727272;
+}
+
+.theme--dark .vue-treeselect--open-below .vue-treeselect__menu,
+.theme--dark .vue-treeselect--open-above .vue-treeselect__menu {
+    border-color: #727272;
+}
+
+.theme--dark .vue-treeselect__placeholder,
+.theme--dark .vue-treeselect--focused.vue-treeselect--searchable .vue-treeselect__single-value {
+  color: #aaa;
+}
+.theme--dark .vue-treeselect__single-value {
+  color: #fafafa;
+}
+.theme-dark .vue-treeselect__multi-value-item {
+    color: #fafafa;
+}
+.theme--dark .vue-treeselect:not(.vue-treeselect--disabled) .vue-treeselect__multi-value-item:not(.vue-treeselect__multi-value-item-disabled):hover {
+    color: #fafafa;
+}
+.theme--dark .vue-treeselect__multi-value-item.vue-treeselect__multi-value-item-disabled {
+    color: #fafafa;
+}
+.theme--dark .vue-treeselect__option--highlight {
+  background: #727272;
+}
+.theme--dark .vue-treeselect--single .vue-treeselect__option--selected {
+  background: #727272;
+  font-weight: 600;
+}
+.theme--dark .vue-treeselect--single .vue-treeselect__option--selected:hover {
+  background: #727272;
+}
+</style>
+
 <style src="@riophae/vue-treeselect/dist/vue-treeselect.min.css"></style>
+

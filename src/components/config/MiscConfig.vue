@@ -110,6 +110,18 @@
                     </v-card-text>
                 </v-card>
             </v-flex>
+            <v-flex md6>
+                <v-card>
+                    <v-card-title><h2><v-icon left>dvr</v-icon> Web-Interface</h2></v-card-title>
+                    <v-card-text>
+                        <v-layout row wrap>
+                            <v-flex xs12>
+                                <v-switch label="Dark Theme" v-model="darkTheme" />
+                            </v-flex>
+                        </v-layout>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
         </v-layout>
 </v-container>
 </template>
@@ -159,9 +171,21 @@ const methods = {
     }
 }
 
+const computed = {
+    darkTheme: {
+        get () {
+            return this.$store.state.ui.darkTheme
+        },
+        set (value) {
+            this.$store.commit('uiUpdateDarkTheme', value)
+        }
+    }
+}
+
 export default {
     data,
     methods,
+    computed,
 
     created () {
         this.loadConfig()

@@ -1,6 +1,6 @@
 <template>
 
-<v-toolbar color="indigo" flat dark fixed app :tabs="tabs">
+<v-toolbar :color="bgColor" dark flat fixed app :tabs="tabs">
     <slot name="icon">
         <v-toolbar-side-icon @click.stop="navbar = !navbar"></v-toolbar-side-icon>
     </slot>
@@ -21,6 +21,10 @@ const computed = {
         set (value) {
             this.$store.commit('uiUpdateNavbar', value)
         }
+    },
+
+    bgColor () {
+        return (this.$store.state.ui.darkTheme) ? '' : 'indigo'
     }
 }
 

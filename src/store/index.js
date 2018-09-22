@@ -32,7 +32,8 @@ const state = {
     ui: {
         navbar: true,
         visControls: false,
-        notifications: []
+        notifications: [],
+        darkTheme: false
     },
     presets: [],
     soundfonts: [],
@@ -131,6 +132,16 @@ const mutations = {
 
     uiUpdateNavbar (state, value) {
         state.ui.navbar = value
+    },
+
+    uiUpdateDarkTheme (state, value) {
+        state.ui.darkTheme = value
+        localStorage.setItem('mgweb_dark', value)
+    },
+
+    uiLoadDarkTheme (state, value) {
+        var dark = !!localStorage.getItem('mgweb_dark')
+        state.ui.darkTheme = dark
     },
 
     setPresets (state, presets) {

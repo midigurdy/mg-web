@@ -29,6 +29,11 @@ select {
     color: #000;
 }
 
+.theme--dark select {
+    color: #fff;
+    background: #424242;
+}
+
 .no-caret select {
     -moz-appearance: listbox;
     -webkit-appearance: listbox;

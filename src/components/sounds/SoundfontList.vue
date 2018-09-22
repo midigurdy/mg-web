@@ -12,7 +12,7 @@
     <v-list two-line>
         <div v-if="soundfonts.length" v-for="(set, index) in soundfonts">
             <v-list-tile :key="set.id" avatar :to="{name: 'soundfont-details', params: {soundfontId: set.id}}">
-                <v-list-tile-avatar :color="(set.mode == 'midigurdy') ? 'indigo' : 'grey'">
+                <v-list-tile-avatar :color="(set.mode == 'midigurdy') ? 'primary' : 'grey'">
                 <span class="white--text">{{ set.mode == 'midigurdy' ? 'MG' : 'G' }}</span> 
                 </v-list-tile-avatar>
                 <v-list-tile-content>

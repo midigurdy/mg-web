@@ -261,6 +261,18 @@ export default {
     background-color: #ddd;
 }
 
+.theme--dark .key-calib {
+    background-color: darkslategrey;
+}
+
+.theme--dark .key-calib:hover {
+    background-color: slategrey !important;
+}
+
+.theme--dark .key-calib.valid {
+    background-color: darkgreen !important;
+}
+
 .key-calib.valid {
     background-color: lightgreen !important;
 }

@@ -51,5 +51,8 @@ new Vue({
         this.$store.commit('generateClientId')
         this.$sockets = sockets
         this.$sockets.open(this.$store, API.getURL('MG_NOTIFY_WS_URL'))
+    },
+    beforeCreate () {
+        this.$store.commit('uiLoadDarkTheme')
     }
 })

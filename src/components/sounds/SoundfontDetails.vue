@@ -67,7 +67,7 @@
                     <td style="width: 1%">
                         <v-avatar
                             size="30"
-                            :color="sound.type == 'generic' ? 'grey' : 'indigo'""
+                            :color="sound.type == 'generic' ? 'grey' : 'primary'""
                             class="white--text"
                             :title="sound.type | capfirst">
                                 {{ sound | soundType }}

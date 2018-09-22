@@ -1,6 +1,6 @@
 <template>
 
-<v-app>
+<v-app :dark="darkTheme">
     <mg-navbar/>
     <v-content>
         <v-container fluid>
@@ -24,6 +24,11 @@ export default {
         'mg-navbar': Navbar,
         'mg-toolbar': Toolbar,
         Notifications
+    },
+    computed: {
+        darkTheme () {
+            return this.$store.state.ui.darkTheme
+        }
     }
 }
 </script>
