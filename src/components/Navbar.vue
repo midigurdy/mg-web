@@ -45,13 +45,15 @@
                 </v-list-tile-content>
             </v-list-tile>
         </template>
+            <v-list-tile>
+                <v-list-tile-action>
+                    <v-btn icon @click="mini = !mini">
+                        <v-icon v-if="mini">chevron_right</v-icon>
+                        <v-icon v-else>chevron_left</v-icon>
+                    </v-btn>
+                </v-list-tile-action>
+            </v-list-tile>
     </v-list>
-    <v-footer app>
-        <v-btn icon @click="mini = !mini">
-            <v-icon v-if="mini">chevron_right</v-icon>
-            <v-icon v-else>chevron_left</v-icon>
-        </v-btn>
-    </v-footer>
 </v-navigation-drawer>
 
 </template>
