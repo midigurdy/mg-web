@@ -170,9 +170,13 @@ export default {
 
     savePreset (preset) {
         if (preset.id) {
-            return API.put('presets/' + preset.id, preset)
+            return API.put('presets/' + preset.id, preset, {
+                headers: {'Content-Type': 'application/json'}
+            })
         } else {
-            return API.post('presets', preset)
+            return API.post('presets', preset, {
+                headers: {'Content-Type': 'application/json'}
+            })
         }
     },
 

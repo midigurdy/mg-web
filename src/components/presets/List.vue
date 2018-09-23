@@ -4,6 +4,9 @@
     <mg-toolbar title="Presets">
         <v-spacer/>
         <v-toolbar-items>
+            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="uploadDialog = true">
+                <v-icon left>cloud_upload</v-icon><span class="hidden-xs-only">Import</span>
+            </v-btn>
             <v-btn v-if="presets.length" flat :icon="$vuetify.breakpoint.xs" :to="{name: 'presets-reorder'}">
                 <v-icon>format_line_spacing</v-icon> <span class="hidden-xs-only">Reorder</span>
             </v-btn>
@@ -43,6 +46,8 @@
             No presets defined
         </div>
     </div>
+
+    <preset-upload :show.sync="uploadDialog"/>
 </div>
 
 </template>
@@ -55,6 +60,13 @@
 
 <script>
 import MidiFilters from '@/mixins/midifilters'
+import PresetUpload from '@/components/presets/Upload'
+
+function data () {
+    return {
+        uploadDialog: false
+    }
+}
 
 const computed = {
     presets () {
@@ -89,7 +101,11 @@ const methods = {
 
 export default {
     name: 'preset-list',
+    data,
     computed,
-    methods
+    methods,
+    components: {
+        'preset-upload': PresetUpload
+    }
 }
 </script>

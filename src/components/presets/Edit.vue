@@ -7,7 +7,7 @@
 
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn v-if="preset.id" flat :icon="$vuetify.breakpoint.xs" :href="'http://localhost:9090/api/presets/'+preset.id+'?dl=1'">
+            <v-btn v-if="preset.id" flat :icon="$vuetify.breakpoint.xs" :href="'/api/presets/'+preset.id+'?dl=1'">
                <v-icon left>cloud_download</v-icon><span class="hidden-xs-only">Export</span>
             </v-btn>
             <v-btn v-if="preset.id" flat :icon="$vuetify.breakpoint.xs" @click="deletePreset">
