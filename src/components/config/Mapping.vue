@@ -79,6 +79,7 @@
 <script>
 import * as d3 from 'd3'
 import API from '@/api'
+import { debounce } from 'lodash'
 
 const height = 400
 const margin = {
@@ -267,34 +268,6 @@ const computed = {
         return height - margin.top - margin.bottom
     },
 
-    chartScales () {
-        var x = d3.scaleLinear()
-            .rangeRound([0, this.chartWidth])
-            .domain([this.mapping.src.min, this.mapping.src.max])
-        var y = d3.scaleLinear()
-            .rangeRound([this.chartHeight, 0])
-            .domain([this.mapping.dst.min, this.mapping.dst.max])
-        return {x, y}
-    },
-
-    chartLine () {
-        var scale = this.chartScales
-        return d3.line()
-            .x((d) => { return scale.x(d.src) })
-            .y((d) => { return scale.y(d.dst) })
-    },
-
-    chartDragBehaviour () {
-        var scale = this.chartScales
-        return d3.drag()
-            .on('drag', (d, i) => {
-                var rx = parseInt(scale.x.invert(d3.event.x), 10)
-                var ry = parseInt(scale.y.invert(d3.event.y), 10)
-                this.ranges[i]['src'] = this.updateValue(i, 'src', parseInt(rx, 10))
-                this.ranges[i]['dst'] = this.updateValue(i, 'dst', parseInt(ry, 10))
-            })
-    },
-
     colors () {
         // setup theme colors
         if (this.$store.state.ui.darkTheme) {
@@ -320,6 +293,14 @@ const computed = {
 }
 
 const methods = {
+    onResize: debounce(function () {
+        this.setupChart()
+    }, 250),
+
+    getchartWidth () {
+        return parseInt(this.svg.style('width'), 10) - margin.left - margin.right
+    },
+
     rangeKey (range) {
         if (!range) return
         if (!range.key) {
@@ -333,6 +314,16 @@ const methods = {
     onValueChange (val, idx, side) {
         val = this.updateValue(idx, side, val)
         this.ranges[idx][side] = val
+    },
+
+    updateChartScales () {
+        var x = d3.scaleLinear()
+            .rangeRound([0, this.getchartWidth()])
+            .domain([this.mapping.src.min, this.mapping.src.max])
+        var y = d3.scaleLinear()
+            .rangeRound([this.chartHeight, 0])
+            .domain([this.mapping.dst.min, this.mapping.dst.max])
+        this._chartScales = {x, y}
     },
 
     /* Update range values with bounds checking */
@@ -455,7 +446,9 @@ const methods = {
         // If we have no mapping yet, don't render anything
         if (!this.mapping) return
 
-        var scale = this.chartScales
+        this.updateChartScales()
+
+        var scale = this._chartScales
         var height = this.chartHeight
 
         // Setup outer margins
@@ -474,7 +467,7 @@ const methods = {
             .attr('stroke', this.colors.axisText)
 
         g.append('text')
-            .attr('transform', 'translate(' + (this.chartWidth / 2) + ',' + (height + (margin.bottom / 1.2)) + ')')
+            .attr('transform', 'translate(' + (this.getchartWidth() / 2) + ',' + (height + (margin.bottom / 1.2)) + ')')
             .attr('fill', this.colors.axisText)
             .text(this.mapping.src.name)
 
@@ -497,7 +490,7 @@ const methods = {
                 .attr('stroke-linecap', 'round')
                 .attr('stroke-dasharray', '5')
                 .attr('stroke-width', 1)
-                .attr('d', 'M 0 ' + scale.y(0) + ' H ' + this.chartWidth)
+                .attr('d', 'M 0 ' + scale.y(0) + ' H ' + this.getchartWidth())
         }
 
         // Setup the raw line path
@@ -525,13 +518,20 @@ const methods = {
 
     /* Update the D3 chart if ranges change. Only updates lines and circles */
     updateChart () {
-        var scale = this.chartScales
+        var scale = this._chartScales
         var g = this.svg.select('g')
 
         var circles = g.selectAll('.point')
             .data(this.ranges)
             .attr('cx', function (d) { return scale.x(d.src) })
             .attr('cy', function (d) { return scale.y(d.dst) })
+
+        var chartDragBehaviour = d3.drag().on('drag', (d, i) => {
+            var rx = parseInt(scale.x.invert(d3.event.x), 10)
+            var ry = parseInt(scale.y.invert(d3.event.y), 10)
+            this.ranges[i]['src'] = this.updateValue(i, 'src', parseInt(rx, 10))
+            this.ranges[i]['dst'] = this.updateValue(i, 'dst', parseInt(ry, 10))
+        })
 
         circles.enter()
             .append('circle')
@@ -542,19 +542,23 @@ const methods = {
             .attr('r', 20)
             .attr('cx', function (d) { return scale.x(d.src) })
             .attr('cy', function (d) { return scale.y(d.dst) })
-            .call(this.chartDragBehaviour)
+            .call(chartDragBehaviour)
 
         circles.exit()
             .remove()
 
+        var chartLine = d3.line()
+            .x((d) => { return scale.x(d.src) })
+            .y((d) => { return scale.y(d.dst) })
+
         g.select('.mapline')
             .datum(this.ranges)
-            .attr('d', this.chartLine)
+            .attr('d', chartLine)
     },
 
     updateSourceValue (val) {
         var g = this.svg.select('g')
-        var scale = this.chartScales
+        var scale = this._chartScales
 
         g.select('.srcline')
             .attr('transform', 'translate(' + scale.x(val) + ', 0)')
@@ -610,10 +614,12 @@ export default {
     mounted () {
         this.getMapping()
         this.setupChart()
+        window.addEventListener('resize', this.onResize)
     },
 
     destroyed () {
         this.disconnectWebsocket()
+        window.removeEventListener('resize', this.onResize)
     }
 }
 </script>
