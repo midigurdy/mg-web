@@ -131,6 +131,13 @@ const mapConfig = {
             packetIndex: 3
         }
     },
+    speed_to_percussion: {
+        websocket: {
+            name: 'wheel',
+            packetSize: 4,
+            packetIndex: 3
+        }
+    },
     keyvel_to_notevel: {
         websocket: {
             name: 'keys',
@@ -201,6 +208,10 @@ const computed = {
                     {
                         'id': 'speed_to_chien',
                         'name': 'Chien Volume'
+                    },
+                    {
+                        'id': 'speed_to_percussion',
+                        'name': 'Percussion Volume'
                     }
                 ]
             },
