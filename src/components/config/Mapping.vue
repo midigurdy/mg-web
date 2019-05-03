@@ -519,9 +519,14 @@ const methods = {
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
         // Setup axes, x axis at bottom, y axis on left
+        var xAxis = d3.axisBottom(scale.x)
+        if (this.mapConfig && this.mapConfig.xFormat) {
+            xAxis = xAxis.ticks(this.mapConfig.xFormat.ticks, this.mapConfig.xFormat.format)
+        }
+
         g.append('g')
             .attr('transform', 'translate(0,' + height + ')')
-            .call(d3.axisBottom(scale.x))
+            .call(xAxis)
             .attr('stroke', this.colors.axisText)
 
         g.append('g')
