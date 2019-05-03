@@ -39,6 +39,14 @@
                     <v-icon left>settings</v-icon> <span class="hidden-xs-only">Reset To Factory Default</span>
                 </v-btn>
             </v-card>
+            <v-expansion-panel v-if="mapConfig && mapConfig.description" class="mapping-description">
+                <v-expansion-panel-content v-model="showDescription" >
+                    <div slot="header">Description</div>
+                    <v-card>
+                        <v-card-text>{{ mapConfig.description }}</v-card-text>
+                    </v-card>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
         </v-flex>
         <v-flex md3>
             <v-card class="mapping-values">
@@ -102,49 +110,77 @@ const mapConfig = {
             name: 'keys',
             packetSize: 5,
             packetIndex: 2
-        }
+        },
+        description: `
+            Maps the pressure you apply on the keys to the amount and direction of the pitch bend
+            (which affects the fine tuning of the sound). Positive values make the sound higher,
+            negative values make the sound lower.
+        `
     },
     speed_to_melody_volume: {
         websocket: {
             name: 'wheel',
             packetSize: 4,
             packetIndex: 1
-        }
+        },
+        description: `
+            Controls the volume response of the melody strings in reaction to the wheel speed.
+        `
     },
     speed_to_drone_volume: {
         websocket: {
             name: 'wheel',
             packetSize: 4,
             packetIndex: 1
-        }
+        },
+        description: `
+            Controls the volume response of the drone strings in reaction to the wheel speed.
+        `
     },
     speed_to_trompette_volume: {
         websocket: {
             name: 'wheel',
             packetSize: 4,
             packetIndex: 1
-        }
+        },
+        description: `
+            Controls the volume response of the trompette strings in reaction to the wheel speed.
+        `
     },
     speed_to_chien: {
         websocket: {
             name: 'wheel',
             packetSize: 4,
             packetIndex: 3
-        }
+        },
+        description: `
+            Controls the volume of the chien (the buzzing sound) in reaction to the wheel speed.
+            Only the speed above the current chien sensitivity (threshold) is considered.
+            NOTE: this only applies to trompette strings in 'MidiGurdy' mode.
+        `
     },
     speed_to_percussion: {
         websocket: {
             name: 'wheel',
             packetSize: 4,
             packetIndex: 3
-        }
+        },
+        description: `
+            Controls the initial volume of the chien sound for trompette strings in 'Percussion' mode.
+            Note that unlike the 'Wheel Speed to Chien Volume' mapping, this mapping only affects
+            the *initial* sound volume. Once the sound has started, the volume is not changed anymore.
+        `
     },
     keyvel_to_notevel: {
         websocket: {
             name: 'keys',
             packetSize: 5,
             packetIndex: 3
-        }
+        },
+        description: `
+            Only applies to melody strings in "Keyboard" mode. It controls the initial volume of
+            the sound in response to the key velocity, i.e. how fast and hard you press the keys.
+        `
     },
     keyvel_to_tangent: {
         websocket: {
@@ -158,7 +194,11 @@ const mapConfig = {
             name: 'keys',
             packetSize: 5,
             packetIndex: 3
-        }
+        },
+        description: `
+            Controls the initial velocity of the key noise sounds in response to the key velocity,
+            i.e. how fast and hard you press the keys.
+        `
     }
 }
 
@@ -173,7 +213,9 @@ function data () {
             dst: { name: 'Undefined', min: 0, max: 0 }
         },
         ranges: [],
-        dirty: false
+        dirty: false,
+        showDescription: false,
+        mapConfig: null
     }
 }
 
@@ -681,7 +723,7 @@ table tr:hover td {
   100% { opacity: 0; }
 }
 
-.mapping-tools {
+.mapping-tools, .mapping-description {
     margin-top: 5px;
 }
 </style>
