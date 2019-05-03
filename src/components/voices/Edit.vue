@@ -45,30 +45,41 @@
                         />
                 </div>
                 <template v-if="type == 'melody'">
-                <div class="flex xs3" style="padding-left: 3em">
-                    <label style="color: grey; font-size: 13px">Polyphonic</label>
-                    <v-switch
-                     :input-value="polyphonic"
-                     @change="$emit('update:polyphonic', $event)"
-                    />
-                </div>
-                <div class="flex xs3">
-                    <single-select
-                        label="Capo Key"
-                        :choices="capoChoices"
-                        :value="capo"
-                        @update:value="$emit('update:capo', $event)"
+                    <div class="flex xs3" style="padding-left: 3em">
+                        <label style="color: grey; font-size: 13px">Polyphonic</label>
+                        <v-switch
+                        :input-value="polyphonic"
+                        @change="$emit('update:polyphonic', $event)"
                         />
-                </div>
-                <div class="flex xs3">
-                    <single-select
-                        label="Mode"
-                        :choices="modeChoices"
-                        :value="mode"
-                        @update:value="$emit('update:mode', $event)"
-                        :numericValue="false"
-                        />
-                </div>
+                    </div>
+                    <div class="flex xs3">
+                        <single-select
+                            label="Capo Key"
+                            :choices="capoChoices"
+                            :value="capo"
+                            @update:value="$emit('update:capo', $event)"
+                            />
+                    </div>
+                    <div class="flex xs3">
+                        <single-select
+                            label="Mode"
+                            :choices="melodyModeChoices"
+                            :value="mode"
+                            @update:value="$emit('update:mode', $event)"
+                            :numericValue="false"
+                            />
+                    </div>
+                </template>
+                <template v-if="type == 'trompette'">
+                    <div class="flex xs3">
+                        <single-select
+                            label="Mode"
+                            :choices="chienModeChoices"
+                            :value="mode"
+                            @update:value="$emit('update:mode', $event)"
+                            :numericValue="false"
+                            />
+                    </div>
                 </template>
             </div>
         </v-card>
@@ -148,11 +159,18 @@ const computed = {
         return choices
     },
 
-    modeChoices () {
+    melodyModeChoices () {
         return [
             {text: 'MidiGurdy', value: 'midigurdy'},
             {text: 'Hurdy-Gurdy', value: 'generic'},
             {text: 'Keyboard', value: 'keyboard'}
+        ]
+    },
+
+    chienModeChoices () {
+        return [
+            {text: 'MidiGurdy', value: 'midigurdy'},
+            {text: 'Percussion', value: 'generic'}
         ]
     },
 
@@ -168,11 +186,7 @@ const computed = {
     },
 
     soundfontTree () {
-        if (this.type === 'trompette') {
-            return this.$store.getters.typedSoundFontTree('trompette')
-        } else {
-            return this.$store.getters.soundFontTree
-        }
+        return this.$store.getters.soundFontTree
     }
 }
 
@@ -200,7 +214,13 @@ const methods = {
                 this.$emit('update:bank', result.sound.bank)
                 this.$emit('update:program', result.sound.program)
                 if (this.mode !== 'keyboard' || result.soundfont.mode === 'midigurdy') {
-                    this.$emit('update:mode', result.soundfont.mode)
+                    /* If a trompette string is set to a sound that is not of type trompette,
+                       set the mode to generic automatically */
+                    if (this.type === 'trompette') {
+                        this.$emit('update:mode', (result.sound.type === 'trompette') ? 'midigurdy' : 'generic')
+                    } else {
+                        this.$emit('update:mode', result.soundfont.mode)
+                    }
                 }
                 baseNote = result.sound.note
             } else {
