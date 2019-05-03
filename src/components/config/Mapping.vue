@@ -215,7 +215,8 @@ function data () {
         ranges: [],
         dirty: false,
         showDescription: false,
-        mapConfig: null
+        mapConfig: null,
+        storeField: null
     }
 }
 
@@ -227,6 +228,9 @@ const watch = {
     },
     '$route' () {
         this.getMapping()
+    },
+    storeValue (val) {
+        this.updateSourceValue(val)
     }
 }
 
@@ -294,6 +298,15 @@ const computed = {
                 ]
             }
         ]
+    },
+
+    storeValue () {
+        if (this.storeField) {
+            return this.storeField
+                .split(/[.[\]]+/)
+                .reduce((prev, key) => prev ? prev[key] : null, this.$store.state)
+        }
+        return null
     },
 
     mapname () {
@@ -444,12 +457,16 @@ const methods = {
         // store this separately, to make watching easier
         this.ranges = this.mapping.ranges
         this.dirty = false
+        this.storeField = null
 
         /* This gets called whenever a mapping changes (i.e. a change in mapname),
         so clear the chart and setup with new mapping values */
         this.setupChart()
         if (this.mapConfig.websocket) {
             this.connectWebsocket(this.mapConfig.websocket.name)
+        } else if (this.mapConfig.storeField) {
+            this.storeField = this.mapConfig.storeField
+            this.updateSourceValue(this.storeValue)
         }
     },
 
@@ -646,6 +663,12 @@ const methods = {
             val = data[i + packetIndex]
         }
         this.updateSourceValue(val)
+    },
+
+    getStoreField (path) {
+        return path
+            .split(/[.[\]]+/)
+            .reduce((prev, key) => prev[key], this.$store.state)
     }
 }
 
