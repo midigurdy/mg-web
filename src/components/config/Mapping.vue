@@ -98,6 +98,18 @@ const margin = {
 }
 
 const mapConfig = {
+    chien_threshold_to_range: {
+        description: `
+            Controls how the chien response changes in response to the chien sensitivity. Negative
+            values have the effect of making the chien response sharper or harder, positive
+            values make the chien response softer.
+        `,
+        xFormat: {
+            ticks: 10,
+            format: 's'
+        },
+        storeField: 'instrument.chien.threshold'
+    },
     pressure_to_poly: {
         websocket: {
             name: 'keys',
@@ -294,6 +306,16 @@ const computed = {
                     {
                         'id': 'keyvel_to_notevel',
                         'name': 'Keyboard Mode Volume'
+                    }
+                ]
+            },
+            {
+                name: 'Chien Sensitivity',
+                icon: 'fast_forward',
+                links: [
+                    {
+                        'id': 'chien_threshold_to_range',
+                        'name': 'Chien Response'
                     }
                 ]
             }
