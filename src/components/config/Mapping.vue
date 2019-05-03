@@ -419,7 +419,7 @@ const methods = {
                 val = this.ranges[idx + 1][side] - 1
             }
         }
-        if (!val) {
+        if (Number.isNaN(val)) {
             val = target.min
         } else if (val < target.min) {
             val = target.min
