@@ -8,20 +8,18 @@
 
     <v-layout row>
         <v-flex md3>
-            <v-card>
-            <v-card-title><h2>Mappings</h2></v-card-title>
+            <template v-for="group, i in mapLinks">
+            <v-card class="mapping-group">
+                <v-card-title><h3><v-icon v-if="group.icon">{{ group.icon }}</v-icon> {{ group.name }}</h3></v-card-title>
                 <v-list>
-                    <template v-for="group, i in mapLinks">
-                    <v-subheader><b><v-icon v-if="group.icon">{{ group.icon }}</v-icon> {{ group.name }} to ...</b></v-subheader>
                     <v-list-tile v-for="link in group.links" :key="link.id" :to="{name: 'config-mapping', params: {mapname: link.id}}">
                         <v-list-tile-title>
-                            ... {{ link.name }}
+                            {{ link.name }}
                         </v-list-tile-title>
                     </v-list-tile>
-                    <v-divider v-if="i < mapLinks.length -1"/>
-                    </template>
                 </v-list>
             </v-card>
+            </template>
         </v-flex>
         <v-flex md8>
             <v-card>
@@ -100,9 +98,10 @@ const margin = {
 const mapConfig = {
     chien_threshold_to_range: {
         description: `
-            Controls how the chien response changes in response to the chien sensitivity. Negative
-            values have the effect of making the chien response sharper or harder, positive
-            values make the chien response softer.
+            Controls how the chien response changes for different sensitivity values. Negative
+            values have the effect of making the chien attack softer, positive
+            values make the chien attack harder. The red line shows the current value of the
+            chien sensitivity.
         `,
         xFormat: {
             ticks: 10,
@@ -126,7 +125,8 @@ const mapConfig = {
         description: `
             Maps the pressure you apply on the keys to the amount and direction of the pitch bend
             (which affects the fine tuning of the sound). Positive values make the sound higher,
-            negative values make the sound lower.
+            negative values make the sound lower. The red line shows the current pressure on
+            the highest pressed key.
         `
     },
     speed_to_melody_volume: {
@@ -136,7 +136,8 @@ const mapConfig = {
             packetIndex: 1
         },
         description: `
-            Controls the volume response of the melody strings in reaction to the wheel speed.
+            Controls the volume response of the melody strings in reaction to the wheel speed. The
+            red line indicates the current speed of the wheel.
         `
     },
     speed_to_drone_volume: {
@@ -146,7 +147,9 @@ const mapConfig = {
             packetIndex: 1
         },
         description: `
-            Controls the volume response of the drone strings in reaction to the wheel speed.
+            Controls the volume response of the drone strings in reaction to the wheel speed. The
+            red line indicates the current speed of the wheel.
+
         `
     },
     speed_to_trompette_volume: {
@@ -156,7 +159,9 @@ const mapConfig = {
             packetIndex: 1
         },
         description: `
-            Controls the volume response of the trompette strings in reaction to the wheel speed.
+            Controls the volume response of the trompette strings in reaction to the wheel speed. The
+            red line indicates the current speed of the wheel.
+
         `
     },
     speed_to_chien: {
@@ -166,9 +171,11 @@ const mapConfig = {
             packetIndex: 3
         },
         description: `
-            Controls the volume of the chien (the buzzing sound) in reaction to the wheel speed.
-            Only the speed above the current chien sensitivity (threshold) is considered.
-            NOTE: this only applies to trompette strings in 'MidiGurdy' mode.
+            Controls the volume of the chien (buzzing) in reaction to the wheel speed.
+            Please note: this only applies to trompette strings in 'MidiGurdy' mode. For 'Percussion'
+            mode chiens, please use the 'Percussion Mode Response' mapping.
+
+            The red line shows the current wheel speed, when a coup would actually sound.
         `
     },
     speed_to_percussion: {
@@ -179,8 +186,10 @@ const mapConfig = {
         },
         description: `
             Controls the initial volume of the chien sound for trompette strings in 'Percussion' mode.
-            Note that unlike the 'Wheel Speed to Chien Volume' mapping, this mapping only affects
-            the *initial* sound volume. Once the sound has started, the volume is not changed anymore.
+            Please note that this mapping only affects the *initial* sound volume. Once the sound has
+            started, the volume is not changed anymore. So only the attack of your coup has an effect
+            here, not how fast you turn after starting the coup. The red line shows the level of
+            attack of your last coup.
         `
     },
     keyvel_to_notevel: {
@@ -250,58 +259,16 @@ const computed = {
     mapLinks () {
         return [
             {
-                name: 'Wheel Speed',
-                icon: 'rotate_right',
+                name: 'Melody',
+                icon: 'music_note',
                 links: [
                     {
                         'id': 'speed_to_melody_volume',
-                        'name': 'Melody Volume'
+                        'name': 'Volume Response'
                     },
-                    {
-                        'id': 'speed_to_drone_volume',
-                        'name': 'Drone Volume'
-                    },
-                    {
-                        'id': 'speed_to_trompette_volume',
-                        'name': 'Trompette Volume'
-                    },
-                    {
-                        'id': 'speed_to_chien',
-                        'name': 'Chien Volume'
-                    },
-                    {
-                        'id': 'speed_to_percussion',
-                        'name': 'Percussion Volume'
-                    }
-                ]
-            },
-            {
-                name: 'Key Pressure',
-                icon: 'touch_app',
-                links: [
-                    /*
-                    {
-                        'id': 'pressure_to_poly',
-                        'name': 'Aftertouch'
-                    },
-                    */
                     {
                         'id': 'pressure_to_pitch',
                         'name': 'Pitch Bend'
-                    }
-                ]
-            },
-            {
-                name: 'Key Velocity',
-                icon: 'fast_forward',
-                links: [
-                    {
-                        'id': 'keyvel_to_tangent',
-                        'name': 'Tangent Hit Volume'
-                    },
-                    {
-                        'id': 'keyvel_to_keynoise',
-                        'name': 'Keynoise Volume'
                     },
                     {
                         'id': 'keyvel_to_notevel',
@@ -310,12 +277,48 @@ const computed = {
                 ]
             },
             {
-                name: 'Chien Sensitivity',
-                icon: 'fast_forward',
+                name: 'Drone',
+                icon: 'music_note',
                 links: [
                     {
-                        'id': 'chien_threshold_to_range',
+                        'id': 'speed_to_drone_volume',
+                        'name': 'Volume Response'
+                    }
+                ]
+            },
+            {
+                name: 'Trompette',
+                icon: 'music_note',
+                links: [
+                    {
+                        'id': 'speed_to_trompette_volume',
+                        'name': 'Volume Response'
+                    },
+                    {
+                        'id': 'speed_to_chien',
                         'name': 'Chien Response'
+                    },
+                    {
+                        'id': 'chien_threshold_to_range',
+                        'name': 'Sensitivity / Hardness'
+                    },
+                    {
+                        'id': 'speed_to_percussion',
+                        'name': 'Percussion Mode Response'
+                    }
+                ]
+            },
+            {
+                name: 'Key Noise',
+                icon: 'music_note',
+                links: [
+                    {
+                        'id': 'keyvel_to_tangent',
+                        'name': 'Tangent Hit Volume'
+                    },
+                    {
+                        'id': 'keyvel_to_keynoise',
+                        'name': 'Keynoise Volume'
                     }
                 ]
             }
@@ -775,5 +778,9 @@ table tr:hover td {
 
 .mapping-tools, .mapping-description {
     margin-top: 5px;
+}
+
+.mapping-group {
+    margin-bottom: 5px;
 }
 </style>
