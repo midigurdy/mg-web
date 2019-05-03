@@ -12,10 +12,10 @@
             <v-card-title><h2>Mappings</h2></v-card-title>
                 <v-list>
                     <template v-for="group, i in mapLinks">
-                    <v-subheader><b>{{ group.name }} to ...</b></v-subheader>
+                    <v-subheader><b><v-icon v-if="group.icon">{{ group.icon }}</v-icon> {{ group.name }} to ...</b></v-subheader>
                     <v-list-tile v-for="link in group.links" :key="link.id" :to="{name: 'config-mapping', params: {mapname: link.id}}">
                         <v-list-tile-title>
-                            {{ link.name }}
+                            ... {{ link.name }}
                         </v-list-tile-title>
                     </v-list-tile>
                     <v-divider v-if="i < mapLinks.length -1"/>
@@ -193,6 +193,7 @@ const computed = {
         return [
             {
                 name: 'Wheel Speed',
+                icon: 'rotate_right',
                 links: [
                     {
                         'id': 'speed_to_melody_volume',
@@ -218,6 +219,7 @@ const computed = {
             },
             {
                 name: 'Key Pressure',
+                icon: 'touch_app',
                 links: [
                     /*
                     {
@@ -233,6 +235,7 @@ const computed = {
             },
             {
                 name: 'Key Velocity',
+                icon: 'fast_forward',
                 links: [
                     {
                         'id': 'keyvel_to_tangent',
