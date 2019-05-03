@@ -94,7 +94,7 @@ const margin = {
     top: 50,
     right: 50,
     bottom: 50,
-    left: 50
+    left: 60
 }
 
 const mapConfig = {
@@ -518,7 +518,7 @@ const methods = {
 
         g.append('text')
             .attr('transform', 'rotate(-90)')
-            .attr('y', 0 - margin.left)
+            .attr('y', 0 - margin.left + 10)
             .attr('x', 0 - (height / 2))
             .attr('dy', '1em')
             .attr('fill', this.colors.axisText)
