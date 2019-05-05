@@ -136,11 +136,11 @@ const mutations = {
 
     uiUpdateDarkTheme (state, value) {
         state.ui.darkTheme = value
-        localStorage.setItem('mgweb_dark', value)
+        localStorage.setItem('mgweb_dark', value ? 'dark' : 'light')
     },
 
     uiLoadDarkTheme (state, value) {
-        var dark = !!localStorage.getItem('mgweb_dark')
+        var dark = (localStorage.getItem('mgweb_dark') === 'dark')
         state.ui.darkTheme = dark
     },
 
