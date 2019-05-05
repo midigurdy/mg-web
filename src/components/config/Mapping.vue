@@ -39,9 +39,9 @@
             </v-card>
             <v-expansion-panel v-if="mapConfig && mapConfig.description" class="mapping-description">
                 <v-expansion-panel-content v-model="showDescription" >
-                    <div slot="header">Description</div>
+                    <div slot="header" v-html="mapConfig.description || 'Description'"></div>
                     <v-card>
-                        <v-card-text>{{ mapConfig.description }}</v-card-text>
+                        <v-card-text v-html="mapConfig.longDescription"></v-card-text>
                     </v-card>
                 </v-expansion-panel-content>
             </v-expansion-panel>
@@ -97,11 +97,12 @@ const margin = {
 
 const mapConfig = {
     chien_threshold_to_range: {
-        description: `
-            Controls how the chien response changes for different sensitivity values. Negative
+        description: 'Changes the <i>hardness</i> of the chien based on the chien sensitivity',
+        longDescription: `
+            <p>Controls how the chien response changes for different sensitivity values. Negative
             values have the effect of making the chien attack softer, positive
-            values make the chien attack harder. The red line shows the current value of the
-            chien sensitivity.
+            values make the chien attack harder.</p>
+            <p>The red line shows the current value of the chien sensitivity.</p>
         `,
         xFormat: {
             ticks: 10,
@@ -122,11 +123,12 @@ const mapConfig = {
             packetSize: 5,
             packetIndex: 2
         },
-        description: `
-            Maps the pressure you apply on the keys to the amount and direction of the pitch bend
+        description: 'Controls the amount of pitch bend in response to key pressure.',
+        longDescription: `
+            <p>Maps the pressure you apply on the keys to the amount and direction of the pitch bend
             (which affects the fine tuning of the sound). Positive values make the sound higher,
-            negative values make the sound lower. The red line shows the current pressure on
-            the highest pressed key.
+            negative values make the sound lower.</p>
+            <p>The red line shows the current pressure on the highest pressed key.</p>
         `
     },
     speed_to_melody_volume: {
@@ -135,9 +137,9 @@ const mapConfig = {
             packetSize: 4,
             packetIndex: 1
         },
-        description: `
-            Controls the volume response of the melody strings in reaction to the wheel speed. The
-            red line indicates the current speed of the wheel.
+        description: 'Controls the volume response of the melody strings in reaction to the wheel speed.',
+        longDescription: `
+            <p>The red line indicates the current speed of the wheel.</p>
         `
     },
     speed_to_drone_volume: {
@@ -146,10 +148,9 @@ const mapConfig = {
             packetSize: 4,
             packetIndex: 1
         },
-        description: `
-            Controls the volume response of the drone strings in reaction to the wheel speed. The
-            red line indicates the current speed of the wheel.
-
+        description: 'Controls the volume response of the drone strings in reaction to the wheel speed.',
+        longDescription: `
+            <p>The red line indicates the current speed of the wheel.</p>
         `
     },
     speed_to_trompette_volume: {
@@ -158,10 +159,9 @@ const mapConfig = {
             packetSize: 4,
             packetIndex: 1
         },
-        description: `
-            Controls the volume response of the trompette strings in reaction to the wheel speed. The
-            red line indicates the current speed of the wheel.
-
+        description: 'Controls the volume response of the trompette strings in reaction to the wheel speed.',
+        longDescription: `
+            <p>The red line indicates the current speed of the wheel.</p>
         `
     },
     speed_to_chien: {
@@ -170,12 +170,11 @@ const mapConfig = {
             packetSize: 4,
             packetIndex: 3
         },
-        description: `
-            Controls the volume of the chien (buzzing) in reaction to the wheel speed.
-            Please note: this only applies to trompette strings in 'MidiGurdy' mode. For 'Percussion'
-            mode chiens, please use the 'Percussion Mode Response' mapping.
-
-            The red line shows the current wheel speed, when a coup would actually sound.
+        description: 'Controls the volume of the chien (buzzing) in reaction to the wheel speed.',
+        longDescription: `
+            <p><b>Please note:</b> this only applies to trompette strings in "MidiGurdy" mode. For trompettes
+            in "Percussion" mode, please use the "Percussion Mode Response" mapping.</p>
+            <p>The red line shows the current wheel speed, when a coup would actually sound.</p>
         `
     },
     speed_to_percussion: {
@@ -184,12 +183,12 @@ const mapConfig = {
             packetSize: 4,
             packetIndex: 3
         },
-        description: `
-            Controls the initial volume of the chien sound for trompette strings in 'Percussion' mode.
-            Please note that this mapping only affects the *initial* sound volume. Once the sound has
-            started, the volume is not changed anymore. So only the attack of your coup has an effect
-            here, not how fast you turn after starting the coup. The red line shows the level of
-            attack of your last coup.
+        description: 'Controls the volume of the chien sound for trompette strings in <b>Percussion mode</b>.',
+        longDescription: `
+            <p>Please note that this mapping only affects the <b>initial</b> sound volume.
+            Once the sound has started, the volume is not changed anymore. So only the attack of your coup has an effect
+            here, not how fast you turn after starting the coup.</p>
+            <p>The red line shows the level of attack of your last coup.</p>
         `
     },
     keyvel_to_notevel: {
@@ -198,9 +197,11 @@ const mapConfig = {
             packetSize: 5,
             packetIndex: 3
         },
-        description: `
-            Only applies to melody strings in "Keyboard" mode. It controls the initial volume of
-            the sound in response to the key velocity, i.e. how fast and hard you press the keys.
+        description: 'Controls the volume of the melody sounds in <b>Keyboard mode</b>.',
+        longDescription: `
+            <p>This only applies to melody strings in "Keyboard" mode. It controls the initial volume of
+            the sound in response to the key velocity, i.e. how fast and hard you press the keys.</p>
+            <p>The red line show the last key press speed.</p>
         `
     },
     keyvel_to_tangent: {
@@ -208,7 +209,14 @@ const mapConfig = {
             name: 'keys',
             packetSize: 5,
             packetIndex: 3
-        }
+        },
+        description: 'Controls the volume of the tangent noise sounds for melody strings.',
+        longDescription: `
+            <p>Controls the volume of the tangent noise sounds for melody strings in response to
+            how fast you press the keys. Please note that not all MidiGurdy soundfonts react to this
+            control.</p>
+            <p>The red line show the last key press speed.</p>
+        `
     },
     keyvel_to_keynoise: {
         websocket: {
@@ -217,8 +225,10 @@ const mapConfig = {
             packetIndex: 3
         },
         description: `
-            Controls the initial velocity of the key noise sounds in response to the key velocity,
-            i.e. how fast and hard you press the keys.
+            Controls the key noise volume in response to how fast you press or release the keys.
+        `,
+        longDescription: `
+            <p>The red line show the last key press speed.</p>
         `
     }
 }
@@ -318,7 +328,7 @@ const computed = {
                     },
                     {
                         'id': 'keyvel_to_keynoise',
-                        'name': 'Keynoise Volume'
+                        'name': 'Key Noise Volume'
                     }
                 ]
             }
