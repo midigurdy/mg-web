@@ -102,20 +102,22 @@ const mapConfig = {
             <p>Controls how the chien response changes for different sensitivity values. Negative
             values have the effect of making the chien attack softer, positive
             values make the chien attack harder.</p>
-            <p>The red line shows the current value of the chien sensitivity.</p>
+            <p>The <span style="color: green">green line</span> shows the current value of the chien sensitivity.</p>
         `,
         xFormat: {
             ticks: 10,
             format: 's'
         },
-        storeField: 'instrument.chien.threshold'
+        storeField: 'instrument.chien.threshold',
+        rawLineColour: 'green'
     },
     pressure_to_poly: {
         websocket: {
             name: 'keys',
             packetSize: 5,
             packetIndex: 2
-        }
+        },
+        rawLineColour: 'red'
     },
     pressure_to_pitch: {
         websocket: {
@@ -123,12 +125,13 @@ const mapConfig = {
             packetSize: 5,
             packetIndex: 2
         },
+        rawLineColour: 'red',
         description: 'Controls the amount of pitch bend in response to key pressure.',
         longDescription: `
             <p>Maps the pressure you apply on the keys to the amount and direction of the pitch bend
             (which affects the fine tuning of the sound). Positive values make the sound higher,
             negative values make the sound lower.</p>
-            <p>The red line shows the current pressure on the highest pressed key.</p>
+            <p>The <span style="color: red">red line</span> shows the current pressure on the highest pressed key.</p>
         `
     },
     speed_to_melody_volume: {
@@ -137,9 +140,10 @@ const mapConfig = {
             packetSize: 4,
             packetIndex: 1
         },
+        rawLineColour: 'red',
         description: 'Controls the volume response of the melody strings in reaction to the wheel speed.',
         longDescription: `
-            <p>The red line indicates the current speed of the wheel.</p>
+            <p>The <span style="color: red">red line</span> indicates the current speed of the wheel.</p>
         `
     },
     speed_to_drone_volume: {
@@ -148,9 +152,10 @@ const mapConfig = {
             packetSize: 4,
             packetIndex: 1
         },
+        rawLineColour: 'red',
         description: 'Controls the volume response of the drone strings in reaction to the wheel speed.',
         longDescription: `
-            <p>The red line indicates the current speed of the wheel.</p>
+            <p>The <span style="color: red">red line</span> indicates the current speed of the wheel.</p>
         `
     },
     speed_to_trompette_volume: {
@@ -159,9 +164,10 @@ const mapConfig = {
             packetSize: 4,
             packetIndex: 1
         },
+        rawLineColour: 'red',
         description: 'Controls the volume response of the trompette strings in reaction to the wheel speed.',
         longDescription: `
-            <p>The red line indicates the current speed of the wheel.</p>
+            <p>The <span style="color: red">red line</span> indicates the current speed of the wheel.</p>
         `
     },
     speed_to_chien: {
@@ -170,11 +176,12 @@ const mapConfig = {
             packetSize: 4,
             packetIndex: 3
         },
+        rawLineColour: 'red',
         description: 'Controls the volume of the chien (buzzing) in reaction to the wheel speed.',
         longDescription: `
             <p><b>Please note:</b> this only applies to trompette strings in "MidiGurdy" mode. For trompettes
             in "Percussion" mode, please use the "Percussion Mode Response" mapping.</p>
-            <p>The red line shows the current wheel speed, when a coup would actually sound.</p>
+            <p>The <span style="color: red">red line</span> shows the current wheel speed, when a coup would actually sound.</p>
         `
     },
     speed_to_percussion: {
@@ -183,12 +190,13 @@ const mapConfig = {
             packetSize: 4,
             packetIndex: 3
         },
+        rawLineColour: 'red',
         description: 'Controls the volume of the chien sound for trompette strings in <b>Percussion mode</b>.',
         longDescription: `
             <p>Please note that this mapping only affects the <b>initial</b> sound volume.
             Once the sound has started, the volume is not changed anymore. So only the attack of your coup has an effect
             here, not how fast you turn after starting the coup.</p>
-            <p>The red line shows the level of attack of your last coup.</p>
+            <p>The <span style="color: red">red line</span> shows the level of attack of your last coup.</p>
         `
     },
     keyvel_to_notevel: {
@@ -197,11 +205,12 @@ const mapConfig = {
             packetSize: 5,
             packetIndex: 3
         },
+        rawLineColour: 'red',
         description: 'Controls the volume of the melody sounds in <b>Keyboard mode</b>.',
         longDescription: `
             <p>This only applies to melody strings in "Keyboard" mode. It controls the initial volume of
             the sound in response to the key velocity, i.e. how fast and hard you press the keys.</p>
-            <p>The red line show the last key press speed.</p>
+            <p>The <span style="color: red">red line</span> show the last key press speed.</p>
         `
     },
     keyvel_to_tangent: {
@@ -210,12 +219,13 @@ const mapConfig = {
             packetSize: 5,
             packetIndex: 3
         },
+        rawLineColour: 'red',
         description: 'Controls the volume of the tangent noise sounds for melody strings.',
         longDescription: `
             <p>Controls the volume of the tangent noise sounds for melody strings in response to
             how fast you press the keys. Please note that not all MidiGurdy soundfonts react to this
             control.</p>
-            <p>The red line show the last key press speed.</p>
+            <p>The <span style="color: red">red line</span> show the last key press speed.</p>
         `
     },
     keyvel_to_keynoise: {
@@ -224,11 +234,12 @@ const mapConfig = {
             packetSize: 5,
             packetIndex: 3
         },
+        rawLineColour: 'red',
         description: `
             Controls the key noise volume in response to how fast you press or release the keys.
         `,
         longDescription: `
-            <p>The red line show the last key press speed.</p>
+            <p>The <span style="color: red">red line</span> show the last key press speed.</p>
         `
     }
 }
@@ -369,8 +380,7 @@ const computed = {
                 circleStoke: 'rgb(25, 118, 210)',
                 circleFill: 'rgba(25, 118, 210, 0.5)',
                 axisText: 'lightgrey',
-                zeroLine: 'grey',
-                rawLine: 'red'
+                zeroLine: 'grey'
             }
         } else {
             return {
@@ -378,8 +388,7 @@ const computed = {
                 circleStoke: 'blue',
                 circleFill: 'rgba(0, 0, 255, 0.5)',
                 axisText: 'darkgrey',
-                zeroLine: 'grey',
-                rawLine: 'red'
+                zeroLine: 'grey'
             }
         }
     }
@@ -596,14 +605,16 @@ const methods = {
         }
 
         // Setup the raw line path
-        g.append('path')
-            .attr('class', 'srcline')
-            .attr('fill', 'none')
-            .attr('stroke', this.colors.rawLine)
-            .attr('stroke-linejoin', 'round')
-            .attr('stroke-linecap', 'round')
-            .attr('stroke-width', 2)
-            .attr('d', 'M 0 0 V ' + height)
+        if (this.mapConfig.rawLineColour) {
+            g.append('path')
+                .attr('class', 'srcline')
+                .attr('fill', 'none')
+                .attr('stroke', this.mapConfig.rawLineColour)
+                .attr('stroke-linejoin', 'round')
+                .attr('stroke-linecap', 'round')
+                .attr('stroke-width', 2)
+                .attr('d', 'M 0 0 V ' + height)
+        }
 
         // Setup the line path
         g.append('path')
