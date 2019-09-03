@@ -245,7 +245,7 @@ function data () {
         },
         ranges: [],
         dirty: false,
-        showDescription: false,
+        showDescription: true,
         mapConfig: null,
         storeField: null
     }
