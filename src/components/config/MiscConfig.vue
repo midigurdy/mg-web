@@ -122,6 +122,22 @@
                     </v-card-text>
                 </v-card>
             </v-flex>
+            <v-flex md6>
+                <v-card>
+                    <v-card-title><h2><v-icon left>star</v-icon> Features</h2></v-card-title>
+                    <v-card-text>
+                        <v-layout row wrap>
+                            <v-flex xs12>
+                                <v-switch
+                                    label="Separate chien sensitivities"
+                                    hint="Enable this feature if you want to control the sensitivity of the three chiens separately, disable for a single sensitivity."
+                                    persistent-hint
+                                    v-model="misc.ui.multi_chien_threshold" />
+                            </v-flex>
+                        </v-layout>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
         </v-layout>
 </v-container>
 </template>
@@ -141,7 +157,8 @@ function data () {
             ui: {
                 timeout: 0,
                 brightness: 0,
-                chien_sens_reverse: false
+                chien_sens_reverse: false,
+                multi_chien_threshold: false
             }
         }
     }
@@ -163,6 +180,7 @@ const methods = {
     saveConfig () {
         API.saveMiscConfig(this.misc).then((response) => {
             Object.assign(this.misc, response.data)
+            this.$store.dispatch('fetchMiscConfig')
             this.$store.dispatch('snacks/add', {
                 message: 'Configuration saved',
                 timeout: 2000

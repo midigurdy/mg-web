@@ -66,9 +66,6 @@ function emptyPreset () {
             gain: 1.0,
             pitchbend_range: 100
         },
-        chien: {
-            threshold: 50
-        },
         tuning: {
             coarse: 0,
             fine: 0
@@ -99,7 +96,8 @@ function emptyVoice () {
         capo: 0,
         polyphonic: false,
         mode: 'midigurdy',
-        finetune: 0
+        finetune: 0,
+        chien_threshold: 50
     }
 }
 

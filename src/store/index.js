@@ -40,10 +40,15 @@ const state = {
     connected: false,
     systemInformation: {},
     sounds: [],
-    instrument: {}
+    instrument: {},
+    misc: {}
 }
 
 const getters = {
+    multiChienThreshold (state) {
+        return (state.misc.ui || {}).multi_chien_threshold
+    },
+
     getPresets (state) {
         return state.presets
     },
@@ -148,8 +153,18 @@ const mutations = {
         state.presets = presets
     },
 
-    setChienThreshold (state, val) {
-        state.instrument.chien.threshold = val
+    setChienThreshold (state, data) {
+        var st
+        if (data.string === 'trompette1') {
+            st = state.instrument.voices.trompette[0]
+        } else if (data.string === 'trompette2') {
+            st = state.instrument.voices.trompette[1]
+        } else if (data.string === 'trompette3') {
+            st = state.instrument.voices.trompette[2]
+        } else {
+            return
+        }
+        st.chien_threshold = data.chien_threshold
     },
 
     setMainVolume (state, val) {
@@ -187,6 +202,10 @@ const mutations = {
 
     setInstrumentState (state, instrument) {
         state.instrument = instrument
+    },
+
+    setMiscConfig (state, misc) {
+        state.misc = misc
     },
 
     setPresetOrder (state, orderedIds) {
@@ -249,6 +268,12 @@ const actions = {
     fetchInstrumentState ({ commit }) {
         return API.getInstrumentState().then((response) => {
             commit('setInstrumentState', response.data)
+        })
+    },
+
+    fetchMiscConfig ({ commit }) {
+        return API.getMiscConfig().then((response) => {
+            commit('setMiscConfig', response.data)
         })
     },
 

@@ -1,27 +1,20 @@
 <template>
-    <v-card>
-        <v-card-title>
-            <h2><v-icon>pets</v-icon> Chien Setup</h2>
-        </v-card-title>
-        <v-card-text>
-            <v-layout row>
-                <v-flex xs10>
-                    <v-slider
-                        label="Sensitivity (%)"
-                        :value="sensitivity"
-                        @input="setSensitivity($event)"
-                        tabindex="-1"
-                        />
+    <v-layout row>
+        <v-flex xs10>
+            <v-slider
+                :label="title"
+                :value="sensitivity"
+                @input="setSensitivity($event)"
+                tabindex="-1"
+                />
+        </v-flex>
+        <v-flex xs2>
+            <v-text-field
+                :value="sensitivity"
+                @change="setSensitivity($event)"
+                type="number"/>
                 </v-flex>
-                <v-flex xs2>
-                    <v-text-field
-                        :value="sensitivity"
-                        @change="setSensitivity($event)"
-                        type="number"/>
-                        </v-flex>
-            </v-layout>
-        </v-card-text>
-    </v-card>
+    </v-layout>
 </template>
 
 <script>
@@ -34,7 +27,21 @@ const methods = {
 
 export default {
     name: 'chien-config',
-    props: ['sensitivity'],
+    props: ['sensitivity', 'title'],
     methods
 }
 </script>
+
+<style scoped>
+.layout .flex {
+    padding: 0 !important;
+}
+
+.flex .input-group {
+    padding: 0
+}
+.flex .input-group--slider {
+    padding-left: 10px;
+    padding-right: 20px;
+}
+</style>

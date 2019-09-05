@@ -5,12 +5,16 @@ const events = {
         store.commit('setSystemInformation', msg.data)
     },
 
+    'multi_chien_threshold:changed': ({ store, msg }) => {
+        store.dispatch('fetchMiscConfig')
+    },
+
     'main_volume:changed': ({ store, msg }) => {
         store.commit('setMainVolume', msg.data.main_volume)
     },
 
-    'chien_threshold:changed': ({ store, msg }) => {
-        store.commit('setChienThreshold', msg.data.chien_threshold)
+    'active:preset:voice:chien_threshold:changed': ({ store, msg }) => {
+        store.commit('setChienThreshold', msg.data)
     },
 
     'reverb_volume:changed': ({ store, msg }) => {
@@ -79,6 +83,7 @@ const socket = {
             name: 'client_id',
             data: {id: socket.store.state.clientId}
         }))
+        socket.store.dispatch('fetchMiscConfig')
         socket.store.dispatch('fetchSoundFonts')
         socket.store.dispatch('fetchPresets')
         socket.store.dispatch('fetchInstrumentState')

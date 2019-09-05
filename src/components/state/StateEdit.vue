@@ -178,10 +178,29 @@
             </v-card>
         </v-flex>
         <v-flex xs12>
-            <chien-config
-                :sensitivity="preset.chien.threshold"
-                @update:sensitivity="preset.chien.threshold = $event; stateChanged()"
-                />
+            <v-card>
+                <v-card-title>
+                    <h2><v-icon>pets</v-icon> Chien Sensitivity</h2>
+                </v-card-title>
+                <v-card-text>
+                    <template v-if="multiChienThreshold">
+                        <chien-config
+                            v-for="(voice, index) in preset.voices.trompette"
+                            :key="'cth' + index"
+                            :title="'Chien ' + (index + 1)"
+                            :sensitivity="voice.chien_threshold"
+                            @update:sensitivity="voice.chien_threshold = $event; stateChanged()"
+                            />
+                    </template>
+                    <template v-else>
+                        <chien-config
+                            title="Sensitivity"
+                            :sensitivity="preset.voices.trompette[0].chien_threshold"
+                            @update:sensitivity="preset.voices.trompette[0].chien_threshold = $event; stateChanged()"
+                            />
+                    </template>
+                </v-card-text>
+            </v-card>
         </v-flex>
         <v-flex xs12>
             <tuning-config
@@ -250,6 +269,12 @@ const watch = {
     }
 }
 
+const computed = {
+    multiChienThreshold () {
+        return this.$store.getters.multiChienThreshold
+    }
+}
+
 const methods = {
     hasSound (voice) {
         return voice.soundfont && voice.note >= 0
@@ -276,6 +301,7 @@ export default {
     data,
     watch,
     methods,
+    computed,
     components: {
         VoiceEdit,
         VoiceMixer,
