@@ -35,7 +35,6 @@ const methods = {
     },
 
     save (preset, filename) {
-        console.log(preset)
         this.status = 'uploading'
         this.$store.dispatch('savePreset', preset)
         .then(() => {

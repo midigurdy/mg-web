@@ -80,13 +80,11 @@ export default {
     methods,
 
     created () {
-        console.log('created')
         this.timeout = null
         this.updateGain()
     },
 
     destroyed () {
-        console.log('destroyed')
         this.update = false
         if (this.timeout) {
             clearTimeout(this.timeout)

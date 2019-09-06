@@ -18,7 +18,6 @@
                     v-for="(preset, idx) in presets"
                     :key="preset.id"
                     @click="loadPreset(preset)"
-                    @dblclick="console.log($event)"
                     >
                     <v-list-tile-avatar>{{ idx + 1 }}</v-list-tile-avatar>
                     <v-list-tile-content>
