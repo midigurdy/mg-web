@@ -91,7 +91,7 @@ function emptyVoice () {
         program: 0,
         volume: 127,
         panning: 64,
-        muted: false,
+        muted: true,
         note: 60,
         capo: 0,
         polyphonic: false,
