@@ -108,7 +108,7 @@ const mapConfig = {
             ticks: 10,
             format: 's'
         },
-        storeField: 'instrument.chien.threshold',
+        storeField: 'firstChienThreshold',
         rawLineColour: 'orange'
     },
     pressure_to_poly: {
@@ -347,10 +347,8 @@ const computed = {
     },
 
     storeValue () {
-        if (this.storeField) {
-            return this.storeField
-                .split(/[.[\]]+/)
-                .reduce((prev, key) => prev ? prev[key] : null, this.$store.state)
+        if (this.storeField === 'firstChienThreshold') {
+            return this.$store.getters.firstChienThreshold
         }
         return null
     },

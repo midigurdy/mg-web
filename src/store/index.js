@@ -49,6 +49,10 @@ const getters = {
         return (state.misc.ui || {}).multi_chien_threshold
     },
 
+    firstChienThreshold (state) {
+        return state.instrument.voices.trompette[0].chien_threshold
+    },
+
     getPresets (state) {
         return state.presets
     },
