@@ -21,6 +21,8 @@
                                     label="Display Brightness"
                                     :value="misc.ui.brightness"
                                     @input="misc.ui.brightness = check($event, 0, 100)"
+                                    hint="Set this to a lower value to reduce battery consumption"
+                                    persistent-hint
                                     min=0
                                     max=100
                                     />
@@ -36,6 +38,8 @@
                                     label="Display Timeout"
                                     :value="misc.ui.timeout"
                                     @input="misc.ui.timeout = check($event, 0, 60)"
+                                    hint="Controls after how many seconds of inactivity the instrument menu jumps back to the home screen"
+                                    persistent-hint
                                     min=0
                                     max=60
                                     />
@@ -50,6 +54,8 @@
                                 <v-switch
                                     label="Reverse Chien Sensitivity Direction"
                                     v-model="misc.ui.chien_sens_reverse"
+                                    hint="Reverses the direction you need to turn the rotary knob to increase and decrease the chien sensitivity on the instrument."
+                                    persistent-hint
                                     />
                             </v-flex>
                         </v-layout>
