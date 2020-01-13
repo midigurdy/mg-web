@@ -690,8 +690,10 @@ const methods = {
 
     disconnectWebsocket () {
         if (this.ws) {
+            this.ws.onclose = undefined
             this.ws.close()
             this.ws = undefined
+            this.onWebSocketClose()
         }
     },
 
