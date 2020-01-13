@@ -551,7 +551,7 @@ const methods = {
         this.svg.selectAll('g').remove()
 
         // If we have no mapping yet, don't render anything
-        if (!this.mapping) return
+        if (!this.mapping || !this.mapConfig) return
 
         this.updateChartScales()
 
@@ -565,7 +565,7 @@ const methods = {
 
         // Setup axes, x axis at bottom, y axis on left
         var xAxis = d3.axisBottom(scale.x)
-        if (this.mapConfig && this.mapConfig.xFormat) {
+        if (this.mapConfig.xFormat) {
             xAxis = xAxis.ticks(this.mapConfig.xFormat.ticks, this.mapConfig.xFormat.format)
         }
 
