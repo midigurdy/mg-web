@@ -268,9 +268,6 @@ const watch = {
         handler: 'updateChart',
         deep: true
     },
-    '$route' () {
-        this.getMapping()
-    },
     storeValue (val) {
         this.updateSourceValue(val)
     }
