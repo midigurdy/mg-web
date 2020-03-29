@@ -50,7 +50,7 @@
                                     @change="misc.ui.timeout = check($event, 0, 60)"
                                     type="number"/>
                             </v-flex>
-                            <v-flex xs12>
+                            <v-flex xs12 mt-3>
                                 <v-switch
                                     label="Reverse Chien Sensitivity Direction"
                                     v-model="misc.ui.chien_sens_reverse"

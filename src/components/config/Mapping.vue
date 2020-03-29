@@ -33,7 +33,7 @@
                 <v-btn flat :disabled="!dirty" :icon="$vuetify.breakpoint.xs" @click="getMapping">
                     <v-icon left>cached</v-icon> <span class="hidden-xs-only">Discard Changes</span>
                 </v-btn>
-                <v-btn flat :icon="$vuetify.breakpoint.xs" @click="resetMapping">
+                <v-btn flat style="float: right" :icon="$vuetify.breakpoint.xs" @click="resetMapping">
                     <v-icon left>settings</v-icon> <span class="hidden-xs-only">Reset To Factory Default</span>
                 </v-btn>
             </v-card>
@@ -62,8 +62,10 @@
                             <td>
                                 <v-btn flat icon small @click="addRange(index)" :tabindex="-1"
                                   title="Add control point below"
-                                 ><v-icon>control_point</v-icon></v-btn>
-                                <v-btn flat icon small @click="removeRange(index)" :tabindex="-1"><v-icon>remove</v-icon></v-btn>
+                                 ><v-icon>add</v-icon></v-btn>
+                                <v-btn flat icon small @click="removeRange(index)" :tabindex="-1"
+                                  title="Remove this control point"
+                                  ><v-icon>remove</v-icon></v-btn>
                             </td>
                             <td><v-text-field class="number-field" hide-details type="number" :value="range.src" @change="onValueChange($event, index, 'src')"/></td>
                             <td><v-text-field class="number-field" hide-details type="number" :value="range.dst" @change="onValueChange($event, index, 'dst')"/></td>
