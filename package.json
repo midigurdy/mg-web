@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@riophae/vue-treeselect": "0.0.29",
-    "axios": "^0.16.2",
+    "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
     "d3": "^4.9.1",
     "lodash": "^4.17.4",
