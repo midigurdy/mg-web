@@ -33,6 +33,8 @@
                     <label>Fade Speed: {{ fadeSpeed }}
                         <v-slider thumb-label v-model.number="fadeSpeed" min="0" max="8"/>
                     </label>
+                    <v-btn block color="secondary" @click.stop="clearScreen">Clear screen</v-btn>
+                    <div>Or press <em>c</em> to clear the screen</div>
                 </v-card-text>
             </v-card>
 
@@ -134,7 +136,9 @@ function data () {
         coupDetectHysteresis: 30,
         coupDebounce: 0,
         coupDebounceCount: 5,
-        coupOn: false
+        coupOn: false,
+
+        doClear: false,
     }
 }
 
@@ -171,12 +175,21 @@ const watch = {
 }
 
 const methods = {
+    clearScreen () {
+        this.doClear = true
+    },
+
     toggleControls () {
         this.$store.commit('uiUpdateVisControls', !this.$store.state.ui.visControls)
     },
 
     pos2angle (pos) {
         return (pos / 16384.0) * Math.PI * 2 - this.topOffset
+    },
+
+    clearCoups () {
+        this.coupDebounce = 0
+        this.coupPositions = []
     },
 
     detectCoups (data) {
@@ -242,6 +255,8 @@ const methods = {
     onKeyDown (evt) {
         if (evt.code === 'Space') {
             this.setRotationOffset()
+        } else if (evt.code === 'KeyC') {
+            this.clearScreen()
         }
     },
 
@@ -366,7 +381,12 @@ const methods = {
                 return
             }
 
-            if (skipFade) {
+            if (this.doClear) {
+                this.overlay.clear()
+                    .beginFill(color(1, 1, 1), 1)
+                    .drawRect(0, 0, STAGE_WIDTH, STAGE_HEIGHT)
+                    .endFill()
+            } else if (skipFade) {
                 fadingStage.removeChild(this.overlay)
             }
 
@@ -379,7 +399,10 @@ const methods = {
                 this.lastLineX = this.lastLineY = undefined
             }
 
-            if (this.queue) {
+            if (this.doClear) {
+                this.clearCoups()
+                this.updateCoups()
+            } else if (this.queue) {
                 this.detectCoups(this.queue)
                 this.updateCoups()
             }
@@ -409,6 +432,10 @@ const methods = {
             }
 
             /* main stage is rendered by PIXI application ticker */
+            if (this.doClear) {
+                this.updateOverlay()
+                this.doClear = false
+            }
         }
 
         var fpsCalls = 0
