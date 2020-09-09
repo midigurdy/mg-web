@@ -357,8 +357,8 @@ const actions = {
         })
     },
 
-    uploadSoundFont ({ commit }, { binary, filename, overwrite, progressCallback }) {
-        return API.uploadSound(binary, filename, overwrite, progressCallback)
+    uploadSoundFont ({ commit }, { binary, filename, progressCallback }) {
+        return API.uploadSound(binary, filename, progressCallback)
         .catch(() => {
             // just ignore, as message is already displayed by
             // global API error handler

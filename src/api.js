@@ -200,11 +200,8 @@ export default {
         return API.get('sounds/' + id)
     },
 
-    uploadSound (binary, filename, overwrite, progressCallback) {
+    uploadSound (binary, filename, progressCallback) {
         var url = ['upload/sound', filename]
-        if (overwrite) {
-            url.push('1')
-        }
         return API.post(url.join('/'), binary, {
             onUploadProgress: progressCallback,
             headers: {'Content-Type': 'application/octet-stream'}

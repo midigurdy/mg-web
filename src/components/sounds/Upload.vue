@@ -26,7 +26,6 @@ function data () {
     return {
         status: 'initial',
         progressPercent: 0,
-        overwrite: true,
         visible: false
     }
 }
@@ -36,7 +35,6 @@ const methods = {
         this.status = 'initial'
         this.progressPercent = 0
         this.$refs.fileupload.value = ''
-        this.overwrite = true
     },
 
     save (binary, filename) {
@@ -44,7 +42,6 @@ const methods = {
         this.$store.dispatch('uploadSoundFont', {
             binary,
             filename,
-            overwrite: this.overwrite,
             progressCallback: (evt) => {
                 this.progressPercent = Math.round((evt.loaded * 100) / evt.total)
             }
