@@ -78,6 +78,8 @@
                                     @input="misc.keyboard.key_on_debounce = check($event, 0, 50)"
                                     min=0
                                     max=50
+                                    hint="How many milliseconds does a key need to touch the string before it is treated as pressed"
+                                    persistent-hint
                                     />
                             </v-flex>
                             <v-flex xs2>
@@ -95,6 +97,8 @@
                                     @input="misc.keyboard.key_off_debounce = check($event, 0, 50)"
                                     min=0
                                     max=50
+                                    hint="How many milliseconds does a key need to not touch the string before it is treated as not pressed"
+                                    persistent-hint
                                     />
                             </v-flex>
                             <v-flex xs2>
@@ -112,6 +116,8 @@
                                     @input="misc.keyboard.base_note_delay = check($event, 0, 50)"
                                     min=0
                                     max=50
+                                    hint="How many milliseconds to wait before returning to the string base note after all keys are released"
+                                    persistent-hint
                                     />
                             </v-flex>
                             <v-flex xs2>
