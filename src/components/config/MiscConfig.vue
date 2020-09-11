@@ -31,7 +31,9 @@
                                 <v-text-field
                                     :value="misc.ui.brightness"
                                     @change="misc.ui.brightness = check($event, 0, 100)"
-                                    type="number"/>
+                                    type="number"
+                                    suffix="%"
+                                    />
                             </v-flex>
                             <v-flex xs10>
                                 <v-slider
@@ -48,7 +50,9 @@
                                 <v-text-field
                                     :value="misc.ui.timeout"
                                     @change="misc.ui.timeout = check($event, 0, 60)"
-                                    type="number"/>
+                                    type="number"
+                                    suffix="s"
+                                    />
                             </v-flex>
                             <v-flex xs12 mt-3>
                                 <v-switch
@@ -80,7 +84,9 @@
                                 <v-text-field
                                     :value="misc.keyboard.key_on_debounce"
                                     @change="misc.keyboard.key_on_debounce = check($event, 0, 50)"
-                                    type="number"/>
+                                    type="number"
+                                    suffix="ms"
+                                    />
                             </v-flex>
                             <v-flex xs10>
                                 <v-slider
@@ -95,7 +101,9 @@
                                 <v-text-field
                                     :value="misc.keyboard.key_off_debounce"
                                     @change="misc.keyboard.key_off_debounce = check($event, 0, 50)"
-                                    type="number"/>
+                                    type="number"
+                                    suffix="ms"
+                                    />
                             </v-flex>
                             <v-flex xs10>
                                 <v-slider
@@ -110,7 +118,9 @@
                                 <v-text-field
                                     :value="misc.keyboard.base_note_delay"
                                     @change="misc.keyboard.base_note_delay = check($event, 0, 50)"
-                                    type="number"/>
+                                    type="number"
+                                    suffix="ms"
+                                    />
                             </v-flex>
                         </v-layout>
                     </v-card-text>
