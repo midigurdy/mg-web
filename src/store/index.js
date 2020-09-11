@@ -32,6 +32,7 @@ const state = {
     ui: {
         navbar: true,
         visControls: false,
+        visCrankPosition: 0,
         notifications: [],
         darkTheme: false
     },
@@ -139,6 +140,11 @@ const mutations = {
         state.ui.visControls = value
     },
 
+    uiUpdateCrankPosition (state, value) {
+        state.ui.visCrankPosition = value
+        localStorage.setItem('mgweb_crank_position', value)
+    },
+
     uiUpdateNavbar (state, value) {
         state.ui.navbar = value
     },
@@ -148,9 +154,12 @@ const mutations = {
         localStorage.setItem('mgweb_dark', value ? 'dark' : 'light')
     },
 
-    uiLoadDarkTheme (state, value) {
+    uiLoadLocalStorage (state, value) {
         var dark = (localStorage.getItem('mgweb_dark') === 'dark')
         state.ui.darkTheme = dark
+
+        var crankPosition = parseFloat(localStorage.getItem('mgweb_crank_position')) || 0
+        state.ui.visCrankPosition = crankPosition
     },
 
     setPresets (state, presets) {

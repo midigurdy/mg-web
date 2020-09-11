@@ -53,6 +53,6 @@ new Vue({
         this.$sockets.open(this.$store, API.getURL('MG_NOTIFY_WS_URL'))
     },
     beforeCreate () {
-        this.$store.commit('uiLoadDarkTheme')
+        this.$store.commit('uiLoadLocalStorage')
     }
 })

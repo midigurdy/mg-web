@@ -126,7 +126,6 @@ function data () {
         wsConnected: false,
         wsStatusLabel: 'Not connected!',
 
-        rotationOffset: 0,
         onePosition: '12',
         topOffset: HALF_PI,
 
@@ -150,7 +149,16 @@ const computed = {
         set (value) {
             this.$store.commit('uiUpdateVisControls', value)
         }
-    }
+    },
+
+    rotationOffset: {
+        get () {
+            return this.$store.state.ui.visCrankPosition
+        },
+        set (value) {
+            this.$store.commit('uiUpdateCrankPosition', value)
+        },
+    },
 }
 
 const watch = {
