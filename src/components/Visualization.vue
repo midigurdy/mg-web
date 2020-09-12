@@ -249,12 +249,14 @@ const methods = {
     },
 
     setRotationOffset () {
-        var prevOffset = this.rotationOffset
         this.rotationOffset = this.pointer.rotation + this.rotationOffset + this.topOffset
-        this.line.rotation = -this.rotationOffset
-        this.arc.rotation = -this.rotationOffset
-        this.coups.rotation = -this.rotationOffset
-        this.pointer.rotation -= (this.rotationOffset - prevOffset)
+        this.updateFromRotationOffset(this.rotationOffset)
+    },
+
+    updateFromRotationOffset (offset) {
+        this.line.rotation = -offset
+        this.arc.rotation = -offset
+        this.coups.rotation = -offset
     },
 
     onKeyDown (evt) {
@@ -638,6 +640,9 @@ export default {
         window.addEventListener('keydown', this.onKeyDown)
         this.retryWebSocket = true
         this.connectWebsocket()
+        if (this.rotationOffset) {
+            this.updateFromRotationOffset(this.rotationOffset)
+        }
     },
     beforeDestroy () {
         document.body.className = ''
