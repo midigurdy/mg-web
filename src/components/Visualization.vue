@@ -8,11 +8,8 @@
         </mg-toolbar>
 
         <v-navigation-drawer right app touchless v-model="controls">
-            <div class="text-xs-center">
-                <v-chip v-if="wsConnected" color="green" text-color="white">
-                    FPS: {{ fps }}
-                </v-chip>
-                <v-chip v-else color="red" text-color="white">
+            <div class="text-xs-center" v-if="!wsConnected">
+                <v-chip color="red" text-color="white">
                     {{ wsStatusLabel }}
                 </v-chip>
             </div>
