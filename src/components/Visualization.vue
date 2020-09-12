@@ -108,7 +108,7 @@ function data () {
         arcOuterRadius: 300,
 
         showSpeedLine: false,
-        lineMaxRadius: 400,
+        lineMaxRadius: 500,
         lineMinRadius: 310,
         lineMaxSpeed: 5000,
 
