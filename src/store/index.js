@@ -125,6 +125,10 @@ const getters = {
         })
     },
 
+    getSoundfont: (state) => (id) => {
+        return state.soundfonts.find((sf) => { return sf.id === id })
+    },
+
     getSoundAndFont: (state) => (id) => {
         const sfid = id.split(':')[0]
         var soundfont = state.soundfonts.find((sf) => { return sf.id === sfid })

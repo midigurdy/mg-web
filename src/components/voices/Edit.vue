@@ -45,13 +45,6 @@
                         />
                 </div>
                 <template v-if="type == 'melody'">
-                    <div class="flex xs3" style="padding-left: 3em">
-                        <label style="color: grey; font-size: 13px">Polyphonic</label>
-                        <v-switch
-                        :input-value="polyphonic"
-                        @change="$emit('update:polyphonic', $event)"
-                        />
-                    </div>
                     <div class="flex xs3">
                         <single-select
                             label="Capo Key"
@@ -60,24 +53,18 @@
                             @update:value="$emit('update:capo', $event)"
                             />
                     </div>
-                    <div class="flex xs3">
-                        <single-select
-                            label="Mode"
-                            :choices="melodyModeChoices"
-                            :value="mode"
-                            @update:value="$emit('update:mode', $event)"
-                            :numericValue="false"
+                    <div class="flex xs3" style="padding-left: 3em">
+                        <label style="color: grey; font-size: 13px">Polyphonic</label>
+                        <v-switch
+                            :input-value="polyphonic"
+                            @change="$emit('update:polyphonic', $event)"
                             />
                     </div>
-                </template>
-                <template v-if="type == 'trompette'">
-                    <div class="flex xs3">
-                        <single-select
-                            label="Mode"
-                            :choices="chienModeChoices"
-                            :value="mode"
-                            @update:value="$emit('update:mode', $event)"
-                            :numericValue="false"
+                    <div class="flex xs3" v-if="soundfontMode === 'generic'">
+                        <label style="color: grey; font-size: 13px">Keyboard Mode</label>
+                        <v-switch
+                            :input-value="mode === 'keyboard'"
+                            @change="$emit('update:mode', $event ? 'keyboard' : 'midigurdy')"
                             />
                     </div>
                 </template>
@@ -118,6 +105,15 @@ const computed = {
             return [this.soundfont, this.bank, this.program].join(':')
         } else {
             return null
+        }
+    },
+
+    soundfontMode () {
+        if (this.soundfont) {
+            var font = this.$store.getters.getSoundfont(this.soundfont)
+            if (font) {
+                return font.mode
+            }
         }
     },
 
