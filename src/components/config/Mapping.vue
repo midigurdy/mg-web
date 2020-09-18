@@ -1,15 +1,11 @@
 <template>
-<v-container fluid grid-list-md>
-    <mg-toolbar title="Sensor Mappings">
-        <v-spacer/>
-        <v-toolbar-items>
-        </v-toolbar-items>
-    </mg-toolbar>
+<v-container grid-list-md fluid>
+    <mg-toolbar title="Sensor Mappings"></mg-toolbar>
 
     <v-layout row>
         <v-flex md3>
             <template v-for="group in mapLinks">
-            <v-card class="mapping-group" :key="group.name">
+            <v-card class="mb-2" :key="group.name">
                 <v-card-title><h3><v-icon v-if="group.icon">{{ group.icon }}</v-icon> {{ group.name }}</h3></v-card-title>
                 <v-list>
                     <v-list-item v-for="link in group.links" :key="link.id" :to="{name: 'config-mapping', params: {mapname: link.id}}">
@@ -21,63 +17,65 @@
             </v-card>
             </template>
         </v-flex>
-        <v-flex md8>
+        <v-flex md6>
             <v-card>
                 <v-card-title><h2>{{ mapping.name }}</h2></v-card-title>
                 <svg></svg>
             </v-card>
-            <v-card class="mapping-tools">
-                <v-btn :loading="busy" text color="primary" :disabled="ranges.length === 0" :icon="$vuetify.breakpoint.xs" @click="saveRanges">
-                    <v-icon left>done</v-icon> <span class="hidden-xs-only">Save</span>
-                </v-btn>
-                <v-btn text :disabled="!dirty" :icon="$vuetify.breakpoint.xs" @click="getMapping">
-                    <v-icon left>cached</v-icon> <span class="hidden-xs-only">Discard Changes</span>
-                </v-btn>
-                <v-btn text style="float: right" :icon="$vuetify.breakpoint.xs" @click="resetMapping">
-                    <v-icon left>settings</v-icon> <span class="hidden-xs-only">Reset To Factory Default</span>
-                </v-btn>
+            <v-card class="mt-2 mb-2">
+                <v-card-text>
+                    <v-btn :loading="busy" text color="primary" :disabled="ranges.length === 0" @click="saveRanges">
+                        <v-icon left>done</v-icon> Save
+                    </v-btn>
+                    <v-btn text :disabled="!dirty" @click="getMapping">
+                        <v-icon left>cached</v-icon> Discard Changes
+                    </v-btn>
+                    <v-btn text @click="resetMapping">
+                        <v-icon left>settings</v-icon> Reset To Factory Default
+                    </v-btn>
+                </v-card-text>
             </v-card>
-            <v-expansion-panel v-if="mapConfig && mapConfig.description" class="mapping-description">
-                <v-expansion-panel-content v-model="showDescription" >
-                    <div slot="header" v-html="mapConfig.description || 'Description'"></div>
-                    <v-card>
-                        <v-card-text v-html="mapConfig.longDescription"></v-card-text>
-                    </v-card>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
+            <v-expansion-panels v-if="mapConfig && mapConfig.description" :value="0">
+                <v-expansion-panel>
+                    <v-expansion-panel-header>{{ mapConfig.description }}</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <div v-html="mapConfig.Description"></div>
+                        <div v-html="mapConfig.longDescription"></div>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
         </v-flex>
         <v-flex md3>
-            <v-card class="mapping-values">
+            <v-card>
                 <v-card-title><h2>Values</h2></v-card-title>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>{{ mapping.src.name }}</th>
-                            <th>{{ mapping.dst.name }}</th>
-                        </tr>
-                    </thead>
-                    <tbody name="list" is="transition-group">
-                        <tr v-for="(range, index) in ranges" :key="rangeKey(range)">
-                            <td>
-                                <v-btn text icon small @click="addRange(index)" :tabindex="-1"
-                                  title="Add control point below"
-                                 ><v-icon>add</v-icon></v-btn>
-                                <v-btn text icon small @click="removeRange(index)" :tabindex="-1"
-                                  title="Remove this control point"
-                                  ><v-icon>remove</v-icon></v-btn>
-                            </td>
-                            <td><v-text-field class="number-field" hide-details type="number" :value="range.src" @change="onValueChange($event, index, 'src')"/></td>
-                            <td><v-text-field class="number-field" hide-details type="number" :value="range.dst" @change="onValueChange($event, index, 'dst')"/></td>
-                        </tr>
-                        <tr v-if="ranges.length === 0" key="empty">
-                            <td>
-                                <v-btn icon @click="addRange(-1)"><v-icon>add</v-icon></v-btn>
-                            </td>
-                            <td colspan="2"></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <v-card-text>
+                <v-row>
+                    <v-flex xs4></v-flex>
+                    <v-flex xs4 class="text-center">{{ mapping.src.name }}</v-flex>
+                    <v-flex xs4 class="text-center">{{ mapping.dst.name }}</v-flex>
+                </v-row>
+                <v-row v-for="(range, index) in ranges" :key="rangeKey(range)">
+                    <v-flex xs4 class="text-center">
+                        <v-btn text icon small @click="addRange(index)" :tabindex="-1"
+                            title="Add control point below"
+                            ><v-icon>add</v-icon></v-btn>
+                        <v-btn text icon small @click="removeRange(index)" :tabindex="-1"
+                            title="Remove this control point"
+                            ><v-icon>remove</v-icon></v-btn>
+                    </v-flex>
+                    <v-flex xs4>
+                        <v-text-field dense class="number-field" hide-details type="number" :value="range.src" @change="onValueChange($event, index, 'src')"/>
+                    </v-flex>
+                    <v-flex xs4>
+                        <v-text-field dense class="number-field" hide-details type="number" :value="range.dst" @change="onValueChange($event, index, 'dst')"/>
+                    </v-flex>
+                </v-row>
+                <v-row v-if="ranges.length === 0">
+                    <v-flex xs4>
+                        <v-btn icon @click="addRange(-1)"><v-icon>add</v-icon></v-btn>
+                    </v-flex>
+                </v-row>
+                </v-card-text>
             </v-card>
         </v-flex>
     </v-layout>
@@ -99,7 +97,7 @@ const margin = {
 
 const mapConfig = {
     chien_threshold_to_range: {
-        description: 'Changes the <i>hardness</i> of the chien based on the chien sensitivity',
+        description: 'Changes the hardness of the chien based on the chien sensitivity',
         longDescription: `
             <p>Controls how the chien response changes for different sensitivity values. Negative
             values have the effect of making the chien attack softer, positive
@@ -193,7 +191,7 @@ const mapConfig = {
             packetIndex: 3
         },
         rawLineColour: 'red',
-        description: 'Controls the volume of the chien sound for trompette strings in <b>Percussion mode</b>.',
+        description: 'Controls the volume of the chien sound for trompette strings in Percussion mode.',
         longDescription: `
             <p>Please note that this mapping only affects the <b>initial</b> sound volume.
             Once the sound has started, the volume is not changed anymore. So only the attack of your coup has an effect
@@ -208,7 +206,7 @@ const mapConfig = {
             packetIndex: 3
         },
         rawLineColour: 'green',
-        description: 'Controls the volume of the melody sounds in <b>Keyboard mode</b>.',
+        description: 'Controls the volume of the melody sounds in Keyboard mode.',
         longDescription: `
             <p>This only applies to melody strings in "Keyboard" mode. It controls the initial volume of
             the sound in response to the key velocity, i.e. how fast and hard you press the keys.</p>
@@ -639,9 +637,10 @@ const methods = {
             .attr('cx', function (d) { return scale.x(d.src) })
             .attr('cy', function (d) { return scale.y(d.dst) })
 
-        var chartDragBehaviour = d3.drag().on('drag', (d, i) => {
-            var rx = parseInt(scale.x.invert(d3.event.x), 10)
-            var ry = parseInt(scale.y.invert(d3.event.y), 10)
+        var chartDragBehaviour = d3.drag().on('drag', (d, range) => {
+            var i = this.ranges.indexOf(range)
+            var rx = parseInt(scale.x.invert(d.x), 10)
+            var ry = parseInt(scale.y.invert(d.y), 10)
             this.ranges[i]['src'] = this.updateValue(i, 'src', parseInt(rx, 10))
             this.ranges[i]['dst'] = this.updateValue(i, 'dst', parseInt(ry, 10))
         })
@@ -751,36 +750,6 @@ svg {
     height: 400px;
 }
 
-.table thead th {
-    text-align: center;
-    white-space: unset;
-}
-
-table tr:hover td {
-    background-color: #eee;
-}
-
-.theme--dark table tr:hover td {
-    background-color: #505050;
-}
-
-.table tbody td:first-child {
-    padding: 0 0 0 4px;
-    white-space: nowrap;
-}
-
-.table tbody td .btn {
-    margin: 0;
-}
-
-.table tbody tr {
-    border-bottom: 0 !important;
-}
-
-.mapping-values {
-    padding-bottom: 2em;
-}
-
 .list-enter-active {
   animation: fadein 0.6s ease-in;
 }
@@ -794,16 +763,9 @@ table tr:hover td {
   0% {opacity: 0;}
   100% { opacity: 1;}
 }
+
 @keyframes fadeout {
   0% {opacity: 1; }
   100% { opacity: 0; }
-}
-
-.mapping-tools, .mapping-description {
-    margin-top: 5px;
-}
-
-.mapping-group {
-    margin-bottom: 5px;
 }
 </style>
