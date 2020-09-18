@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar :timeout="timeout" v-model="visible" :color="color" top auto-height>
+    <v-snackbar :timeout="timeout" v-model="visible" :color="color" top>
         {{ message }}
         <v-btn text icon @click.native="visible = false"><v-icon>close</v-icon></v-btn>
     </v-snackbar>
