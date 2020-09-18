@@ -16,7 +16,7 @@
     </mg-toolbar>
 
     <v-list>
-        <draggable v-model="presets" v-if="presets.length" :options="{handle: '.list__tile__action'}">
+        <draggable v-model="presets" v-if="presets.length" handle=".v-list-item__action">
             <v-list-item v-for="preset in presets" :key="preset.id">
                 <v-list-item-action>
                     <v-icon class="drag-pointer" color="pink">reorder</v-icon>
