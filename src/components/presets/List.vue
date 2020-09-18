@@ -20,24 +20,24 @@
         <div v-if="presets.length" class="col-sm-12">
             <v-list two-line>
                 <template v-for="(preset, idx) in presets">
-                <v-list-tile avatar :key="preset.id" :to="{name: 'preset-edit', params: {presetId: preset.id}}">
-                    <v-list-tile-avatar>
+                <v-list-item avatar :key="preset.id" :to="{name: 'preset-edit', params: {presetId: preset.id}}">
+                    <v-list-item-avatar>
                         {{ idx + 1 }}
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                    <v-list-tile-title>{{ preset.name || 'Unnamed' }}</v-list-tile-title>
-                        <v-list-tile-sub-title>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                    <v-list-item-title>{{ preset.name || 'Unnamed' }}</v-list-item-title>
+                        <v-list-item-subtitle>
                             <span class="summary-entry" v-for="entry in presetSummary(preset)" :key="entry">
                                 {{ entry }}
                             </span>
-                        </v-list-tile-sub-title>
-                    </v-list-tile-content>
-                    <v-list-tile-action>
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
                         <v-btn icon ripple title="Load preset" @click.prevent="loadPreset(preset)">
                             <v-icon color="grey">open_in_browser</v-icon>
                         </v-btn>
-                    </v-list-tile-action>
-                </v-list-tile>
+                    </v-list-item-action>
+                </v-list-item>
                 </template>
             </v-list>
         </div>

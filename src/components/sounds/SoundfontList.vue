@@ -11,30 +11,30 @@
 
     <v-list two-line>
         <template v-if="soundfonts.length">
-        <div v-for="(set, index) in soundfonts" :key="set.id">
-            <v-list-tile avatar :to="{name: 'soundfont-details', params: {soundfontId: set.id}}">
-                <v-list-tile-avatar :color="(set.mode == 'midigurdy') ? 'primary' : 'grey'">
+        <div v-for="(set, index) in soundfonts" :key="index">
+            <v-list-item :to="{name: 'soundfont-details', params: {soundfontId: set.id}}">
+                <v-list-item-avatar :color="(set.mode == 'midigurdy') ? 'primary' : 'grey'">
                 <span class="white--text">{{ set.mode == 'midigurdy' ? 'MG' : 'G' }}</span> 
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                    <v-list-tile-title>{{ set.name }}</v-list-tile-title>
-                    <v-list-tile-sub-title>{{ set.description }}</v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                    <v-list-tile-action-text class="text--primary">{{ set.sounds.length }} Sounds</v-list-tile-action-text>
-                    <v-list-tile-action-text>{{set.filename }}</v-list-tile-action-text>
-                    <v-list-tile-action-text>{{ set.filesize | humanizedSize }}</v-list-tile-action-text>
-                </v-list-tile-action>
-            </v-list-tile>
-            <v-divider v-if="index + 1 < soundfonts.length" :key="index"></v-divider>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                    <v-list-item-title>{{ set.name }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ set.description }}</v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action>
+                    <v-list-item-action-text class="text--primary">{{ set.sounds.length }} Sounds</v-list-item-action-text>
+                    <v-list-item-action-text>{{set.filename }}</v-list-item-action-text>
+                    <v-list-item-action-text>{{ set.filesize | humanizedSize }}</v-list-item-action-text>
+                </v-list-item-action>
+            </v-list-item>
+            <v-divider v-if="index + 1 < soundfonts.length"></v-divider>
         </div>
         </template>
-        <v-list-tile v-else>
-            <v-list-tile-content>
-                <v-list-tile-title>No Sounds available</v-list-tile-title>
-                <v-list-tile-sub-title>Use the "Add Sounds" function to uploads sounds to the Instrument.</v-list-tile-sub-title>
-            </v-list-tile-content>
-        </v-list-tile>
+        <v-list-item v-else>
+            <v-list-item-content>
+                <v-list-item-title>No Sounds available</v-list-item-title>
+                <v-list-item-subtitle>Use the "Add Sounds" function to uploads sounds to the Instrument.</v-list-item-subtitle>
+            </v-list-item-content>
+        </v-list-item>
     </v-list>
 
     <soundfont-upload :show.sync="uploadDialog"/>

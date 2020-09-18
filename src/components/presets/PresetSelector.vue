@@ -14,18 +14,18 @@
         </v-toolbar>
         <v-list v-if="presets.length">
             <vue-draggable v-model="presets">
-                <v-list-tile
+                <v-list-item
                     v-for="(preset, idx) in presets"
                     :key="preset.id"
                     @click="loadPreset(preset)"
                     >
-                    <v-list-tile-avatar>{{ idx + 1 }}</v-list-tile-avatar>
-                    <v-list-tile-content>
-                        <v-list-tile-title>
+                    <v-list-item-avatar>{{ idx + 1 }}</v-list-item-avatar>
+                    <v-list-item-content>
+                        <v-list-item-title>
                             {{ preset.name || 'Unnamed' }}
-                        </v-list-tile-title>
-                    </v-list-tile-content>
-                    <v-list-tile-action>
+                        </v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-action>
                         <div>
                             <v-btn small icon @click.stop="renamePreset(preset)"
                                 title="Rename the preset"
@@ -43,8 +43,8 @@
                                 <v-icon color="grey">delete</v-icon>
                             </v-btn>
                         </div>
-                    </v-list-tile-action>
-                </v-list-tile>
+                    </v-list-item-action>
+                </v-list-item>
             </vue-draggable>
         </v-list>
     </div>

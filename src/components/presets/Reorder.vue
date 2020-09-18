@@ -15,16 +15,16 @@
 
     <v-list>
         <draggable v-model="presets" v-if="presets.length" :options="{handle: '.list__tile__action'}">
-            <v-list-tile v-for="preset in presets" :key="preset.id">
-                <v-list-tile-action>
+            <v-list-item v-for="preset in presets" :key="preset.id">
+                <v-list-item-action>
                     <v-icon class="drag-pointer" color="pink">reorder</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                    <v-list-tile-title>
+                </v-list-item-action>
+                <v-list-item-content>
+                    <v-list-item-title>
                         {{ preset.number }} - {{ preset.name || 'Unnamed' }}
-                    </v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
+                    </v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
         </draggable>
     </v-list>
 </div>
