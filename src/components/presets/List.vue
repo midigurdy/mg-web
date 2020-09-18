@@ -27,7 +27,7 @@
                     <v-list-tile-content>
                     <v-list-tile-title>{{ preset.name || 'Unnamed' }}</v-list-tile-title>
                         <v-list-tile-sub-title>
-                            <span class="summary-entry" v-for="entry in presetSummary(preset)">
+                            <span class="summary-entry" v-for="entry in presetSummary(preset)" :key="entry">
                                 {{ entry }}
                             </span>
                         </v-list-tile-sub-title>
@@ -38,7 +38,6 @@
                         </v-btn>
                     </v-list-tile-action>
                 </v-list-tile>
-                <v-divider/>
                 </template>
             </v-list>
         </div>

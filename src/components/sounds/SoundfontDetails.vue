@@ -1,6 +1,6 @@
 <template>
 <div>
-    <mg-toolbar :title="soundfont.name" tabs>
+    <mg-toolbar :title="soundfont.name">
         <v-btn slot="icon" icon :to="{name: 'soundfont-list'}" exact>
             <v-icon>arrow_back</v-icon>
         </v-btn>
@@ -63,11 +63,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="sound in soundfont.sounds">
+                <tr v-for="sound in soundfont.sounds" :key="sound.id">
                     <td style="width: 1%">
                         <v-avatar
                             size="30"
-                            :color="sound.type == 'generic' ? 'grey' : 'primary'""
+                            :color="(sound.type === 'generic') ? 'grey' : 'primary'"
                             class="white--text"
                             :title="sound.type | capfirst">
                                 {{ sound | soundType }}
@@ -96,7 +96,6 @@ function data () {
     return {
         loading: true,
 
-        tabs: null,
         test: null,
 
         soundfont: {

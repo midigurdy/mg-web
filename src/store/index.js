@@ -158,7 +158,7 @@ const mutations = {
         localStorage.setItem('mgweb_dark', value ? 'dark' : 'light')
     },
 
-    uiLoadLocalStorage (state, value) {
+    uiLoadLocalStorage (state) {
         var dark = (localStorage.getItem('mgweb_dark') === 'dark')
         state.ui.darkTheme = dark
 
@@ -264,7 +264,7 @@ const mutations = {
 }
 
 const actions = {
-    notificationsPop ({ commit, state }) {
+    notificationsPop ({ state }) {
         return state.ui.notifications.shift()
     },
 
@@ -294,7 +294,7 @@ const actions = {
         })
     },
 
-    updateInstrumentState ({ commit }, data) {
+    updateInstrumentState (data) {
         return API.updateInstrumentState(data)
     },
 

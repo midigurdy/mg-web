@@ -11,7 +11,7 @@
                 :value="value"
                 @input="$emit('update:value', convert($event.target.value))"
                 >
-                <option v-for="choice in choices" :value="choice.value">
+                <option v-for="choice in choices" :value="choice.value" :key="choice.value">
                     {{ choice.text }}
                 </option>
             </select>

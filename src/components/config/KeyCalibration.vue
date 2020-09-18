@@ -25,7 +25,7 @@
             </v-card-text>
         </v-card>
 
-        <div v-for="key in keys" class="key-calib"
+        <div v-for="key in keys" class="key-calib" :key="key.number"
             :class="{valid: mode === 'auto' && key.pressure > 0}">
             <div class="key-number">{{ key.number }}</div>
             <div class="key-position" :class="{'key-top': key.position === 'top'}">

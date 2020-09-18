@@ -15,14 +15,12 @@
 <script>
 
 import Navbar from '@/components/Navbar'
-import Toolbar from '@/components/Toolbar'
 import Notifications from '@/components/Notifications'
 
 export default {
     name: 'app',
     components: {
         'mg-navbar': Navbar,
-        'mg-toolbar': Toolbar,
         Notifications
     },
     computed: {

@@ -68,10 +68,10 @@ const methods = {
             this.preset = API.emptyPreset()
         } else {
             this.$store.dispatch('fetchPreset', id)
-            .then((preset) => {
+            .then(() => {
                 this.preset = this.$store.getters.getPreset(id)
             })
-            .catch((result) => {
+            .catch(() => {
                 this.$store.dispatch('snacks/add', {
                     message: 'Preset not found!',
                     type: 'error'

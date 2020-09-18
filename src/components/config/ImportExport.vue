@@ -75,7 +75,7 @@ const methods = {
 
     doImport () {
         API.importConfig(this.fileData, this.presets, this.mappings, this.calibration, this.settings)
-            .then((result) => {
+            .then(() => {
                 this.$store.dispatch('fetchSoundFonts')
                 this.$store.dispatch('fetchPresets')
                 this.$store.dispatch('fetchInstrumentState')

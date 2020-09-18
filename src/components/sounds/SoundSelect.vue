@@ -28,7 +28,7 @@ export default {
         beforeClear () {
             /* Used to react to pressing the "clear" button
              * on treeselect, as it doesn't provide an event for this */
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 resolve(true)
             }).finally(() => {
                 this.$emit('input', undefined)

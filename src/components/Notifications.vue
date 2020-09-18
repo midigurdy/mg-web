@@ -49,7 +49,7 @@ export default {
     watch,
     created () {
         this.display()
-        this.$store.subscribe((mutation, state) => {
+        this.$store.subscribe((mutation) => {
             if (mutation.type === 'snacks/push' && !this.pending && !this.visible) {
                 this.pending = true
                 this.display()

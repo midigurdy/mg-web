@@ -1,13 +1,10 @@
 <template>
 
-<v-toolbar :color="bgColor" dark flat fixed app :tabs="tabs">
-    <slot name="icon">
-        <v-toolbar-side-icon @click.stop="navbar = !navbar"></v-toolbar-side-icon>
-    </slot>
+<v-app-bar :color="bgColor" dark flat fixed app>
+    <v-app-bar-nav-icon @click.stop="navbar = !navbar"></v-app-bar-nav-icon>
     <v-toolbar-title>{{ title }}</v-toolbar-title>
-    <slot name="tabs" slot="extension"></slot>
     <slot></slot>
-</v-toolbar>
+</v-app-bar>
 
 </template>
 
@@ -31,6 +28,6 @@ const computed = {
 export default {
     name: 'mg-toolbar',
     computed,
-    props: ['title', 'tabs']
+    props: ['title']
 }
 </script>

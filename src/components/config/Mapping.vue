@@ -8,8 +8,8 @@
 
     <v-layout row>
         <v-flex md3>
-            <template v-for="group, i in mapLinks">
-            <v-card class="mapping-group">
+            <template v-for="group in mapLinks">
+            <v-card class="mapping-group" :key="group.name">
                 <v-card-title><h3><v-icon v-if="group.icon">{{ group.icon }}</v-icon> {{ group.name }}</h3></v-card-title>
                 <v-list>
                     <v-list-tile v-for="link in group.links" :key="link.id" :to="{name: 'config-mapping', params: {mapname: link.id}}">

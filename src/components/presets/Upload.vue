@@ -34,7 +34,7 @@ const methods = {
         this.$refs.fileupload.value = ''
     },
 
-    save (preset, filename) {
+    save (preset) {
         this.status = 'uploading'
         this.$store.dispatch('savePreset', preset)
         .then(() => {
