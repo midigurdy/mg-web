@@ -64,7 +64,6 @@ function data () {
 
 const methods = {
     reset () {
-        this.$refs.fileupload.value = ''
         this.filename = null
         this.presets = false
         this.mappings = false
