@@ -49,13 +49,12 @@
                 </v-list-item-content>
             </v-list-item>
         </template>
-            <v-list-item>
+            <v-list-item @click="mini = !mini" class="mt-4">
                 <v-list-item-action>
-                    <v-btn icon @click="mini = !mini">
-                        <v-icon v-if="mini">chevron_right</v-icon>
-                        <v-icon v-else>chevron_left</v-icon>
-                    </v-btn>
+                    <v-icon v-if="mini">chevron_right</v-icon>
+                    <v-icon v-else>chevron_left</v-icon>
                 </v-list-item-action>
+                <v-list-item-content></v-list-item-content>
             </v-list-item>
     </v-list>
 </v-navigation-drawer>
