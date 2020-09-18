@@ -30,6 +30,7 @@
                     <label>Fade Speed: {{ fadeSpeed }}
                         <v-slider thumb-label v-model.number="fadeSpeed" min="0" max="8"/>
                     </label>
+
                     <v-btn block color="secondary" @click.stop="clearScreen">Clear screen</v-btn>
                     <div>Or press <em>c</em> to clear the screen</div>
                 </v-card-text>
@@ -39,9 +40,7 @@
 
             <v-card flat>
                 <v-card-text>
-                    <label>Show Circular Speed Line
-                        <v-switch v-model="showSpeedLine"/>
-                    </label>
+                    <v-switch v-model="showSpeedLine" label="Show Wheel Speed"/>
                     <div v-if="showSpeedLine">
                         <label>Line Max Radius: {{ lineMaxRadius }}
                             <v-slider thumb-label v-model.number="lineMaxRadius" min="320" max="500"/>
