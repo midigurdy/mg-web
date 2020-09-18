@@ -2,11 +2,11 @@
 
 <v-app>
     <mg-navbar/>
-    <v-content>
+    <v-main>
         <v-container fluid>
             <router-view></router-view>
         </v-container>
-    </v-content>
+    </v-main>
     <notifications/>
 </v-app>
 
