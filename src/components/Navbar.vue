@@ -13,10 +13,10 @@
             <span class="caption" id="version-string">{{ info.version }}</span>
         </v-card-title>
         <v-card-text v-if="!mini">
-            <v-alert type="error" :value="!connected" outline>
+            <v-alert type="error" :value="!connected" outlined>
                 You are not connected!
             </v-alert>
-            <v-alert type="success" :value="connected" outline>
+            <v-alert type="success" :value="connected" outlined>
                 Connected to {{ info.name }}
             </v-alert>
         </v-card-text>
