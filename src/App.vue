@@ -1,6 +1,6 @@
 <template>
 
-<v-app :dark="darkTheme">
+<v-app>
     <mg-navbar/>
     <v-content>
         <v-container fluid>
@@ -27,7 +27,12 @@ export default {
         darkTheme () {
             return this.$store.state.ui.darkTheme
         }
-    }
+    },
+    watch: {
+        darkTheme (dark) {
+            this.$vuetify.theme.dark = dark
+        },
+    },
 }
 </script>
 
