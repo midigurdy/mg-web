@@ -27,13 +27,13 @@
                 <svg></svg>
             </v-card>
             <v-card class="mapping-tools">
-                <v-btn :loading="busy" flat color="primary" :disabled="ranges.length === 0" :icon="$vuetify.breakpoint.xs" @click="saveRanges">
+                <v-btn :loading="busy" text color="primary" :disabled="ranges.length === 0" :icon="$vuetify.breakpoint.xs" @click="saveRanges">
                     <v-icon left>done</v-icon> <span class="hidden-xs-only">Save</span>
                 </v-btn>
-                <v-btn flat :disabled="!dirty" :icon="$vuetify.breakpoint.xs" @click="getMapping">
+                <v-btn text :disabled="!dirty" :icon="$vuetify.breakpoint.xs" @click="getMapping">
                     <v-icon left>cached</v-icon> <span class="hidden-xs-only">Discard Changes</span>
                 </v-btn>
-                <v-btn flat style="float: right" :icon="$vuetify.breakpoint.xs" @click="resetMapping">
+                <v-btn text style="float: right" :icon="$vuetify.breakpoint.xs" @click="resetMapping">
                     <v-icon left>settings</v-icon> <span class="hidden-xs-only">Reset To Factory Default</span>
                 </v-btn>
             </v-card>
@@ -60,10 +60,10 @@
                     <tbody name="list" is="transition-group">
                         <tr v-for="(range, index) in ranges" :key="rangeKey(range)">
                             <td>
-                                <v-btn flat icon small @click="addRange(index)" :tabindex="-1"
+                                <v-btn text icon small @click="addRange(index)" :tabindex="-1"
                                   title="Add control point below"
                                  ><v-icon>add</v-icon></v-btn>
-                                <v-btn flat icon small @click="removeRange(index)" :tabindex="-1"
+                                <v-btn text icon small @click="removeRange(index)" :tabindex="-1"
                                   title="Remove this control point"
                                   ><v-icon>remove</v-icon></v-btn>
                             </td>

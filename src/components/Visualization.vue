@@ -3,7 +3,7 @@
         <mg-toolbar title="Wheel Visualisation">
             <v-spacer/>
             <v-toolbar-items>
-                <v-btn @click.stop="toggleControls" flat><v-icon>settings</v-icon> Settings</v-btn>
+                <v-btn @click.stop="toggleControls" text><v-icon>settings</v-icon> Settings</v-btn>
             </v-toolbar-items>
         </mg-toolbar>
 

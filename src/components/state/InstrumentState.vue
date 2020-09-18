@@ -3,7 +3,7 @@
     <mg-toolbar title="Instrument Setup">
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="showSelector = !showSelector">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click="showSelector = !showSelector">
                 <v-icon left>description</v-icon>
                 <span class="hidden-xs-only">Presets</span>
             </v-btn>

@@ -7,7 +7,7 @@
 
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click.stop="saveOrder">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click.stop="saveOrder">
                 <v-icon>done</v-icon> <span class="hidden-xs-only">Save</span>
             </v-btn>
         </v-toolbar-items>

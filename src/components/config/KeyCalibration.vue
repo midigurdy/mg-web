@@ -3,10 +3,10 @@
         <mg-toolbar title="Keyboard Calibration">
             <v-spacer/>
             <v-toolbar-items>
-                <v-btn flat :icon="$vuetify.breakpoint.xs" @click="resetKeyCalibration">
+                <v-btn text :icon="$vuetify.breakpoint.xs" @click="resetKeyCalibration">
                     <v-icon left>settings</v-icon> <span class="hidden-xs-only">Reset to Defaults</span>
                 </v-btn>
-                <v-btn flat :icon="$vuetify.breakpoint.xs" @click="saveKeyData()">
+                <v-btn text :icon="$vuetify.breakpoint.xs" @click="saveKeyData()">
                     <v-icon left>done</v-icon> <span class="hidden-xs-only">Save Calibration</span>
                 </v-btn>
             </v-toolbar-items>

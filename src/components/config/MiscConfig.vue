@@ -3,7 +3,7 @@
     <mg-toolbar title="Settings">
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="saveConfig">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click="saveConfig">
                 <v-icon left>done</v-icon>
                 <span class="hidden-xs-only">Save Config</span>
             </v-btn>

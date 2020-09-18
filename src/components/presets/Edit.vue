@@ -7,13 +7,13 @@
 
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn v-if="preset.id" flat :icon="$vuetify.breakpoint.xs" :href="'/api/presets/'+preset.id+'?dl=1'">
+            <v-btn v-if="preset.id" text :icon="$vuetify.breakpoint.xs" :href="'/api/presets/'+preset.id+'?dl=1'">
                <v-icon left>cloud_download</v-icon><span class="hidden-xs-only">Export</span>
             </v-btn>
-            <v-btn v-if="preset.id" flat :icon="$vuetify.breakpoint.xs" @click="deletePreset">
+            <v-btn v-if="preset.id" text :icon="$vuetify.breakpoint.xs" @click="deletePreset">
                <v-icon left>delete</v-icon><span class="hidden-xs-only">Delete</span>
             </v-btn>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="savePreset">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click="savePreset">
                 <v-icon>done</v-icon> <span class="hidden-xs-only">Save</span>
             </v-btn>
         </v-toolbar-items>

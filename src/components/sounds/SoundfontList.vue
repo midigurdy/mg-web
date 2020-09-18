@@ -3,7 +3,7 @@
     <mg-toolbar title="Sounds">
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="uploadDialog = true">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click="uploadDialog = true">
                 <v-icon left>cloud_upload</v-icon><span class="hidden-xs-only">Add Sound</span>
             </v-btn>
         </v-toolbar-items>

@@ -6,10 +6,10 @@
         </v-btn>
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" :href="'/download/sounds/' + soundfont.filename">
+            <v-btn text :icon="$vuetify.breakpoint.xs" :href="'/download/sounds/' + soundfont.filename">
                <v-icon left>cloud_download</v-icon><span class="hidden-xs-only">Download</span>
             </v-btn>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="deleteSoundfont">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click="deleteSoundfont">
                <v-icon left>delete</v-icon><span class="hidden-xs-only">Delete</span>
             </v-btn>
         </v-toolbar-items>

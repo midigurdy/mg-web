@@ -4,13 +4,13 @@
     <mg-toolbar title="Presets">
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="uploadDialog = true">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click="uploadDialog = true">
                 <v-icon left>cloud_upload</v-icon><span class="hidden-xs-only">Import</span>
             </v-btn>
-            <v-btn v-if="presets.length" flat :icon="$vuetify.breakpoint.xs" :to="{name: 'presets-reorder'}">
+            <v-btn v-if="presets.length" text :icon="$vuetify.breakpoint.xs" :to="{name: 'presets-reorder'}">
                 <v-icon>format_line_spacing</v-icon> <span class="hidden-xs-only">Reorder</span>
             </v-btn>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" :to="{name: 'preset-edit', params: {presetId: 'new'}}">
+            <v-btn text :icon="$vuetify.breakpoint.xs" :to="{name: 'preset-edit', params: {presetId: 'new'}}">
                 <v-icon>add</v-icon> <span class="hidden-xs-only">Add Preset</span>
             </v-btn>
         </v-toolbar-items>
