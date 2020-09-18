@@ -2,15 +2,16 @@
 
 <v-navigation-drawer v-model="navbar" fixed app stateless :mini-variant="mini" width="300">
 
-    <v-card flat>
+    <div>
         <v-card-title>
-            <h3 v-if="mini" :class="{'red--text': !connected }">
-                MG
-                <v-icon v-if="connected" color="success" small>check_circle</v-icon>
-                <v-icon v-else small color="error">warning</v-icon>
-            </h3>
-            <h2 v-else>MidiGurdy</h2>
-            <span class="caption" id="version-string">{{ info.version }}</span>
+            <div v-if="mini" :class="{'red--text': !connected }">
+                <v-icon v-if="connected" color="success">check_circle</v-icon>
+                <v-icon v-else color="error">warning</v-icon>
+            </div>
+            <div v-else>
+                <span class="font-weight-bold">MidiGurdy</span>
+                <span class="caption" id="version-string">{{ info.version }}</span>
+            </div>
         </v-card-title>
         <v-card-text v-if="!mini">
             <v-alert type="error" :value="!connected" outlined>
@@ -20,7 +21,7 @@
                 Connected to {{ info.name }}
             </v-alert>
         </v-card-text>
-    </v-card>
+    </div>
 
     <v-divider></v-divider>
 
