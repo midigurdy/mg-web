@@ -33,6 +33,9 @@ export default {
             this.$vuetify.theme.dark = dark
         },
     },
+    mounted () {
+        this.$vuetify.theme.dark = this.darkTheme
+    },
 }
 </script>
 
