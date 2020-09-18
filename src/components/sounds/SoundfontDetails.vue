@@ -1,9 +1,11 @@
 <template>
 <div>
     <mg-toolbar :title="soundfont.name">
-        <v-btn slot="icon" icon :to="{name: 'soundfont-list'}" exact>
-            <v-icon>arrow_back</v-icon>
-        </v-btn>
+        <template v-slot:icon>
+            <v-app-bar-nav-icon :to="{name: 'soundfont-list'}" exact>
+                <v-icon>arrow_back</v-icon>
+            </v-app-bar-nav-icon>
+        </template>
         <v-spacer/>
         <v-toolbar-items>
             <v-btn text :icon="$vuetify.breakpoint.xs" :href="'/download/sounds/' + soundfont.filename">

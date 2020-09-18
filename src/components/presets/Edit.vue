@@ -1,9 +1,11 @@
 <template>
 <div>
     <mg-toolbar :title="!preset.id ? 'New Preset' : preset.name || 'Unnamed'">
-        <v-btn slot="icon" icon :to="{name: 'preset-list'}" exact>
-            <v-icon>arrow_back</v-icon>
-        </v-btn>
+        <template v-slot:icon>
+            <v-app-bar-nav-icon :to="{name: 'preset-list'}" exact>
+                <v-icon>arrow_back</v-icon>
+            </v-app-bar-nav-icon>
+        </template>
 
         <v-spacer/>
         <v-toolbar-items>

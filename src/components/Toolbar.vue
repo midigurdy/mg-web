@@ -1,7 +1,9 @@
 <template>
 
 <v-app-bar :color="bgColor" dark flat fixed app>
-    <v-app-bar-nav-icon @click.stop="navbar = !navbar"></v-app-bar-nav-icon>
+    <slot name="icon">
+        <v-app-bar-nav-icon @click.stop="navbar = !navbar"></v-app-bar-nav-icon>
+    </slot>
     <v-toolbar-title>{{ title }}</v-toolbar-title>
     <slot></slot>
 </v-app-bar>
