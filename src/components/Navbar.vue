@@ -124,7 +124,4 @@ export default {
         background: transparent;
     }
 
-    .card__text {
-        padding-top: 0;
-    }
 </style>

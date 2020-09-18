@@ -48,12 +48,6 @@ export default {
     background-color: #000 !important;
 }
 
-.slider__thumb {
-  width: 24px;
-  height: 24px;
-  left: -12px;
-}
-
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -62,10 +56,6 @@ export default {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-}
-
-.btn .icon--left {
-    margin-right: 8px;
 }
 
 input[type='number'] {
