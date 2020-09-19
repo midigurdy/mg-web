@@ -1,82 +1,92 @@
 <template>
-    <div class="container grid-list-sm">
-        <div class="layout row wrap">
-            <div class="flex xs3" style="padding-top: 0.5em; text-align: left">
+    <div>
+        <v-row align="center">
+            <v-col cols="2">
                 <div @click="toggleDetails" class="noselect" style="cursor: pointer; margin-left: -1em">
                     <v-icon v-if="showDetails">expand_less</v-icon>
                     <v-icon v-else>expand_more</v-icon>
                     {{ label }} {{ number }}
                 </div>
-            </div>
-            <div class="flex xs6">
+            </v-col>
+            <v-col cols="6">
                 <sound-select
                     :sound_id="soundId" v-on:input="setSound($event)"
                     :options="soundfontTree"/>
-            </div>
-            <div class="flex xs3">
-                <div class="layout">
-                    <single-select
+            </v-col>
+            <v-col cols="2">
+                    <v-select
                         inputClass="flex xs6"
-                        :choices="noteChoices"
+                        :items="noteChoices"
                         :value="localNote"
                         @update:value="noteChanged($event)"
+                        :menu-props="{auto: true, transition: null}"
                         :disabled="!soundId"
                         noCaret="true"
+                        dense
                         />
-                    <single-select
+            </v-col>
+            <v-col cols="2">
+                    <v-select
                         inputClass="flex xs6"
-                        :choices="octaveChoices"
+                        :items="octaveChoices"
                         :value="octave"
                         @update:value="octaveChanged($event)"
+                        :menu-props="{auto: true, transition: null}"
                         :disabled="!soundId"
                         noCaret="true"
+                        dense
                         />
-                </div>
-            </div>
-        </div>
-        <v-card flat class="string-details" v-if="showDetails">
-            <div class="layout">
-                <div class="flex xs3">
-                    <single-select
+            </v-col>
+        </v-row>
+        <v-row class="string-details" v-if="showDetails" align="center">
+                <v-col cols="3">
+                    <v-select
                         label="Fine Tune"
-                        :choices="fineTuningChoices"
+                        :items="fineTuningChoices"
                         :value="finetune"
+                        :menu-props="{auto: true, transition: null}"
                         @update:value="$emit('update:finetune', $event)"
+                        dense
+                        hide-details
                         />
-                </div>
+                </v-col>
                 <template v-if="type == 'melody'">
-                    <div class="flex xs3">
-                        <single-select
+                    <v-col cols="3">
+                        <v-select
                             label="Capo Key"
-                            :choices="capoChoices"
+                            :items="capoChoices"
                             :value="capo"
                             @update:value="$emit('update:capo', $event)"
+                            :menu-props="{auto: true, transition: null}"
+                            dense
+                            hide-details
                             />
-                    </div>
-                    <div class="flex xs3" style="padding-left: 3em">
-                        <label style="color: grey; font-size: 13px">Polyphonic</label>
-                        <v-switch
+                    </v-col>
+                    <v-col cols="3">
+                        <v-checkbox
+                            label="Polyphonic"
                             :input-value="polyphonic"
                             @change="$emit('update:polyphonic', $event)"
+                            dense
+                            hide-details
                             />
-                    </div>
-                    <div class="flex xs3" v-if="soundfontMode === 'generic'">
-                        <label style="color: grey; font-size: 13px">Keyboard Mode</label>
-                        <v-switch
+                        <v-checkbox
+                            v-if="soundfontMode === 'generic'"
+                            label="Keyboard Mode"
                             :input-value="mode === 'keyboard'"
                             @change="$emit('update:mode', $event ? 'keyboard' : 'midigurdy')"
+                            dense
+                            hide-details
                             />
-                    </div>
+                    </v-col>
                 </template>
-            </div>
-        </v-card>
-</div>
+        </v-row>
+    </div>
 </template>
 
 <script>
 import MidiFilters from '@/mixins/midifilters'
 import SoundSelect from '@/components/sounds/SoundSelect'
-import SingleSelect from '@/components/forms/SingleSelect'
 
 function data () {
     return {
@@ -247,7 +257,7 @@ const methods = {
 }
 
 export default {
-    components: { SoundSelect, SingleSelect },
+    components: { SoundSelect },
     mixins: [MidiFilters],
     props: [
         'type', 'number', 'label',

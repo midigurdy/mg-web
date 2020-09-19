@@ -6,18 +6,20 @@
         <v-card-text>
             <v-row style="flex-wrap: nowrap">
                 <v-col cols="6">
-                    <single-select
+                    <v-select
                         label="Coarse Tune"
-                        :choices="coarseTuningChoices"
+                        :items="coarseTuningChoices"
                         :value="coarse"
+                        :menu-props="{auto: true, transition: null}"
                         @update:value="$emit('update:coarse', $event)"
                         />
                 </v-col>
                 <v-col cols="6">
-                    <single-select
+                    <v-select
                         label="Fine Tune"
-                        :choices="fineTuningChoices"
+                        :items="fineTuningChoices"
                         :value="fine"
+                        :menu-props="{auto: true, transition: null}"
                         @update:value="$emit('update:fine', $event)"
                         />
                 </v-col>
@@ -36,6 +38,7 @@
                     <v-text-field
                         :value="pitchbend_range"
                         @change="setPitchbendRange($event)"
+                        dense
                         type="number"/>
                 </v-col>
             </v-row>
@@ -47,8 +50,6 @@
 </style>
 
 <script>
-import SingleSelect from '@/components/forms/SingleSelect'
-
 const computed = {
     coarseTuningChoices () {
         var choices = []
@@ -90,7 +91,6 @@ export default {
     computed,
     methods,
     components: {
-        SingleSelect
     }
 }
 </script>

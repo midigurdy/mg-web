@@ -105,7 +105,7 @@
                 <v-card-title class="font-weight-bold">
                     <v-icon left>queue_music</v-icon> String Setup
                 </v-card-title>
-                <v-container fluid>
+                <v-card-text>
                     <voice-edit
                         v-for="(voice, index) in preset.voices.melody"
                         :key="'vm' + index"
@@ -174,7 +174,7 @@
                         type="trompette"
                         label="Trompette"
                         :number="index + 1"/>
-                </v-container>
+                </v-card-text>
             </v-card>
         </v-flex>
         <v-flex xs12>
