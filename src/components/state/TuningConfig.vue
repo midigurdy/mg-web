@@ -4,24 +4,26 @@
             <v-icon left>audiotrack</v-icon> Tuning &amp; Pitch Bend
         </v-card-title>
         <v-card-text>
-            <v-layout row wrap>
-                <v-flex xs6>
+            <v-row style="flex-wrap: nowrap">
+                <v-col cols="6">
                     <single-select
                         label="Coarse Tune"
                         :choices="coarseTuningChoices"
                         :value="coarse"
                         @update:value="$emit('update:coarse', $event)"
                         />
-                </v-flex>
-                <v-flex xs6>
+                </v-col>
+                <v-col cols="6">
                     <single-select
                         label="Fine Tune"
                         :choices="fineTuningChoices"
                         :value="fine"
                         @update:value="$emit('update:fine', $event)"
                         />
-                </v-flex>
-                <v-flex xs10>
+                </v-col>
+            </v-row>
+            <v-row style="flex-wrap: nowrap">
+                <v-col :cols="1" class="flex-grow-1 flex-shrink-0" style="min-width: 50px; max-width: 100%">
                     <v-slider
                         label="Pitch Bend (Cent)"
                         :value="pitchbend_range"
@@ -29,14 +31,14 @@
                         @input="setPitchbendRange($event)"
                         tabindex="-1"
                         />
-                </v-flex>
-                <v-flex xs2>
+                </v-col>
+                <v-col cols="2" class="flex-grow-0 flex-shrink-1" style="min-width: 3em">
                     <v-text-field
                         :value="pitchbend_range"
                         @change="setPitchbendRange($event)"
                         type="number"/>
-                </v-flex>
-            </v-layout>
+                </v-col>
+            </v-row>
         </v-card-text>
     </v-card>
 </template>
