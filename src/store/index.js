@@ -294,7 +294,8 @@ const actions = {
         })
     },
 
-    updateInstrumentState (data) {
+    /* eslint-disable no-unused-vars */
+    updateInstrumentState ({ commit }, data) {
         return API.updateInstrumentState(data)
     },
 
