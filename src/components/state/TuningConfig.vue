@@ -1,7 +1,7 @@
 <template>
     <v-card>
-        <v-card-title>
-            <h2><v-icon>audiotrack</v-icon> Tuning &amp; Pitch Bend</h2>
+        <v-card-title class="font-weight-bold">
+            <v-icon left>audiotrack</v-icon> Tuning &amp; Pitch Bend
         </v-card-title>
         <v-card-text>
             <v-layout row wrap>

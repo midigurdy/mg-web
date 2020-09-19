@@ -11,8 +11,8 @@
 
         <v-flex md6 class="mixer-panel">
             <v-card>
-                <v-card-title>
-                    <h2><v-icon>tune</v-icon> Mixer</h2>
+                <v-card-title class="font-weight-bold">
+                    <v-icon left>tune</v-icon> Mixer
                 </v-card-title>
                 <v-container fluid grid-list>
                     <voice-mixer title="Main Volume"
@@ -102,8 +102,8 @@
             <v-layout row wrap>
                 <v-flex xs12>
             <v-card>
-                <v-card-title>
-                    <h2><v-icon>queue_music</v-icon> String Setup</h2>
+                <v-card-title class="font-weight-bold">
+                    <v-icon left>queue_music</v-icon> String Setup
                 </v-card-title>
                 <v-container fluid>
                     <voice-edit
@@ -179,8 +179,8 @@
         </v-flex>
         <v-flex xs12>
             <v-card>
-                <v-card-title>
-                    <h2><v-icon>pets</v-icon> Chien Sensitivity</h2>
+                <v-card-title class="font-weight-bold">
+                    <v-icon left>pets</v-icon> Chien Sensitivity
                 </v-card-title>
                 <v-card-text>
                     <template v-if="multiChienThreshold">
