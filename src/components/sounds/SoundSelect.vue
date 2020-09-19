@@ -1,14 +1,17 @@
 <template>
     <div>
-        <treeselect :value="sound_id"
-        @select="$emit('input', $event.id)"
-        @delselect="$emit('input', undefined)"
-        :clearable="true" :multiple="false" :options="options"
-        :beforeClearAll="beforeClear"
-        :disable-branch-nodes="true"
-        :show-count="true"
-        :flat="true"
-        placeholder="Select a sound...">
+        <treeselect
+            :value="sound_id"
+            @select="$emit('input', $event.id)"
+            @delselect="$emit('input', undefined)"
+            :clearable="true"
+            :multiple="false"
+            :options="options"
+            :beforeClearAll="beforeClear"
+            :disable-branch-nodes="true"
+            :show-count="true"
+            placeholder="Select a sound..."
+        >
             <label slot="option-label" slot-scope="{ node, shouldShowCount, count, labelClassName, countClassName }" :class="labelClassName">
                 {{ node.isBranch ? node.label : node.raw.list_label }}
                 <span v-if="shouldShowCount" :class="countClassName">({{ count }})</span>
