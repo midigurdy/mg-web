@@ -227,8 +227,12 @@ const mutations = {
 
     setPresetOrder (state, orderedIds) {
         var presets = []
-        orderedIds.forEach((id) => {
-            presets.push(presetById(state, id))
+        orderedIds.forEach((id, idx) => {
+            var preset = presetById(state, id)
+            if (preset) {
+                preset.number = idx + 1
+                presets.push(preset)
+            }
         })
         state.presets = presets
     },
@@ -336,6 +340,7 @@ const actions = {
 
     reorderPresets ({ commit }, presets) {
         var orderedIds = presets.map((p) => { return p.id })
+        commit('setPresetOrder', orderedIds)
         API.reorderPresets(orderedIds)
         .then((response) => {
             commit('setPresetOrder', response.data.order)
