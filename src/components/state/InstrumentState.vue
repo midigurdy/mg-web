@@ -51,7 +51,7 @@ const computed = {
 }
 
 export default {
-    name: 'preset-edit',
+    name: 'instrument-state',
     data,
     methods,
     watch,

@@ -4,7 +4,9 @@
     <mg-navbar/>
     <v-main>
         <v-container fluid>
-            <router-view></router-view>
+        <keep-alive include="instrument-state">
+                <router-view></router-view>
+        </keep-alive>
         </v-container>
     </v-main>
     <notifications/>
