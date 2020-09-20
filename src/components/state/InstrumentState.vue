@@ -38,12 +38,6 @@ const methods = {
     }, 250)
 }
 
-const watch = {
-    instrument (val) {
-        this.preset = val
-    }
-}
-
 const computed = {
     instrument () {
         return this.$store.getters.getInstrumentState
@@ -54,15 +48,21 @@ export default {
     name: 'instrument-state',
     data,
     methods,
-    watch,
     computed,
     components: {
         StateEdit,
         PresetSelector
     },
 
-    created () {
+    deactivated () {
+        this.unwatchInstrument()
+    },
+
+    activated () {
+        this.unwatchInstrument = this.$watch('instrument', function(val) {
+            this.preset = val
+        })
         this.$store.dispatch('fetchInstrumentState')
-    }
+    },
 }
 </script>
