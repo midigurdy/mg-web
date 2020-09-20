@@ -18,15 +18,15 @@
 
     <div v-if="presets.length">
         <v-list two-line>
-            <template v-for="(preset, idx) in presets">
-                <v-list-item :key="preset.id" :to="{name: 'preset-edit', params: {presetId: preset.id}}">
+            <div v-for="(preset, idx) in presets" :key="preset.id">
+                <v-list-item :to="{name: 'preset-edit', params: {presetId: preset.id}}">
                     <v-list-item-avatar>
                         {{ idx + 1 }}
                     </v-list-item-avatar>
                     <v-list-item-content>
                     <v-list-item-title>{{ preset.name || 'Unnamed' }}</v-list-item-title>
                         <v-list-item-subtitle>
-                            <span class="summary-entry" v-for="entry in presetSummary(preset)" :key="entry">
+                            <span class="mr-4" v-for="entry in presetSummary(preset)" :key="entry">
                                 {{ entry }}
                             </span>
                         </v-list-item-subtitle>
@@ -37,8 +37,8 @@
                         </v-btn>
                     </v-list-item-action>
                 </v-list-item>
-                <v-divider :key="'d' + idx"></v-divider>
-            </template>
+                <v-divider />
+            </div>
         </v-list>
     </div>
     <div v-else class="col-sm-12">
@@ -49,12 +49,6 @@
 </v-container>
 
 </template>
-
-<style scoped>
-    .summary-entry {
-        margin-right: 1em;
-    }
-</style>
 
 <script>
 import MidiFilters from '@/mixins/midifilters'

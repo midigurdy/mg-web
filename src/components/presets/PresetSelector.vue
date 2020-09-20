@@ -6,15 +6,40 @@
             </v-btn>
             <v-toolbar-title>Presets</v-toolbar-title>
             <v-spacer/>
-            <v-toolbar-items>
+            <v-toolbar-items v-if="orderMode">
+                <v-btn text :icon="$vuetify.breakpoint.xs" @click.stop="orderMode = false">
+                    <v-icon>done</v-icon> <span class="hidden-xs-only">Done</span>
+                </v-btn>
+            </v-toolbar-items>
+            <v-toolbar-items v-else>
                 <v-btn text :icon="$vuetify.breakpoint.xs" @click="saveNewPreset">
-                    <v-icon>add</v-icon> <span class="hidden-xs-only">Save New</span>
+                    <v-icon>add</v-icon> <span class="hidden-xs-only">New</span>
+                </v-btn>
+                <v-btn text :icon="$vuetify.breakpoint.xs" @click="orderMode = true">
+                    <v-icon>format_line_spacing</v-icon> <span class="hidden-xs-only">Order</span>
                 </v-btn>
             </v-toolbar-items>
         </v-toolbar>
         <v-list v-if="presets.length">
-            <vue-draggable v-model="presets">
+            <vue-draggable v-model="presets" v-if="orderMode">
                 <v-list-item
+                    class="drag-pointer"
+                    v-for="(preset, idx) in presets"
+                    :key="preset.id"
+                    >
+                    <v-list-item-avatar>{{ idx + 1 }}</v-list-item-avatar>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            {{ preset.name || 'Unnamed' }}
+                        </v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                        <v-icon>reorder</v-icon>
+                    </v-list-item-action>
+                </v-list-item>
+            </vue-draggable>
+                <v-list-item
+                    v-else
                     v-for="(preset, idx) in presets"
                     :key="preset.id"
                     @click="loadPreset(preset)"
@@ -45,7 +70,6 @@
                         </div>
                     </v-list-item-action>
                 </v-list-item>
-            </vue-draggable>
         </v-list>
     </div>
 </template>
@@ -58,6 +82,12 @@
 
 <script>
 import VueDraggable from 'vuedraggable'
+
+function data () {
+    return {
+        orderMode: false,
+    }
+}
 
 const computed = {
     presets: {
@@ -141,6 +171,7 @@ const methods = {
 
 export default {
     name: 'preset-selector',
+    data,
     computed,
     methods,
     components: { VueDraggable }

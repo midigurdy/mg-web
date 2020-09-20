@@ -1,5 +1,5 @@
 <template>
-<div>
+<v-container>
     <mg-toolbar title="Reorder">
         <template v-slot:icon>
             <v-app-bar-nav-icon :to="{name: 'preset-list'}" exact>
@@ -15,25 +15,35 @@
         </v-toolbar-items>
     </mg-toolbar>
 
-    <v-list>
-        <draggable v-model="presets" v-if="presets.length">
-            <v-list-item v-for="preset in presets" :key="preset.id">
-                <v-list-item-action>
-                    <v-icon class="drag-pointer" color="pink">reorder</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                    <v-list-item-title>
-                        {{ preset.number }} - {{ preset.name || 'Unnamed' }}
-                    </v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
+    <v-list two-line v-if="presets.length">
+        <draggable v-model="presets">
+            <div v-for="(preset, idx) in presets" :key="preset.id">
+                <v-list-item class="drag-pointer">
+                    <v-list-item-avatar>
+                        {{ idx + 1 }}
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                    <v-list-item-title>{{ preset.name || 'Unnamed' }}</v-list-item-title>
+                        <v-list-item-subtitle>
+                            <span class="mr-4" v-for="entry in presetSummary(preset)" :key="entry">
+                                {{ entry }}
+                            </span>
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                        <v-icon>reorder</v-icon>
+                    </v-list-item-action>
+                </v-list-item>
+                <v-divider />
+            </div>
         </draggable>
     </v-list>
-</div>
+</v-container>
 </template>
 
 <script>
 import VueDraggable from 'vuedraggable'
+import MidiFilters from '@/mixins/midifilters'
 
 function data () {
     return {
@@ -53,13 +63,28 @@ const computed = {
             return {
                 id: preset.id,
                 name: preset.name,
-                number: idx + 1
+                number: idx + 1,
+                voices: preset.voices,
             }
         })
     }
 }
 
 const methods = {
+    presetSummary (preset) {
+        var voices = ['melody', 'drone', 'trompette']
+        var summary = []
+        voices.forEach(name => {
+            var notes = (preset.voices[name] || [])
+                .filter(el => el.soundfont)
+                .map(el => MidiFilters.filters.midiBaseNote(el.note))
+            if (notes.length) {
+                summary.push(MidiFilters.filters.capfirst(name) + ': ' + notes.join(', '))
+            }
+        })
+        return summary
+    },
+
     saveOrder () {
         this.$store.dispatch('reorderPresets', this.presets)
         .then(() => {
