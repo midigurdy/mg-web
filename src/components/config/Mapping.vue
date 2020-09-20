@@ -54,27 +54,7 @@
                     <v-flex xs4 class="text-center">{{ mapping.src.name }}</v-flex>
                     <v-flex xs4 class="text-center">{{ mapping.dst.name }}</v-flex>
                 </v-row>
-                <v-row v-for="(range, index) in ranges" :key="rangeKey(range)">
-                    <v-flex xs4 class="text-center">
-                        <v-btn text icon small @click="addRange(index)" :tabindex="-1"
-                            title="Add control point below"
-                            ><v-icon>add</v-icon></v-btn>
-                        <v-btn text icon small @click="removeRange(index)" :tabindex="-1"
-                            title="Remove this control point"
-                            ><v-icon>remove</v-icon></v-btn>
-                    </v-flex>
-                    <v-flex xs4>
-                        <v-text-field dense class="number-field" hide-details type="number" :value="range.src" @change="onValueChange($event, index, 'src')"/>
-                    </v-flex>
-                    <v-flex xs4>
-                        <v-text-field dense class="number-field" hide-details type="number" :value="range.dst" @change="onValueChange($event, index, 'dst')"/>
-                    </v-flex>
-                </v-row>
-                <v-row v-if="ranges.length === 0">
-                    <v-flex xs4>
-                        <v-btn icon @click="addRange(-1)"><v-icon>add</v-icon></v-btn>
-                    </v-flex>
-                </v-row>
+                <mapping-values :ranges="ranges"/>
                 </v-card-text>
             </v-card>
         </v-flex>
@@ -85,7 +65,9 @@
 <script>
 import * as d3 from 'd3'
 import API from '@/api'
-import { debounce } from 'lodash'
+import { debounce, throttle } from 'lodash'
+
+import MappingValues from '@/components/config/MappingValues'
 
 const height = 400
 const margin = {
@@ -244,8 +226,6 @@ const mapConfig = {
     }
 }
 
-var rangeKey = 0
-
 function data () {
     return {
         busy: false,
@@ -393,21 +373,12 @@ const computed = {
 }
 
 const methods = {
-    onResize: debounce(function () {
+    onResize () {
         this.setupChart()
-    }, 250),
+    },
 
     getchartWidth () {
         return parseInt(this.svg.style('width'), 10) - margin.left - margin.right
-    },
-
-    rangeKey (range) {
-        if (!range) return
-        if (!range.key) {
-            rangeKey++
-            range.key = 'rk' + rangeKey
-        }
-        return range.key
     },
 
     /* Callback for range input fields */
@@ -450,37 +421,6 @@ const methods = {
         return val
     },
 
-    addRange (idx) {
-        if (idx === -1 || this.ranges.length < 2) {
-            this.ranges.push({src: 0, dst: 0, key: 'rk' + ++rangeKey})
-        } else {
-            if (idx === (this.ranges.length - 1)) {
-                idx = this.ranges.length - 2
-            }
-            var addsrc = Math.round((this.ranges[idx + 1].src - this.ranges[idx].src) / 2)
-            var adddst = Math.round((this.ranges[idx + 1].dst - this.ranges[idx].dst) / 2)
-            var src = this.ranges[idx].src + addsrc
-            var dst = this.ranges[idx].dst + adddst
-            var found = false
-            for (var i = 0; i < this.ranges.length; i++) {
-                if (this.ranges[i].src === src) {
-                    found = true
-                    break
-                }
-            }
-            if (!found) {
-                this.ranges.splice(idx + 1, 0, {src, dst, key: 'rk' + ++rangeKey})
-            }
-        }
-        this.ranges.sort((a, b) => {
-            return a.src - b.src
-        })
-    },
-
-    removeRange (idx) {
-        this.ranges.splice(idx, 1)
-    },
-
     /* Copy ranges from store into local data, so we can edit locally and
        only commit on save */
     getMapping () {
@@ -494,7 +434,6 @@ const methods = {
     loadMapping (response) {
         this.mapping = response.data
         this.mapConfig = mapConfig[this.mapname]
-        rangeKey = 0
 
         // store this separately, to make watching easier
         this.ranges = this.mapping.ranges
@@ -641,8 +580,9 @@ const methods = {
             var i = this.ranges.indexOf(range)
             var rx = parseInt(scale.x.invert(d.x), 10)
             var ry = parseInt(scale.y.invert(d.y), 10)
-            this.ranges[i]['src'] = this.updateValue(i, 'src', parseInt(rx, 10))
-            this.ranges[i]['dst'] = this.updateValue(i, 'dst', parseInt(ry, 10))
+            var src = this.updateValue(i, 'src', parseInt(rx, 10))
+            var dst = this.updateValue(i, 'dst', parseInt(ry, 10))
+            this.setRangeValue(i, src, dst)
         })
 
         circles.enter()
@@ -666,6 +606,11 @@ const methods = {
         g.select('.mapline')
             .datum(this.ranges)
             .attr('d', chartLine)
+    },
+
+    setRangeValue (idx, src, dst) {
+        this.ranges[idx]['src'] = src
+        this.ranges[idx]['dst'] = dst
     },
 
     updateSourceValue (val) {
@@ -726,10 +671,16 @@ const methods = {
 
 export default {
     name: 'mapping',
+    components: { MappingValues },
     watch,
     computed,
     methods,
     data,
+
+    created () {
+        this.setRangeValue = throttle(this.setRangeValue, 30)
+        this.onResize = debounce(this.onResize, 100)
+    },
 
     mounted () {
         this.getMapping()
