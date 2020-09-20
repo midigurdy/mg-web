@@ -11,7 +11,7 @@
                         :items="coarseTuningChoices"
                         :value="coarse"
                         :menu-props="{auto: true, transition: null}"
-                        @update:value="$emit('update:coarse', $event)"
+                        @change="$emit('update:coarse', $event)"
                         />
                 </v-col>
                 <v-col cols="6">
@@ -20,7 +20,7 @@
                         :items="fineTuningChoices"
                         :value="fine"
                         :menu-props="{auto: true, transition: null}"
-                        @update:value="$emit('update:fine', $event)"
+                        @change="$emit('update:fine', $event)"
                         />
                 </v-col>
             </v-row>

@@ -18,7 +18,7 @@
                         inputClass="flex xs6"
                         :items="noteChoices"
                         :value="localNote"
-                        @update:value="noteChanged($event)"
+                        @change="noteChanged($event)"
                         :menu-props="{auto: true, transition: null}"
                         :disabled="!soundId"
                         noCaret="true"
@@ -30,7 +30,7 @@
                         inputClass="flex xs6"
                         :items="octaveChoices"
                         :value="octave"
-                        @update:value="octaveChanged($event)"
+                        @change="octaveChanged($event)"
                         :menu-props="{auto: true, transition: null}"
                         :disabled="!soundId"
                         noCaret="true"
@@ -45,7 +45,7 @@
                         :items="fineTuningChoices"
                         :value="finetune"
                         :menu-props="{auto: true, transition: null}"
-                        @update:value="$emit('update:finetune', $event)"
+                        @change="$emit('update:finetune', $event)"
                         dense
                         hide-details
                         />
@@ -56,7 +56,7 @@
                             label="Capo Key"
                             :items="capoChoices"
                             :value="capo"
-                            @update:value="$emit('update:capo', $event)"
+                            @change="$emit('update:capo', $event)"
                             :menu-props="{auto: true, transition: null}"
                             dense
                             hide-details
