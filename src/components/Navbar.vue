@@ -27,20 +27,8 @@
 
     <v-list>
         <template v-for="link in links">
-            <v-list-group v-if="link.children" :prepend-icon="link.icon" :key="link.to">
-                <template v-slot:activator>
-                    <v-list-item-title v-text="link.label"></v-list-item-title>
-                </template>
-                <v-list-item v-for="child in link.children" :to="child.to" :key="child.to">
-                    <v-list-item-action>
-                        <v-icon>{{ child.icon }}</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                        <v-list-item-title>{{ child.label }}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list-group>
-            <v-list-item v-else :to="link.to" :key="link.to">
+            <v-divider v-if="link.class" :key="link.label"/>
+            <v-list-item :to="link.to" :key="link.to">
                 <v-list-item-action>
                     <v-icon>{{ link.icon }}</v-icon>
                 </v-list-item-action>
@@ -65,20 +53,15 @@
 
 const links = [
     {to: '/instrument', label: 'Instrument Setup', icon: 'play_circle_filled'},
-    {to: '/visualization', label: 'Wheel Visualisation', icon: 'donut_large'},
     {to: '/presets', label: 'Presets', icon: 'description'},
     {to: '/sounds', label: 'Sounds', icon: 'headset'},
-    {
-        label: 'Advanced',
-        icon: 'settings',
-        children: [
-            {to: '/mapping/speed_to_melody_volume', label: 'Sensor Mappings', icon: 'timeline'},
-            {to: '/key-calibration', label: 'Keyboard Calibration', icon: 'keyboard'},
-            {to: '/misc', label: 'Settings', icon: 'stars'}
-        ]
-    },
+    {to: '/visualization', label: 'Wheel Visualisation', icon: 'donut_large', class: 'mt-3'},
+    {to: '/misc', label: 'Settings', icon: 'settings', class: 'mt-3'},
+    {to: '/mapping/speed_to_melody_volume', label: 'Sensor Mappings', icon: 'timeline'},
+    {to: '/key-calibration', label: 'Keyboard Calibration', icon: 'keyboard'},
     {to: '/export', label: 'Import / Export', icon: 'import_export'},
-    {to: '/help', label: 'Help', icon: 'help'}
+    {to: '/help', label: 'Help', icon: 'help', class: 'mt-3'},
+
 ]
 
 function data () {
