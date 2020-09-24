@@ -1,23 +1,25 @@
 <template>
 <div>
-    <mg-toolbar :title="soundfont.name" tabs>
-        <v-btn slot="icon" icon :to="{name: 'soundfont-list'}" exact>
-            <v-icon>arrow_back</v-icon>
-        </v-btn>
+    <mg-toolbar :title="soundfont.name">
+        <template v-slot:icon>
+            <v-app-bar-nav-icon :to="{name: 'soundfont-list'}" exact>
+                <v-icon>arrow_back</v-icon>
+            </v-app-bar-nav-icon>
+        </template>
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" :href="'/download/sounds/' + soundfont.filename">
+            <v-btn text :icon="$vuetify.breakpoint.xs" :href="'/download/sounds/' + soundfont.filename">
                <v-icon left>cloud_download</v-icon><span class="hidden-xs-only">Download</span>
             </v-btn>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="deleteSoundfont">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click="deleteSoundfont">
                <v-icon left>delete</v-icon><span class="hidden-xs-only">Delete</span>
             </v-btn>
         </v-toolbar-items>
     </mg-toolbar>
 
-    <v-container fluid grid-list-lg>
-        <v-layout row wrap>
-            <v-flex xs12>
+    <v-container>
+        <v-row>
+            <v-col>
                 <v-card>
                     <v-card-text>
                         <v-container fluid grid-list-sm>
@@ -48,46 +50,46 @@
                         </v-container>
                     </v-card-text>
                 </v-card>
-            </v-flex>
-
-    <v-flex xs12>
-    <v-card>
-        <v-card-title><h2>Sounds</h2></v-card-title>
-        <table class="table">
-            <thead style="text-align: left">
-                <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Base Note</th>
-                    <th>Bank/Prog</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="sound in soundfont.sounds">
-                    <td style="width: 1%">
-                        <v-avatar
-                            size="30"
-                            :color="sound.type == 'generic' ? 'grey' : 'primary'""
-                            class="white--text"
-                            :title="sound.type | capfirst">
-                                {{ sound | soundType }}
-                        </v-avatar>
-                    </td>
-                    <td>{{ sound.name }}</td>
-                    <td>{{ sound.note | midiNote }}</td>
-                    <td>{{ sound.bank }}:{{ sound.program }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </v-card>
-    </v-flex>
-    </v-layout>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col>
+                <v-card>
+                    <v-card-title>Sounds</v-card-title>
+                    <v-simple-table>
+                        <template v-slot:default>
+                            <thead style="text-align: left">
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Base Note</th>
+                                    <th>Bank/Prog</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="sound in soundfont.sounds" :key="sound.id">
+                                    <td style="width: 1%">
+                                        <v-avatar
+                                            size="30"
+                                            :color="(sound.type === 'generic') ? 'grey' : 'primary'"
+                                            class="white--text"
+                                            :title="sound.type | capfirst">
+                                                {{ sound | soundType }}
+                                        </v-avatar>
+                                    </td>
+                                    <td>{{ sound.name }}</td>
+                                    <td>{{ sound.note | midiNote }}</td>
+                                    <td>{{ sound.bank }}:{{ sound.program }}</td>
+                                </tr>
+                            </tbody>
+                        </template>
+                    </v-simple-table>
+                </v-card>
+            </v-col>
+        </v-row>
     </v-container>
 </div>
 </template>
-
-<style scoped>
-</style>
 
 <script>
 import MidiFilters from '@/mixins/midifilters'
@@ -96,7 +98,6 @@ function data () {
     return {
         loading: true,
 
-        tabs: null,
         test: null,
 
         soundfont: {

@@ -34,7 +34,9 @@ const methods = {
     reset () {
         this.status = 'initial'
         this.progressPercent = 0
-        this.$refs.fileupload.value = ''
+        if (this.$refs.fileupload) {
+            this.$refs.fileupload.value = ''
+        }
     },
 
     save (binary, filename) {

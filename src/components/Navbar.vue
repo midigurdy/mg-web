@@ -1,58 +1,61 @@
 <template>
 
-<v-navigation-drawer v-model="navbar" fixed app stateless :mini-variant="mini" width="240">
-    <v-card flat>
+<v-navigation-drawer v-model="navbar" fixed app stateless :mini-variant="mini" width="300">
+
+    <div>
         <v-card-title>
-            <h3 v-if="mini" :class="{'red--text': !connected }">
-                MG
-                <v-icon v-if="connected" color="success" small>check_circle</v-icon>
-                <v-icon v-else small color="error">warning</v-icon>
-            </h3>
-            <h2 v-else>MidiGurdy</h2>
-            <span class="caption" id="version-string">{{ info.version }}</span>
+            <div v-if="mini" :class="{'red--text': !connected }">
+                <v-icon v-if="connected" color="success">check_circle</v-icon>
+                <v-icon v-else color="error">warning</v-icon>
+            </div>
+            <div v-else>
+                <span class="font-weight-bold">MidiGurdy</span>
+                <span class="caption" id="version-string">{{ info.version }}</span>
+            </div>
         </v-card-title>
         <v-card-text v-if="!mini">
-            <v-alert type="error" :value="!connected" outline>
+            <v-alert type="error" :value="!connected" outlined>
                 You are not connected!
             </v-alert>
-            <v-alert type="success" :value="connected" outline>
+            <v-alert type="success" :value="connected" outlined>
                 Connected to {{ info.name }}
             </v-alert>
         </v-card-text>
-    </v-card>
+    </div>
+
     <v-divider></v-divider>
+
     <v-list>
         <template v-for="link in links">
-            <v-list-group v-if="link.children" :prepend-icon="link.icon">
-                <v-list-tile slot="activator">
-                    <v-list-tile-title>{{ link.label }}</v-list-tile-title>
-                </v-list-tile>
-                <v-list-tile v-for="link in link.children" :to="link.to" :key="link.to">
-                    <v-list-tile-action>
-                        <v-icon>{{ link.icon }}</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                        <v-list-tile-title>{{ link.label }}</v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
+            <v-list-group v-if="link.children" :prepend-icon="link.icon" :key="link.to">
+                <template v-slot:activator>
+                    <v-list-item-title v-text="link.label"></v-list-item-title>
+                </template>
+                <v-list-item v-for="child in link.children" :to="child.to" :key="child.to">
+                    <v-list-item-action>
+                        <v-icon>{{ child.icon }}</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>{{ child.label }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list-group>
-            <v-list-tile v-else :to="link.to" :key="link.to">
-                <v-list-tile-action>
+            <v-list-item v-else :to="link.to" :key="link.to">
+                <v-list-item-action>
                     <v-icon>{{ link.icon }}</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                    <v-list-tile-title>{{ link.label }}</v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
+                </v-list-item-action>
+                <v-list-item-content>
+                    <v-list-item-title>{{ link.label }}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
         </template>
-            <v-list-tile>
-                <v-list-tile-action>
-                    <v-btn icon @click="mini = !mini">
-                        <v-icon v-if="mini">chevron_right</v-icon>
-                        <v-icon v-else>chevron_left</v-icon>
-                    </v-btn>
-                </v-list-tile-action>
-            </v-list-tile>
+            <v-list-item @click="mini = !mini" class="mt-4">
+                <v-list-item-action>
+                    <v-icon v-if="mini">chevron_right</v-icon>
+                    <v-icon v-else>chevron_left</v-icon>
+                </v-list-item-action>
+                <v-list-item-content></v-list-item-content>
+            </v-list-item>
     </v-list>
 </v-navigation-drawer>
 
@@ -121,7 +124,4 @@ export default {
         background: transparent;
     }
 
-    .card__text {
-        padding-top: 0;
-    }
 </style>

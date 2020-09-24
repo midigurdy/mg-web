@@ -1,62 +1,54 @@
 <template>
 
-<div>
+<v-container>
     <mg-toolbar title="Presets">
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="uploadDialog = true">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click="uploadDialog = true">
                 <v-icon left>cloud_upload</v-icon><span class="hidden-xs-only">Import</span>
             </v-btn>
-            <v-btn v-if="presets.length" flat :icon="$vuetify.breakpoint.xs" :to="{name: 'presets-reorder'}">
+            <v-btn v-if="presets.length" text :icon="$vuetify.breakpoint.xs" :to="{name: 'presets-reorder'}">
                 <v-icon>format_line_spacing</v-icon> <span class="hidden-xs-only">Reorder</span>
             </v-btn>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" :to="{name: 'preset-edit', params: {presetId: 'new'}}">
+            <v-btn text :icon="$vuetify.breakpoint.xs" :to="{name: 'preset-edit', params: {presetId: 'new'}}">
                 <v-icon>add</v-icon> <span class="hidden-xs-only">Add Preset</span>
             </v-btn>
         </v-toolbar-items>
     </mg-toolbar>
 
-    <div class="row">
-        <div v-if="presets.length" class="col-sm-12">
-            <v-list two-line>
-                <template v-for="(preset, idx) in presets">
-                <v-list-tile avatar :key="preset.id" :to="{name: 'preset-edit', params: {presetId: preset.id}}">
-                    <v-list-tile-avatar>
+    <div v-if="presets.length">
+        <v-list two-line>
+            <div v-for="(preset, idx) in presets" :key="preset.id">
+                <v-list-item :to="{name: 'preset-edit', params: {presetId: preset.id}}">
+                    <v-list-item-avatar>
                         {{ idx + 1 }}
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                    <v-list-tile-title>{{ preset.name || 'Unnamed' }}</v-list-tile-title>
-                        <v-list-tile-sub-title>
-                            <span class="summary-entry" v-for="entry in presetSummary(preset)">
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                    <v-list-item-title>{{ preset.name || 'Unnamed' }}</v-list-item-title>
+                        <v-list-item-subtitle>
+                            <span class="mr-4" v-for="entry in presetSummary(preset)" :key="entry">
                                 {{ entry }}
                             </span>
-                        </v-list-tile-sub-title>
-                    </v-list-tile-content>
-                    <v-list-tile-action>
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
                         <v-btn icon ripple title="Load preset" @click.prevent="loadPreset(preset)">
                             <v-icon color="grey">open_in_browser</v-icon>
                         </v-btn>
-                    </v-list-tile-action>
-                </v-list-tile>
-                <v-divider/>
-                </template>
-            </v-list>
-        </div>
-        <div v-else class="col-sm-12">
-            No presets defined
-        </div>
+                    </v-list-item-action>
+                </v-list-item>
+                <v-divider />
+            </div>
+        </v-list>
+    </div>
+    <div v-else class="col-sm-12">
+        No presets defined
     </div>
 
     <preset-upload :show.sync="uploadDialog"/>
-</div>
+</v-container>
 
 </template>
-
-<style scoped>
-    .summary-entry {
-        margin-right: 1em;
-    }
-</style>
 
 <script>
 import MidiFilters from '@/mixins/midifilters'

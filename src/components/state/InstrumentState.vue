@@ -3,7 +3,7 @@
     <mg-toolbar title="Instrument Setup">
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="showSelector = !showSelector">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click="showSelector = !showSelector">
                 <v-icon left>description</v-icon>
                 <span class="hidden-xs-only">Presets</span>
             </v-btn>
@@ -38,12 +38,6 @@ const methods = {
     }, 250)
 }
 
-const watch = {
-    instrument (val) {
-        this.preset = val
-    }
-}
-
 const computed = {
     instrument () {
         return this.$store.getters.getInstrumentState
@@ -51,18 +45,24 @@ const computed = {
 }
 
 export default {
-    name: 'preset-edit',
+    name: 'instrument-state',
     data,
     methods,
-    watch,
     computed,
     components: {
         StateEdit,
         PresetSelector
     },
 
-    created () {
+    deactivated () {
+        this.unwatchInstrument()
+    },
+
+    activated () {
+        this.unwatchInstrument = this.$watch('instrument', function(val) {
+            this.preset = val
+        })
         this.$store.dispatch('fetchInstrumentState')
-    }
+    },
 }
 </script>

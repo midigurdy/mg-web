@@ -3,16 +3,16 @@
         <mg-toolbar title="Keyboard Calibration">
             <v-spacer/>
             <v-toolbar-items>
-                <v-btn flat :icon="$vuetify.breakpoint.xs" @click="resetKeyCalibration">
+                <v-btn text :icon="$vuetify.breakpoint.xs" @click="resetKeyCalibration">
                     <v-icon left>settings</v-icon> <span class="hidden-xs-only">Reset to Defaults</span>
                 </v-btn>
-                <v-btn flat :icon="$vuetify.breakpoint.xs" @click="saveKeyData()">
+                <v-btn text :icon="$vuetify.breakpoint.xs" @click="saveKeyData()">
                     <v-icon left>done</v-icon> <span class="hidden-xs-only">Save Calibration</span>
                 </v-btn>
             </v-toolbar-items>
         </mg-toolbar>
 
-        <v-card>
+        <v-card class="mb-4">
             <v-card-text>
                 <p>Here you can calibrate the <strong>maximum pressure</strong> and adjust the <strong>velocity response</strong>
                     of the keyboard sensors.</p>
@@ -25,7 +25,7 @@
             </v-card-text>
         </v-card>
 
-        <div v-for="key in keys" class="key-calib"
+        <div v-for="key in keys" class="key-calib" :key="key.number"
             :class="{valid: mode === 'auto' && key.pressure > 0}">
             <div class="key-number">{{ key.number }}</div>
             <div class="key-position" :class="{'key-top': key.position === 'top'}">
@@ -55,9 +55,7 @@
                 the detection process by clicking the button below. Then you can press each key on your
                 keyboard to set the pressure value.</p>
 
-                <p>
-                    <v-btn color="primary" @click="startAutoCalibration">Scan Keyboard Pressure</v-btn>
-                </p>
+                <v-btn color="primary" @click="startAutoCalibration">Scan Keyboard Pressure</v-btn>
             </v-card-text>
         </v-card>
 
@@ -72,10 +70,8 @@
                 This probably means that some keys are pushed in further than others.</p>
 
                 <p>Once all keys were pressed, the <strong>Finish Scan</strong> button will be enabled.</p>
-                <p>
-                    <v-btn color="green" :disabled="validKeyCount < 24" @click="finishAutoCalibration">Finish Scan</v-btn>
-                    <v-btn color="error" @click="abortAutoCalibration">Abort Scan</v-btn>
-                </p>
+                <v-btn color="green" :disabled="validKeyCount < 24" @click="finishAutoCalibration">Finish Scan</v-btn>
+                <v-btn class="ml-4" color="error" @click="abortAutoCalibration">Abort Scan</v-btn>
             </v-card-text>
         </v-card>
     </div>

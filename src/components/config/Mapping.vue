@@ -1,83 +1,61 @@
 <template>
-<v-container fluid grid-list-md>
-    <mg-toolbar title="Sensor Mappings">
-        <v-spacer/>
-        <v-toolbar-items>
-        </v-toolbar-items>
-    </mg-toolbar>
+<v-container grid-list-md fluid>
+    <mg-toolbar title="Sensor Mappings"></mg-toolbar>
 
     <v-layout row>
         <v-flex md3>
-            <template v-for="group, i in mapLinks">
-            <v-card class="mapping-group">
+            <template v-for="group in mapLinks">
+            <v-card class="mb-2" :key="group.name">
                 <v-card-title><h3><v-icon v-if="group.icon">{{ group.icon }}</v-icon> {{ group.name }}</h3></v-card-title>
                 <v-list>
-                    <v-list-tile v-for="link in group.links" :key="link.id" :to="{name: 'config-mapping', params: {mapname: link.id}}">
-                        <v-list-tile-title>
+                    <v-list-item v-for="link in group.links" :key="link.id" :to="{name: 'config-mapping', params: {mapname: link.id}}">
+                        <v-list-item-title>
                             {{ link.name }}
-                        </v-list-tile-title>
-                    </v-list-tile>
+                        </v-list-item-title>
+                    </v-list-item>
                 </v-list>
             </v-card>
             </template>
         </v-flex>
-        <v-flex md8>
+        <v-flex md6>
             <v-card>
                 <v-card-title><h2>{{ mapping.name }}</h2></v-card-title>
                 <svg></svg>
             </v-card>
-            <v-card class="mapping-tools">
-                <v-btn :loading="busy" flat color="primary" :disabled="ranges.length === 0" :icon="$vuetify.breakpoint.xs" @click="saveRanges">
-                    <v-icon left>done</v-icon> <span class="hidden-xs-only">Save</span>
-                </v-btn>
-                <v-btn flat :disabled="!dirty" :icon="$vuetify.breakpoint.xs" @click="getMapping">
-                    <v-icon left>cached</v-icon> <span class="hidden-xs-only">Discard Changes</span>
-                </v-btn>
-                <v-btn flat style="float: right" :icon="$vuetify.breakpoint.xs" @click="resetMapping">
-                    <v-icon left>settings</v-icon> <span class="hidden-xs-only">Reset To Factory Default</span>
-                </v-btn>
+            <v-card class="mt-2 mb-2">
+                <v-card-text>
+                    <v-btn :loading="busy" text color="primary" :disabled="ranges.length === 0" @click="saveRanges">
+                        <v-icon left>done</v-icon> Save
+                    </v-btn>
+                    <v-btn text :disabled="!dirty" @click="getMapping">
+                        <v-icon left>cached</v-icon> Discard Changes
+                    </v-btn>
+                    <v-btn text @click="resetMapping">
+                        <v-icon left>settings</v-icon> Reset To Factory Default
+                    </v-btn>
+                </v-card-text>
             </v-card>
-            <v-expansion-panel v-if="mapConfig && mapConfig.description" class="mapping-description">
-                <v-expansion-panel-content v-model="showDescription" >
-                    <div slot="header" v-html="mapConfig.description || 'Description'"></div>
-                    <v-card>
-                        <v-card-text v-html="mapConfig.longDescription"></v-card-text>
-                    </v-card>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
+            <v-expansion-panels v-if="mapConfig && mapConfig.description" :value="0">
+                <v-expansion-panel>
+                    <v-expansion-panel-header>{{ mapConfig.description }}</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <div v-html="mapConfig.Description"></div>
+                        <div v-html="mapConfig.longDescription"></div>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
         </v-flex>
         <v-flex md3>
-            <v-card class="mapping-values">
+            <v-card>
                 <v-card-title><h2>Values</h2></v-card-title>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>{{ mapping.src.name }}</th>
-                            <th>{{ mapping.dst.name }}</th>
-                        </tr>
-                    </thead>
-                    <tbody name="list" is="transition-group">
-                        <tr v-for="(range, index) in ranges" :key="rangeKey(range)">
-                            <td>
-                                <v-btn flat icon small @click="addRange(index)" :tabindex="-1"
-                                  title="Add control point below"
-                                 ><v-icon>add</v-icon></v-btn>
-                                <v-btn flat icon small @click="removeRange(index)" :tabindex="-1"
-                                  title="Remove this control point"
-                                  ><v-icon>remove</v-icon></v-btn>
-                            </td>
-                            <td><v-text-field class="number-field" hide-details type="number" :value="range.src" @change="onValueChange($event, index, 'src')"/></td>
-                            <td><v-text-field class="number-field" hide-details type="number" :value="range.dst" @change="onValueChange($event, index, 'dst')"/></td>
-                        </tr>
-                        <tr v-if="ranges.length === 0" key="empty">
-                            <td>
-                                <v-btn icon @click="addRange(-1)"><v-icon>add</v-icon></v-btn>
-                            </td>
-                            <td colspan="2"></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <v-card-text>
+                <v-row>
+                    <v-flex xs4></v-flex>
+                    <v-flex xs4 class="text-center">{{ mapping.src.name }}</v-flex>
+                    <v-flex xs4 class="text-center">{{ mapping.dst.name }}</v-flex>
+                </v-row>
+                <mapping-values :ranges="ranges"/>
+                </v-card-text>
             </v-card>
         </v-flex>
     </v-layout>
@@ -87,7 +65,9 @@
 <script>
 import * as d3 from 'd3'
 import API from '@/api'
-import { debounce } from 'lodash'
+import { debounce, throttle } from 'lodash'
+
+import MappingValues from '@/components/config/MappingValues'
 
 const height = 400
 const margin = {
@@ -99,7 +79,7 @@ const margin = {
 
 const mapConfig = {
     chien_threshold_to_range: {
-        description: 'Changes the <i>hardness</i> of the chien based on the chien sensitivity',
+        description: 'Changes the hardness of the chien based on the chien sensitivity',
         longDescription: `
             <p>Controls how the chien response changes for different sensitivity values. Negative
             values have the effect of making the chien attack softer, positive
@@ -193,7 +173,7 @@ const mapConfig = {
             packetIndex: 3
         },
         rawLineColour: 'red',
-        description: 'Controls the volume of the chien sound for trompette strings in <b>Percussion mode</b>.',
+        description: 'Controls the volume of the chien sound for trompette strings in Percussion mode.',
         longDescription: `
             <p>Please note that this mapping only affects the <b>initial</b> sound volume.
             Once the sound has started, the volume is not changed anymore. So only the attack of your coup has an effect
@@ -208,7 +188,7 @@ const mapConfig = {
             packetIndex: 3
         },
         rawLineColour: 'green',
-        description: 'Controls the volume of the melody sounds in <b>Keyboard mode</b>.',
+        description: 'Controls the volume of the melody sounds in Keyboard mode.',
         longDescription: `
             <p>This only applies to melody strings in "Keyboard" mode. It controls the initial volume of
             the sound in response to the key velocity, i.e. how fast and hard you press the keys.</p>
@@ -245,8 +225,6 @@ const mapConfig = {
         `
     }
 }
-
-var rangeKey = 0
 
 function data () {
     return {
@@ -395,21 +373,12 @@ const computed = {
 }
 
 const methods = {
-    onResize: debounce(function () {
+    onResize () {
         this.setupChart()
-    }, 250),
+    },
 
     getchartWidth () {
         return parseInt(this.svg.style('width'), 10) - margin.left - margin.right
-    },
-
-    rangeKey (range) {
-        if (!range) return
-        if (!range.key) {
-            rangeKey++
-            range.key = 'rk' + rangeKey
-        }
-        return range.key
     },
 
     /* Callback for range input fields */
@@ -452,37 +421,6 @@ const methods = {
         return val
     },
 
-    addRange (idx) {
-        if (idx === -1 || this.ranges.length < 2) {
-            this.ranges.push({src: 0, dst: 0, key: 'rk' + ++rangeKey})
-        } else {
-            if (idx === (this.ranges.length - 1)) {
-                idx = this.ranges.length - 2
-            }
-            var addsrc = Math.round((this.ranges[idx + 1].src - this.ranges[idx].src) / 2)
-            var adddst = Math.round((this.ranges[idx + 1].dst - this.ranges[idx].dst) / 2)
-            var src = this.ranges[idx].src + addsrc
-            var dst = this.ranges[idx].dst + adddst
-            var found = false
-            for (var i = 0; i < this.ranges.length; i++) {
-                if (this.ranges[i].src === src) {
-                    found = true
-                    break
-                }
-            }
-            if (!found) {
-                this.ranges.splice(idx + 1, 0, {src, dst, key: 'rk' + ++rangeKey})
-            }
-        }
-        this.ranges.sort((a, b) => {
-            return a.src - b.src
-        })
-    },
-
-    removeRange (idx) {
-        this.ranges.splice(idx, 1)
-    },
-
     /* Copy ranges from store into local data, so we can edit locally and
        only commit on save */
     getMapping () {
@@ -496,7 +434,6 @@ const methods = {
     loadMapping (response) {
         this.mapping = response.data
         this.mapConfig = mapConfig[this.mapname]
-        rangeKey = 0
 
         // store this separately, to make watching easier
         this.ranges = this.mapping.ranges
@@ -639,11 +576,13 @@ const methods = {
             .attr('cx', function (d) { return scale.x(d.src) })
             .attr('cy', function (d) { return scale.y(d.dst) })
 
-        var chartDragBehaviour = d3.drag().on('drag', (d, i) => {
-            var rx = parseInt(scale.x.invert(d3.event.x), 10)
-            var ry = parseInt(scale.y.invert(d3.event.y), 10)
-            this.ranges[i]['src'] = this.updateValue(i, 'src', parseInt(rx, 10))
-            this.ranges[i]['dst'] = this.updateValue(i, 'dst', parseInt(ry, 10))
+        var chartDragBehaviour = d3.drag().on('drag', (d, range) => {
+            var i = this.ranges.indexOf(range)
+            var rx = parseInt(scale.x.invert(d.x), 10)
+            var ry = parseInt(scale.y.invert(d.y), 10)
+            var src = this.updateValue(i, 'src', parseInt(rx, 10))
+            var dst = this.updateValue(i, 'dst', parseInt(ry, 10))
+            this.setRangeValue(i, src, dst)
         })
 
         circles.enter()
@@ -667,6 +606,11 @@ const methods = {
         g.select('.mapline')
             .datum(this.ranges)
             .attr('d', chartLine)
+    },
+
+    setRangeValue (idx, src, dst) {
+        this.ranges[idx]['src'] = src
+        this.ranges[idx]['dst'] = dst
     },
 
     updateSourceValue (val) {
@@ -727,10 +671,16 @@ const methods = {
 
 export default {
     name: 'mapping',
+    components: { MappingValues },
     watch,
     computed,
     methods,
     data,
+
+    created () {
+        this.setRangeValue = throttle(this.setRangeValue, 30)
+        this.onResize = debounce(this.onResize, 100)
+    },
 
     mounted () {
         this.getMapping()
@@ -751,36 +701,6 @@ svg {
     height: 400px;
 }
 
-.table thead th {
-    text-align: center;
-    white-space: unset;
-}
-
-table tr:hover td {
-    background-color: #eee;
-}
-
-.theme--dark table tr:hover td {
-    background-color: #505050;
-}
-
-.table tbody td:first-child {
-    padding: 0 0 0 4px;
-    white-space: nowrap;
-}
-
-.table tbody td .btn {
-    margin: 0;
-}
-
-.table tbody tr {
-    border-bottom: 0 !important;
-}
-
-.mapping-values {
-    padding-bottom: 2em;
-}
-
 .list-enter-active {
   animation: fadein 0.6s ease-in;
 }
@@ -794,16 +714,9 @@ table tr:hover td {
   0% {opacity: 0;}
   100% { opacity: 1;}
 }
+
 @keyframes fadeout {
   0% {opacity: 1; }
   100% { opacity: 0; }
-}
-
-.mapping-tools, .mapping-description {
-    margin-top: 5px;
-}
-
-.mapping-group {
-    margin-bottom: 5px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <v-card>
-        <v-card-title>
-            <h2><v-icon>settings</v-icon> Effects Setup</h2>
+        <v-card-title class="font-weight-bold">
+            <v-icon left>settings</v-icon> Effects Setup
         </v-card-title>
         <v-card-text>
             <label>Keynoise Sound</label>

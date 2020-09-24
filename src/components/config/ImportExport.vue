@@ -1,5 +1,5 @@
 <template>
-    <v-container flex>
+    <v-container>
         <mg-toolbar title="Import / Export"></mg-toolbar>
 
         <v-card>
@@ -12,7 +12,7 @@
             </v-card-text>
         </v-card>
 
-        <v-card>
+        <v-card class="mt-5">
             <v-card-title class="headline">Export</v-card-title>
             <v-card-text>
                 <p>Press the button below to export the selected configuration
@@ -26,21 +26,19 @@
             </v-card-text>
         </v-card>
 
-        <v-card>
+        <v-card class="mt-5">
             <v-card-title class="headline">Import</v-card-title>
             <v-card-text>
-                <p>Select the file from your computer and replace the selected
-                configuration.</p>
+                <p>Select the file from your computer to replace the selected configuration.</p>
 
-                <form enctype="multipart/form-data" novalidate>
-                <p><input id="fileupload" ref="fileupload" type="file"
-                    name="sound"
-                    @change.stop="filesChange($event.target.files); fileCount = $event.target.files.length">
-                </p>
-                </form>
+                <v-file-input show-size outlined label="Configuration File" v-model="filename"></v-file-input>
 
-                <v-btn class="primary" @click="doImport"
-                    :disabled="!(presets || mappings || calibration || settings) || !fileData"
+                <v-btn class="primary" disabled v-if="busy">
+                    <v-icon left>cloud_upload</v-icon>
+                    Importing, please wait...
+                </v-btn>
+                <v-btn v-else class="primary" @click="doImport"
+                    :disabled="!(presets || mappings || calibration || settings) || !filename"
                     >
                     <v-icon left>cloud_upload</v-icon>
                     Import Configuration
@@ -55,27 +53,38 @@ import API from '@/api'
 
 function data () {
     return {
-        fileData: null,
+        filename: null,
         presets: false,
         mappings: false,
         calibration: false,
-        settings: false
+        settings: false,
+        busy: false,
     }
 }
 
 const methods = {
     reset () {
-        this.$refs.fileupload.value = ''
-        this.fileData = null
+        this.filename = null
         this.presets = false
         this.mappings = false
         this.calibration = false
         this.settings = false
+        this.busy = false
     },
 
     doImport () {
-        API.importConfig(this.fileData, this.presets, this.mappings, this.calibration, this.settings)
-            .then((result) => {
+        this.busy = true
+        var reader = new FileReader()
+        reader.readAsText(this.filename)
+        reader.onload = () => {
+            API.importConfig(
+                reader.result,
+                this.presets,
+                this.mappings,
+                this.calibration,
+                this.settings
+            )
+            .then(() => {
                 this.$store.dispatch('fetchSoundFonts')
                 this.$store.dispatch('fetchPresets')
                 this.$store.dispatch('fetchInstrumentState')
@@ -85,15 +94,9 @@ const methods = {
                 })
                 this.reset()
             })
-    },
-
-    filesChange (files) {
-        if (files) {
-            this.fileData = files[0]
-        } else {
-            this.fileData = null
+            this.busy = false
         }
-    }
+    },
 }
 
 const watch = {
@@ -110,9 +113,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.card {
-    margin-bottom: 1em;
-}
-</style>

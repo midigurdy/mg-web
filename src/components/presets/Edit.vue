@@ -1,19 +1,21 @@
 <template>
 <div>
     <mg-toolbar :title="!preset.id ? 'New Preset' : preset.name || 'Unnamed'">
-        <v-btn slot="icon" icon :to="{name: 'preset-list'}" exact>
-            <v-icon>arrow_back</v-icon>
-        </v-btn>
+        <template v-slot:icon>
+            <v-app-bar-nav-icon :to="{name: 'preset-list'}" exact>
+                <v-icon>arrow_back</v-icon>
+            </v-app-bar-nav-icon>
+        </template>
 
         <v-spacer/>
         <v-toolbar-items>
-            <v-btn v-if="preset.id" flat :icon="$vuetify.breakpoint.xs" :href="'/api/presets/'+preset.id+'?dl=1'">
+            <v-btn v-if="preset.id" text :icon="$vuetify.breakpoint.xs" :href="'/api/presets/'+preset.id+'?dl=1'">
                <v-icon left>cloud_download</v-icon><span class="hidden-xs-only">Export</span>
             </v-btn>
-            <v-btn v-if="preset.id" flat :icon="$vuetify.breakpoint.xs" @click="deletePreset">
+            <v-btn v-if="preset.id" text :icon="$vuetify.breakpoint.xs" @click="deletePreset">
                <v-icon left>delete</v-icon><span class="hidden-xs-only">Delete</span>
             </v-btn>
-            <v-btn flat :icon="$vuetify.breakpoint.xs" @click="savePreset">
+            <v-btn text :icon="$vuetify.breakpoint.xs" @click="savePreset">
                 <v-icon>done</v-icon> <span class="hidden-xs-only">Save</span>
             </v-btn>
         </v-toolbar-items>
@@ -68,10 +70,10 @@ const methods = {
             this.preset = API.emptyPreset()
         } else {
             this.$store.dispatch('fetchPreset', id)
-            .then((preset) => {
+            .then(() => {
                 this.preset = this.$store.getters.getPreset(id)
             })
-            .catch((result) => {
+            .catch(() => {
                 this.$store.dispatch('snacks/add', {
                     message: 'Preset not found!',
                     type: 'error'

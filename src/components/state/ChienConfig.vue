@@ -1,20 +1,23 @@
 <template>
-    <v-layout row>
-        <v-flex xs10>
+    <v-row style="flex-wrap: nowrap">
+        <v-col :cols="1" class="flex-grow-1 flex-shrink-0" style="min-width: 50px; max-width: 100%">
             <v-slider
                 :label="title"
                 :value="sensitivity"
                 @input="setSensitivity($event)"
                 tabindex="-1"
                 />
-        </v-flex>
-        <v-flex xs2>
+        </v-col>
+        <v-col cols="2" class="flex-grow-0 flex-shrink-1" style="min-width: 3em">
             <v-text-field
                 :value="sensitivity"
                 @change="setSensitivity($event)"
-                type="number"/>
-                </v-flex>
-    </v-layout>
+                type="number"
+                suffix="%"
+                dense
+                />
+        </v-col>
+    </v-row>
 </template>
 
 <script>

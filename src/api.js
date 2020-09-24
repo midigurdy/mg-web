@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 
 function getURL (name) {
-    var url = process.env[name]
+    var url = process.env['VUE_APP_' + name]
     url = url.replace('<ORIGIN>', location.protocol + '//' + location.host)
     url = url.replace('<HOSTNAME>', location.hostname)
     return url
@@ -24,10 +24,14 @@ API.interceptors.response.use(
             var errors
             try {
                 msg = error.response.data.message
-            } catch (e) {}
+            } catch (e) {
+                //
+            }
             try {
                 errors = error.response.data.errors
-            } catch (e) {}
+            } catch (e) {
+                //
+            }
             if (msg) {
                 store.dispatch('snacks/add', {
                     message: 'API Error: ' + msg,

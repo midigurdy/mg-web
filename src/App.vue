@@ -1,12 +1,14 @@
 <template>
 
-<v-app :dark="darkTheme">
+<v-app>
     <mg-navbar/>
-    <v-content>
+    <v-main>
         <v-container fluid>
-            <router-view></router-view>
+        <keep-alive include="instrument-state">
+                <router-view></router-view>
+        </keep-alive>
         </v-container>
-    </v-content>
+    </v-main>
     <notifications/>
 </v-app>
 
@@ -15,21 +17,27 @@
 <script>
 
 import Navbar from '@/components/Navbar'
-import Toolbar from '@/components/Toolbar'
 import Notifications from '@/components/Notifications'
 
 export default {
     name: 'app',
     components: {
         'mg-navbar': Navbar,
-        'mg-toolbar': Toolbar,
         Notifications
     },
     computed: {
         darkTheme () {
             return this.$store.state.ui.darkTheme
         }
-    }
+    },
+    watch: {
+        darkTheme (dark) {
+            this.$vuetify.theme.dark = dark
+        },
+    },
+    mounted () {
+        this.$vuetify.theme.dark = this.darkTheme
+    },
 }
 </script>
 
@@ -42,12 +50,6 @@ export default {
     background-color: #000 !important;
 }
 
-.slider__thumb {
-  width: 24px;
-  height: 24px;
-  left: -12px;
-}
-
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -56,10 +58,6 @@ export default {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-}
-
-.btn .icon--left {
-    margin-right: 8px;
 }
 
 input[type='number'] {

@@ -158,7 +158,7 @@ const mutations = {
         localStorage.setItem('mgweb_dark', value ? 'dark' : 'light')
     },
 
-    uiLoadLocalStorage (state, value) {
+    uiLoadLocalStorage (state) {
         var dark = (localStorage.getItem('mgweb_dark') === 'dark')
         state.ui.darkTheme = dark
 
@@ -227,8 +227,12 @@ const mutations = {
 
     setPresetOrder (state, orderedIds) {
         var presets = []
-        orderedIds.forEach((id) => {
-            presets.push(presetById(state, id))
+        orderedIds.forEach((id, idx) => {
+            var preset = presetById(state, id)
+            if (preset) {
+                preset.number = idx + 1
+                presets.push(preset)
+            }
         })
         state.presets = presets
     },
@@ -264,7 +268,7 @@ const mutations = {
 }
 
 const actions = {
-    notificationsPop ({ commit, state }) {
+    notificationsPop ({ state }) {
         return state.ui.notifications.shift()
     },
 
@@ -294,6 +298,7 @@ const actions = {
         })
     },
 
+    /* eslint-disable no-unused-vars */
     updateInstrumentState ({ commit }, data) {
         return API.updateInstrumentState(data)
     },
@@ -335,6 +340,7 @@ const actions = {
 
     reorderPresets ({ commit }, presets) {
         var orderedIds = presets.map((p) => { return p.id })
+        commit('setPresetOrder', orderedIds)
         API.reorderPresets(orderedIds)
         .then((response) => {
             commit('setPresetOrder', response.data.order)

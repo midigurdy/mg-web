@@ -1,6 +1,6 @@
 <template>
-    <div class="layout row wrap" :class="{'muted': muted || disabled}">
-        <div class="flex xs12 sm3">
+    <v-row no-gutters style="flex-wrap: nowrap;" :class="{'muted': muted || disabled}">
+        <v-col cols="2" class="flex-grow-0 flex-shrink-0" style="min-width: 7em">
             <template v-if="showMute">
                 <v-btn small icon @click="$emit('update:muted', !muted)">
                     <v-icon color="grey" v-if="muted">volume_off</v-icon>
@@ -8,24 +8,30 @@
                 </v-btn>
             </template>
             {{ title }}
-        </div>
-        <div class="flex xs4 sm4">
+        </v-col>
+        <v-col :cols="1" class="flex-grow-1 flex-shrink-0" style="min-width: 50px; max-width: 100%">
             <v-slider
                 :disabled="disabled"
                 :value="volumePercent"
                 @input="setVolume($event)"
+                dense
                 tabindex="-1"
                 />
-        </div>
-        <div class="flex xs2 sm1">
+        </v-col>
+        <v-col cols="1" class="flex-grow-0 flex-shrink-1" style="min-width: 3em">
             <v-text-field
                 :disabled="disabled"
                 :value="volumePercent"
                 @change="setVolume($event)"
-                type="number"/>
-        </div>
+                type="number"
+                class="mr-4"
+                dense
+                />
+        </v-col>
         <template v-if="showBalance">
-            <div class="flex xs4 sm3">
+            <v-col cols="1" class="flex-grow-1 flex-shrink-0"
+            style="min-width: 50px; max-width: 20%"
+            >
                 <mg-slider
                     :disabled="disabled"
                     v-on:dblclick.native="setBalance(0)"
@@ -35,18 +41,21 @@
                     :value="balancePercent"
                     @input="setBalance($event)"
                     tabindex="-1"
+                    :thumbColor="balancePercent === 0 ? '#999' : 'primary'"
                     />
-            </div>
-            <div class="flex xs2 sm1">
+            </v-col>
+            <v-col cols="1" class="flex-grow-0 flex-shrink-1" style="min-width: 3em">
                 <v-text-field
                     :disabled="disabled"
                     :value="balancePercent"
                     @change="setBalance($event)"
                     type="number"
+                    class="mr-4"
+                    dense
                     />
-            </div>
+            </v-col>
         </template>
-    </div>
+    </v-row>
 </template>
 
 <style scoped>

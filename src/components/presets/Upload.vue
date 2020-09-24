@@ -31,10 +31,12 @@ function data () {
 const methods = {
     reset () {
         this.status = 'initial'
-        this.$refs.fileupload.value = ''
+        if (this.$refs.fileupload) {
+            this.$refs.fileupload.value = ''
+        }
     },
 
-    save (preset, filename) {
+    save (preset) {
         this.status = 'uploading'
         this.$store.dispatch('savePreset', preset)
         .then(() => {

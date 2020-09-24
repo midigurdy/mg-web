@@ -5,7 +5,7 @@ const events = {
         store.commit('setSystemInformation', msg.data)
     },
 
-    'multi_chien_threshold:changed': ({ store, msg }) => {
+    'multi_chien_threshold:changed': ({ store }) => {
         store.dispatch('fetchMiscConfig')
     },
 

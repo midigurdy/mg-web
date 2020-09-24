@@ -1,7 +1,9 @@
 <template>
-    <v-snackbar :timeout="timeout" v-model="visible" :color="color" top auto-height>
+    <v-snackbar :timeout="timeout" v-model="visible" :color="color" top>
         {{ message }}
-        <v-btn flat icon @click.native="visible = false"><v-icon>close</v-icon></v-btn>
+        <template v-slot:action>
+            <v-btn text icon @click.native="visible = false"><v-icon>close</v-icon></v-btn>
+        </template>
     </v-snackbar>
 </template>
 
@@ -49,7 +51,7 @@ export default {
     watch,
     created () {
         this.display()
-        this.$store.subscribe((mutation, state) => {
+        this.$store.subscribe((mutation) => {
             if (mutation.type === 'snacks/push' && !this.pending && !this.visible) {
                 this.pending = true
                 this.display()
