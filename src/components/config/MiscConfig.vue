@@ -177,6 +177,19 @@
                             hint="Enable this feature if you want to control the sensitivity of the three chiens separately, disable for a single sensitivity."
                             persistent-hint
                             v-model="misc.ui.multi_chien_threshold" />
+
+                        <v-switch
+                            label="Empty string in polyphonic mode"
+                            hint="Enable this feature if you want to hear the empty string when no key is pressed in polyphonic mode"
+                            persistent-hint
+                            v-model="misc.features.poly_base_note" />
+
+                        <v-switch
+                            label="Pitch bend in polyphonic mode"
+                            hint="Enable this feature if you want to use pitch bend in polyphonic mode"
+                            persistent-hint
+                            v-model="misc.features.poly_pitch_bend" />
+
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -201,7 +214,12 @@ function data () {
                 brightness: 0,
                 chien_sens_reverse: false,
                 multi_chien_threshold: false
-            }
+            },
+
+            features: {
+                poly_base_note: true,
+                poly_pitch_bend: true,
+            },
         }
     }
 }
