@@ -298,6 +298,10 @@ const actions = {
         })
     },
 
+    setMiscConfig ( { commit }, config) {
+        commit('setMiscConfig', config)
+    },
+
     /* eslint-disable no-unused-vars */
     updateInstrumentState ({ commit }, data) {
         return API.updateInstrumentState(data)

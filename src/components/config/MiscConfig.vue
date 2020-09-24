@@ -1,14 +1,6 @@
 <template>
 <v-container fluid grid-list-md>
-    <mg-toolbar title="Settings">
-        <v-spacer/>
-        <v-toolbar-items>
-            <v-btn text :icon="$vuetify.breakpoint.xs" @click="saveConfig">
-                <v-icon left>done</v-icon>
-                <span class="hidden-xs-only">Save Config</span>
-            </v-btn>
-        </v-toolbar-items>
-    </mg-toolbar>
+    <mg-toolbar title="Settings" />
 
         <v-row align="stretch">
             <v-col cols="6">
@@ -23,7 +15,7 @@
                                 <v-slider
                                     label="Display Brightness"
                                     :value="misc.ui.brightness"
-                                    @input="misc.ui.brightness = check($event, 0, 100)"
+                                    @input="misc.ui.brightness = check($event, 0, 100); saveConfig()"
                                     hint="Set this to a lower value to reduce battery consumption"
                                     persistent-hint
                                     min=0
@@ -33,7 +25,7 @@
                             <v-col cols="2">
                                 <v-text-field
                                     :value="misc.ui.brightness"
-                                    @change="misc.ui.brightness = check($event, 0, 100)"
+                                    @change="misc.ui.brightness = check($event, 0, 100); saveConfig()"
                                     type="number"
                                     class="number-field"
                                     suffix="%"
@@ -46,7 +38,7 @@
                                 <v-slider
                                     label="Display Timeout"
                                     :value="misc.ui.timeout"
-                                    @input="misc.ui.timeout = check($event, 0, 60)"
+                                    @input="misc.ui.timeout = check($event, 0, 60); saveConfig()"
                                     hint="Controls after how many seconds of inactivity the instrument menu jumps back to the home screen"
                                     persistent-hint
                                     min=0
@@ -56,7 +48,7 @@
                             <v-col cols="2">
                                 <v-text-field
                                     :value="misc.ui.timeout"
-                                    @change="misc.ui.timeout = check($event, 0, 60)"
+                                    @change="misc.ui.timeout = check($event, 0, 60); saveConfig()"
                                     type="number"
                                     class="number-field"
                                     suffix="s"
@@ -69,6 +61,7 @@
                                 <v-switch
                                     label="Reverse Chien Sensitivity Direction"
                                     v-model="misc.ui.chien_sens_reverse"
+                                    @change="saveConfig()"
                                     hint="Reverses the direction you need to turn the rotary knob to increase and decrease the chien sensitivity on the instrument."
                                     persistent-hint
                                     />
@@ -89,7 +82,7 @@
                                 <v-slider
                                     label="Key-On Delay"
                                     :value="misc.keyboard.key_on_debounce"
-                                    @input="misc.keyboard.key_on_debounce = check($event, 0, 50)"
+                                    @input="misc.keyboard.key_on_debounce = check($event, 0, 50); saveConfig()"
                                     min=0
                                     max=50
                                     hint="How many milliseconds does a key need to touch the string before it is treated as pressed"
@@ -99,7 +92,7 @@
                             <v-col cols="2">
                                 <v-text-field
                                     :value="misc.keyboard.key_on_debounce"
-                                    @change="misc.keyboard.key_on_debounce = check($event, 0, 50)"
+                                    @change="misc.keyboard.key_on_debounce = check($event, 0, 50); saveConfig()"
                                     type="number"
                                     class="number-field"
                                     suffix="ms"
@@ -110,7 +103,7 @@
                                 <v-slider
                                     label="Key-Off Delay"
                                     :value="misc.keyboard.key_off_debounce"
-                                    @input="misc.keyboard.key_off_debounce = check($event, 0, 50)"
+                                    @input="misc.keyboard.key_off_debounce = check($event, 0, 50); saveConfig()"
                                     min=0
                                     max=50
                                     hint="How many milliseconds does a key need to not touch the string before it is treated as not pressed"
@@ -120,7 +113,7 @@
                             <v-col cols="2">
                                 <v-text-field
                                     :value="misc.keyboard.key_off_debounce"
-                                    @change="misc.keyboard.key_off_debounce = check($event, 0, 50)"
+                                    @change="misc.keyboard.key_off_debounce = check($event, 0, 50); saveConfig()"
                                     type="number"
                                     class="number-field"
                                     suffix="ms"
@@ -131,7 +124,7 @@
                                 <v-slider
                                     label="Open String Delay"
                                     :value="misc.keyboard.base_note_delay"
-                                    @input="misc.keyboard.base_note_delay = check($event, 0, 50)"
+                                    @input="misc.keyboard.base_note_delay = check($event, 0, 50); saveConfig()"
                                     min=0
                                     max=50
                                     hint="How many milliseconds to wait before returning to the string base note after all keys are released"
@@ -141,7 +134,7 @@
                             <v-col cols="2">
                                 <v-text-field
                                     :value="misc.keyboard.base_note_delay"
-                                    @change="misc.keyboard.base_note_delay = check($event, 0, 50)"
+                                    @change="misc.keyboard.base_note_delay = check($event, 0, 50); saveConfig()"
                                     type="number"
                                     class="number-field"
                                     suffix="ms"
@@ -176,19 +169,27 @@
                             label="Separate chien sensitivities"
                             hint="Enable this feature if you want to control the sensitivity of the three chiens separately, disable for a single sensitivity."
                             persistent-hint
-                            v-model="misc.ui.multi_chien_threshold" />
+                            v-model="misc.ui.multi_chien_threshold"
+                            @change="saveConfig()"
+                            />
+
+                        <div>{{ misc.features.poly_base_note }}</div>
 
                         <v-switch
                             label="Empty string in polyphonic mode"
                             hint="Enable this feature if you want to hear the empty string when no key is pressed in polyphonic mode"
                             persistent-hint
-                            v-model="misc.features.poly_base_note" />
+                            v-model="misc.features.poly_base_note"
+                            @change="saveConfig()"
+                            />
 
                         <v-switch
                             label="Pitch bend in polyphonic mode"
                             hint="Enable this feature if you want to use pitch bend in polyphonic mode"
                             persistent-hint
-                            v-model="misc.features.poly_pitch_bend" />
+                            v-model="misc.features.poly_pitch_bend"
+                            @change="saveConfig()"
+                            />
 
                     </v-card-text>
                 </v-card>
@@ -199,6 +200,7 @@
 
 <script>
 import API from '@/api'
+import { debounce } from 'lodash'
 
 function data () {
     return {
@@ -225,7 +227,6 @@ function data () {
 }
 
 const methods = {
-
     check (val, min, max) {
         if (val === undefined || val === null) return min
         return Math.max(min, Math.min(max, val))
@@ -240,11 +241,7 @@ const methods = {
     saveConfig () {
         API.saveMiscConfig(this.misc).then((response) => {
             Object.assign(this.misc, response.data)
-            this.$store.dispatch('fetchMiscConfig')
-            this.$store.dispatch('snacks/add', {
-                message: 'Configuration saved',
-                timeout: 2000
-            })
+            this.$store.dispatch('setMiscConfig', response.data)
         })
     }
 }
@@ -266,6 +263,7 @@ export default {
     computed,
 
     created () {
+        this.saveConfig = debounce(this.saveConfig, 250)
         this.loadConfig()
     }
 }
