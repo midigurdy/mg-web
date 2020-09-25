@@ -176,7 +176,7 @@
                         <h4>Number of Strings</h4>
                         <v-switch
                             label="Multiple Strings"
-                            hint=""
+                            hint="Enable if you need up to three melody, drone and trompette strings. Disable if you only need a single string per type."
                             persistent-hint
                             v-model="misc.features.multi_strings"
                             @change="updateConfig()"
