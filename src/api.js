@@ -247,8 +247,12 @@ export default {
         return API.get('misc')
     },
 
-    saveMiscConfig (misc) {
+    setMiscConfig (misc) {
         return API.put('misc', misc)
+    },
+
+    saveMiscConfig (misc) {
+        return API.post('misc', misc)
     },
 
     emptyPreset
