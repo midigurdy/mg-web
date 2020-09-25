@@ -165,16 +165,26 @@
                         Features
                     </v-card-title>
                     <v-card-text>
+                        <h4>Number of Strings</h4>
+                        <v-switch
+                            label="Multiple Strings"
+                            hint=""
+                            persistent-hint
+                            v-model="misc.features.multi_strings"
+                            @change="saveConfig()"
+                            />
                         <v-switch
                             label="Separate chien sensitivities"
                             hint="Enable this feature if you want to control the sensitivity of the three chiens separately, disable for a single sensitivity."
                             persistent-hint
+                            :disabled="!misc.features.multi_strings"
                             v-model="misc.ui.multi_chien_threshold"
                             @change="saveConfig()"
                             />
 
-                        <div>{{ misc.features.poly_base_note }}</div>
-
+                    </v-card-text>
+                    <v-card-text>
+                        <h4>Polyphonic Mode</h4>
                         <v-switch
                             label="Empty string in polyphonic mode"
                             hint="Enable this feature if you want to hear the empty string when no key is pressed in polyphonic mode"
@@ -221,6 +231,7 @@ function data () {
             features: {
                 poly_base_note: true,
                 poly_pitch_bend: true,
+                multi_strings: true,
             },
         }
     }

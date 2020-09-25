@@ -29,9 +29,9 @@
                     </div>
 
                     <voice-mixer
-                        v-for="(voice, index) in preset.voices.melody"
+                        v-for="(voice, index) in melodyVoices"
                         :key="'m' + index"
-                        :title="'Melody ' + (index + 1)"
+                        :title="multiStrings ? 'Melody ' + (index + 1) : 'Melody'"
                         :volume="voice.volume"
                         @update:volume="voice.volume = $event; stateChanged()"
                         :balance="voice.panning"
@@ -42,9 +42,9 @@
                         :disabled="!hasSound(voice)"
                         :showMute="true" />
                     <voice-mixer
-                        v-for="(voice, index) in preset.voices.drone"
+                        v-for="(voice, index) in droneVoices"
                         :key="'d' + index"
-                        :title="'Drone ' + (index + 1)"
+                        :title="multiStrings ? 'Drone ' + (index + 1) : 'Drone'"
                         :volume="voice.volume"
                         @update:volume="voice.volume = $event; stateChanged()"
                         :balance="voice.panning"
@@ -55,9 +55,9 @@
                         :showBalance="true"
                         :showMute="true" />
                     <voice-mixer
-                        v-for="(voice, index) in preset.voices.trompette"
+                        v-for="(voice, index) in trompetteVoices"
                         :key="'t' + index"
-                        :title="'Tromp. ' + (index + 1)"
+                        :title="multiStrings ? 'Tromp. ' + (index + 1) : 'Tromp.'"
                         :volume="voice.volume"
                         @update:volume="voice.volume = $event; stateChanged()"
                         :balance="voice.panning"
@@ -107,7 +107,7 @@
                 </v-card-title>
                 <v-card-text>
                     <voice-edit
-                        v-for="(voice, index) in preset.voices.melody"
+                        v-for="(voice, index) in melodyVoices"
                         :key="'vm' + index"
                         :soundfont="voice.soundfont"
                         @update:soundfont="soundfontChanged($event, voice)"
@@ -127,10 +127,10 @@
                         @update:finetune="voice.finetune = $event; stateChanged()"
                         type="melody"
                         label="Melody"
-                        :number="index + 1"/>
+                        :number="multiStrings ? index + 1 : ''"/>
                 
                     <voice-edit
-                        v-for="(voice, index) in preset.voices.drone"
+                        v-for="(voice, index) in droneVoices"
                         :key="'vd' + index"
                         :soundfont="voice.soundfont"
                         @update:soundfont="soundfontChanged($event, voice)"
@@ -150,10 +150,10 @@
                         @update:finetune="voice.finetune = $event; stateChanged()"
                         type="drone"
                         label="Drone"
-                        :number="index + 1"/>
+                        :number="multiStrings ? index + 1 : ''"/>
 
                     <voice-edit
-                        v-for="(voice, index) in preset.voices.trompette"
+                        v-for="(voice, index) in trompetteVoices"
                         :key="'vc' + index"
                         :soundfont="voice.soundfont"
                         @update:soundfont="soundfontChanged($event, voice)"
@@ -173,7 +173,7 @@
                         @update:finetune="voice.finetune = $event; stateChanged()"
                         type="trompette"
                         label="Trompette"
-                        :number="index + 1"/>
+                        :number="multiStrings ? index + 1 : ''"/>
                 </v-card-text>
             </v-card>
         </v-flex>
@@ -272,7 +272,23 @@ const watch = {
 const computed = {
     multiChienThreshold () {
         return this.$store.getters.multiChienThreshold
-    }
+    },
+
+    multiStrings () {
+        return this.$store.getters.multiStrings
+    },
+
+    melodyVoices () {
+        return  this.multiStrings ? this.preset.voices.melody : [this.preset.voices.melody[0]]
+    },
+
+    droneVoices () {
+        return  this.multiStrings ? this.preset.voices.drone : [this.preset.voices.drone[0]]
+    },
+
+    trompetteVoices () {
+        return  this.multiStrings ? this.preset.voices.trompette : [this.preset.voices.trompette[0]]
+    },
 }
 
 const methods = {

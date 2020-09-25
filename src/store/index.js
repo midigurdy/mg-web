@@ -50,6 +50,10 @@ const getters = {
         return (state.misc.ui || {}).multi_chien_threshold
     },
 
+    multiStrings (state) {
+        return (state.misc.features || {}).multi_strings
+    },
+
     firstChienThreshold (state) {
         return state.instrument.voices.trompette[0].chien_threshold
     },
