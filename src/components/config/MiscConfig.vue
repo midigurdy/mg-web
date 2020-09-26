@@ -47,7 +47,7 @@
                                     label="Display Timeout"
                                     :value="misc.ui.timeout"
                                     @input="misc.ui.timeout = check($event, 0, 60); updateConfig()"
-                                    hint="Controls after how many seconds of inactivity the instrument menu jumps back to the home screen"
+                                    hint="Controls after how many seconds of inactivity the instrument menu jumps back to the home screen. Set to 0s to never automatically return to the home screen."
                                     persistent-hint
                                     min=0
                                     max=60
