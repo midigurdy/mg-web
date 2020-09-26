@@ -4,11 +4,17 @@
             <v-icon left>settings</v-icon> Effects Setup
         </v-card-title>
         <v-card-text>
-            <label>Keynoise Sound</label>
-            <sound-select
-                :sound_id="keynoiseSoundfont"
-                v-on:input="setSound($event)"
-                :options="soundfontTree"/>
+            <v-row align="center">
+                <v-col cols="2">
+                    <label>Key Noise</label>
+                </v-col>
+                <v-col>
+                    <sound-select
+                        :sound_id="keynoiseSoundfont"
+                        v-on:input="setSound($event)"
+                        :options="soundfontTree"/>
+                </v-col>
+            </v-row>
         </v-card-text>
     </v-card>
 </template>
