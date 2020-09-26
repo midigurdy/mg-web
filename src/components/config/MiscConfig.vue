@@ -1,14 +1,14 @@
 <template>
-<v-container fluid grid-list-md>
-    <mg-toolbar title="Settings">
-        <v-spacer/>
-        <v-toolbar-items>
-            <v-btn text :icon="$vuetify.breakpoint.xs" @click="saveConfig">
-                <v-icon left>done</v-icon>
-                <span class="hidden-xs-only">Save Config</span>
-            </v-btn>
-        </v-toolbar-items>
-    </mg-toolbar>
+    <v-container fluid grid-list-md>
+        <mg-toolbar title="Settings">
+            <v-spacer/>
+            <v-toolbar-items>
+                <v-btn text :icon="$vuetify.breakpoint.xs" @click="saveConfig">
+                    <v-icon left>done</v-icon>
+                    <span class="hidden-xs-only">Save Config</span>
+                </v-btn>
+            </v-toolbar-items>
+        </mg-toolbar>
 
         <v-row align="stretch">
             <v-col cols="6">
@@ -98,6 +98,16 @@
                         </v-row>
                     </v-card-text>
                 </v-card>
+
+                <v-card class="mt-6">
+                    <v-card-title>
+                        <v-icon large left>dvr</v-icon>
+                        Web-Interface
+                    </v-card-title>
+                    <v-card-text>
+                        <v-switch label="Dark Theme" v-model="darkTheme" />
+                    </v-card-text>
+                </v-card>
             </v-col>
             <v-col cols="6">
                 <v-card>
@@ -173,22 +183,8 @@
                         </v-row>
                     </v-card-text>
                 </v-card>
-            </v-col>
-            </v-row>
-            <v-row>
-            <v-col cols="6">
-                <v-card>
-                    <v-card-title>
-                        <v-icon large left>dvr</v-icon>
-                        Web-Interface
-                    </v-card-title>
-                    <v-card-text>
-                        <v-switch label="Dark Theme" v-model="darkTheme" />
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <v-col cols="6">
-                <v-card>
+
+                <v-card class="mt-6">
                     <v-card-title>
                         <v-icon large left>star</v-icon>
                         Features
@@ -235,7 +231,7 @@
                 </v-card>
             </v-col>
         </v-row>
-</v-container>
+    </v-container>
 </template>
 
 <script>
