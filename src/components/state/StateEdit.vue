@@ -42,6 +42,7 @@
                         :disabled="!hasSound(voice)"
                         :showMute="true" />
                     <voice-mixer
+                        :class="{'first-in-group': index === 0 && stringCount > 1}"
                         v-for="(voice, index) in droneVoices"
                         :key="'d' + index"
                         :title="stringCount > 1 ? 'Drone ' + (index + 1) : 'Drone'"
@@ -55,6 +56,7 @@
                         :showBalance="true"
                         :showMute="true" />
                     <voice-mixer
+                        :class="{'first-in-group': index === 0 && stringCount > 1}"
                         v-for="(voice, index) in trompetteVoices"
                         :key="'t' + index"
                         :title="stringCount > 1 ? 'Tromp. ' + (index + 1) : 'Tromp.'"
@@ -130,6 +132,7 @@
                         :number="stringCount > 1 ? index + 1 : ''"/>
                 
                     <voice-edit
+                        :class="{'first-in-group': index === 0 && stringCount > 1}"
                         v-for="(voice, index) in droneVoices"
                         :key="'vd' + index"
                         :soundfont="voice.soundfont"
@@ -153,6 +156,7 @@
                         :number="stringCount > 1 ? index + 1 : ''"/>
 
                     <voice-edit
+                        :class="{'first-in-group': index === 0 && stringCount > 1}"
                         v-for="(voice, index) in trompetteVoices"
                         :key="'vc' + index"
                         :soundfont="voice.soundfont"
@@ -178,6 +182,16 @@
             </v-card>
         </v-flex>
         <v-flex xs12>
+            <effect-config
+                :keynoiseSoundfont="preset.keynoise.soundfont"
+                @update:keynoiseSoundfont="preset.keynoise.soundfont = $event; stateChanged();"
+                :keynoiseBank="preset.keynoise.bank"
+                @update:keynoiseBank="preset.keynoise.bank = $event; stateChanged()"
+                :keynoiseProgram="preset.keynoise.program"
+                @update:keynoiseProgram="preset.keynoise.program = $event; stateChanged()"
+                />
+        </v-flex>
+        <v-flex xs12>
             <v-card>
                 <v-card-title class="font-weight-bold">
                     <v-icon left>pets</v-icon> Chien Sensitivity
@@ -185,7 +199,7 @@
                 <v-card-text>
                     <template v-if="multiChienThreshold">
                         <chien-config
-                            v-for="(voice, index) in preset.voices.trompette"
+                            v-for="(voice, index) in trompetteVoices"
                             :key="'cth' + index"
                             :title="'Chien ' + (index + 1)"
                             :sensitivity="voice.chien_threshold"
@@ -212,16 +226,6 @@
                 @update:pitchbend_range="preset.main.pitchbend_range = $event; stateChanged()"
                 />
         </v-flex>
-        <v-flex xs12>
-            <effect-config
-                :keynoiseSoundfont="preset.keynoise.soundfont"
-                @update:keynoiseSoundfont="preset.keynoise.soundfont = $event; stateChanged();"
-                :keynoiseBank="preset.keynoise.bank"
-                @update:keynoiseBank="preset.keynoise.bank = $event; stateChanged()"
-                :keynoiseProgram="preset.keynoise.program"
-                @update:keynoiseProgram="preset.keynoise.program = $event; stateChanged()"
-                />
-        </v-flex>
         </v-layout>
         </v-flex>
     </v-layout>
@@ -242,6 +246,16 @@
 
 .voice-disabled {
     opacity: 0.5;
+}
+
+.first-in-group {
+    padding-top: 1em;
+    border-top: 1px solid #ddd;
+}
+
+.theme--dark .first-in-group {
+    padding-top: 1em;
+    border-top: 1px solid #333;
 }
 
 .mixer-panel label {

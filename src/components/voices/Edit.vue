@@ -283,7 +283,6 @@ export default {
 }
 
 .string-details {
-    border-bottom: 1px solid #ddd;
     margin-bottom: 0.5em;
 }
 </style>
