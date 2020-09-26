@@ -31,7 +31,7 @@
                     <voice-mixer
                         v-for="(voice, index) in melodyVoices"
                         :key="'m' + index"
-                        :title="multiStrings ? 'Melody ' + (index + 1) : 'Melody'"
+                        :title="stringCount > 1 ? 'Melody ' + (index + 1) : 'Melody'"
                         :volume="voice.volume"
                         @update:volume="voice.volume = $event; stateChanged()"
                         :balance="voice.panning"
@@ -44,7 +44,7 @@
                     <voice-mixer
                         v-for="(voice, index) in droneVoices"
                         :key="'d' + index"
-                        :title="multiStrings ? 'Drone ' + (index + 1) : 'Drone'"
+                        :title="stringCount > 1 ? 'Drone ' + (index + 1) : 'Drone'"
                         :volume="voice.volume"
                         @update:volume="voice.volume = $event; stateChanged()"
                         :balance="voice.panning"
@@ -57,7 +57,7 @@
                     <voice-mixer
                         v-for="(voice, index) in trompetteVoices"
                         :key="'t' + index"
-                        :title="multiStrings ? 'Tromp. ' + (index + 1) : 'Tromp.'"
+                        :title="stringCount > 1 ? 'Tromp. ' + (index + 1) : 'Tromp.'"
                         :volume="voice.volume"
                         @update:volume="voice.volume = $event; stateChanged()"
                         :balance="voice.panning"
@@ -127,7 +127,7 @@
                         @update:finetune="voice.finetune = $event; stateChanged()"
                         type="melody"
                         label="Melody"
-                        :number="multiStrings ? index + 1 : ''"/>
+                        :number="stringCount > 1 ? index + 1 : ''"/>
                 
                     <voice-edit
                         v-for="(voice, index) in droneVoices"
@@ -150,7 +150,7 @@
                         @update:finetune="voice.finetune = $event; stateChanged()"
                         type="drone"
                         label="Drone"
-                        :number="multiStrings ? index + 1 : ''"/>
+                        :number="stringCount > 1 ? index + 1 : ''"/>
 
                     <voice-edit
                         v-for="(voice, index) in trompetteVoices"
@@ -173,7 +173,7 @@
                         @update:finetune="voice.finetune = $event; stateChanged()"
                         type="trompette"
                         label="Trompette"
-                        :number="multiStrings ? index + 1 : ''"/>
+                        :number="stringCount > 1 ? index + 1 : ''"/>
                 </v-card-text>
             </v-card>
         </v-flex>
@@ -274,20 +274,20 @@ const computed = {
         return this.$store.getters.multiChienThreshold
     },
 
-    multiStrings () {
-        return this.$store.getters.multiStrings
+    stringCount() {
+        return this.$store.getters.stringCount
     },
 
     melodyVoices () {
-        return  this.multiStrings ? this.preset.voices.melody : [this.preset.voices.melody[0]]
+        return  this.preset.voices.melody.slice(0, this.stringCount)
     },
 
     droneVoices () {
-        return  this.multiStrings ? this.preset.voices.drone : [this.preset.voices.drone[0]]
+        return  this.preset.voices.drone.slice(0, this.stringCount)
     },
 
     trompetteVoices () {
-        return  this.multiStrings ? this.preset.voices.trompette : [this.preset.voices.trompette[0]]
+        return  this.preset.voices.trompette.slice(0, this.stringCount)
     },
 }
 

@@ -50,8 +50,8 @@ const getters = {
         return (state.misc.ui || {}).multi_chien_threshold
     },
 
-    multiStrings (state) {
-        return (state.misc.features || {}).multi_strings
+    stringCount (state) {
+        return (state.misc.features || {}).string_count || 1
     },
 
     firstChienThreshold (state) {

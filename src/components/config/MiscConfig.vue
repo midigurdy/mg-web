@@ -195,18 +195,19 @@
                     </v-card-title>
                     <v-card-text>
                         <h4>Number of Strings</h4>
-                        <v-switch
-                            label="Multiple Strings"
-                            hint="Enable if you need up to three melody, drone and trompette strings. Disable if you only need a single string per type."
-                            persistent-hint
-                            v-model="misc.features.multi_strings"
+                        <v-radio-group
+                            v-model="misc.features.string_count"
                             @change="updateConfig()"
-                            />
+                            >
+                            <v-radio label="3 Strings (1x Melody, 1x Drone, 1x Trompette)" :value="1"/>
+                            <v-radio label="6 Strings (2x Melody, 2x Drone, 2x Trompette)" :value="2"/>
+                            <v-radio label="9 Strings (3x Melody, 3x Drone, 3x Trompette)" :value="3"/>
+                        </v-radio-group>
                         <v-switch
                             label="Separate chien sensitivities"
-                            hint="Enable this feature if you want to control the sensitivity of the three chiens separately, disable for a single sensitivity."
+                            hint="Enable this feature if you want to control the sensitivity of the chiens separately, disable for a single sensitivity."
                             persistent-hint
-                            :disabled="!misc.features.multi_strings"
+                            :disabled="misc.features.string_count === 1"
                             v-model="misc.ui.multi_chien_threshold"
                             @change="updateConfig()"
                             />
@@ -261,7 +262,7 @@ function data () {
             features: {
                 poly_base_note: true,
                 poly_pitch_bend: true,
-                multi_strings: true,
+                string_count: 1,
             },
         }
     }
