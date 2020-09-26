@@ -64,7 +64,7 @@
                                     />
                             </v-col>
                         </v-row>
-                        <v-row no-gutters>
+                        <v-row>
                             <v-col>
                                 <v-switch
                                     label="Reverse Chien Sensitivity Direction"
@@ -73,6 +73,27 @@
                                     hint="Reverses the direction you need to turn the rotary knob to increase and decrease the chien sensitivity on the instrument."
                                     persistent-hint
                                     />
+                            </v-col>
+                        </v-row>
+                        <v-row align="center">
+                            <v-col>
+                                <v-radio-group
+                                    label="G2 / G3 Button Action"
+                                    v-model="misc.ui.group_button_mode"
+                                    @change="updateConfig()"
+                                    >
+                                    <v-radio
+                                        label="G2 / G3 toggle the second and third string groups"
+                                        value="groups"
+                                        />
+                                    <v-radio
+                                        label="G2 loads the previous preset, G3 loads the next preset"
+                                        value="presets"
+                                        />
+                                </v-radio-group>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-img src="/buttons.jpg" class="mt-2" />
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -233,7 +254,8 @@ function data () {
                 timeout: 0,
                 brightness: 0,
                 chien_sens_reverse: false,
-                multi_chien_threshold: false
+                multi_chien_threshold: false,
+                group_button_mode: 'groups',
             },
 
             features: {
