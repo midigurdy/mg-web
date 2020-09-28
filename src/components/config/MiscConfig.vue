@@ -14,6 +14,52 @@
             <v-col cols="6">
                 <v-card>
                     <v-card-title>
+                        <v-icon large left>star</v-icon>
+                        Instrument Mode
+                    </v-card-title>
+                    <v-card-text>
+                        <v-radio-group
+                            v-model="misc.instrument_mode"
+                            @change="updateConfig()"
+                            >
+                            <v-radio value="simple_three" label="3 Strings"/>
+                            <v-radio value="simple_six" label="6 Strings"/>
+                            <v-radio value="nine_rows" label="9 Strings, grouped by number"/>
+                            <v-radio value="nine_cols" label="9 Strings, grouped by type"/>
+                            <v-radio value="old_mg" label="Old MidiGurdy Standard (before Version 1.3.0)"/>
+                            <v-radio value="custom" label="Custom Setup"/>
+                        </v-radio-group>
+                    </v-card-text>
+                </v-card>
+                <v-card class="mt-6">
+                    <v-card-title>
+                        <v-icon large left>star</v-icon>
+                        Features
+                    </v-card-title>
+                    <v-card-text>
+                    </v-card-text>
+                    <v-card-text>
+                        <h4>Polyphonic Mode</h4>
+                        <v-switch
+                            label="Empty string in polyphonic mode"
+                            hint="Enable this feature if you want to hear the empty string when no key is pressed in polyphonic mode"
+                            persistent-hint
+                            v-model="misc.features.poly_base_note"
+                            @change="updateConfig()"
+                            />
+
+                        <v-switch
+                            label="Pitch bend in polyphonic mode"
+                            hint="Enable this feature if you want to use pitch bend in polyphonic mode"
+                            persistent-hint
+                            v-model="misc.features.poly_pitch_bend"
+                            @change="updateConfig()"
+                            />
+
+                    </v-card-text>
+                </v-card>
+                <v-card>
+                    <v-card-title>
                         <v-icon large left>settings_brightness</v-icon>
                         Instrument User-Interface
                     </v-card-title>
@@ -79,94 +125,6 @@
                 </v-card>
 
                 <v-card class="mt-6">
-                    <v-card-title>
-                        <v-icon large left>dvr</v-icon>
-                        Web-Interface
-                    </v-card-title>
-                    <v-card-text>
-                        <v-switch label="Dark Theme" v-model="darkTheme" />
-                    </v-card-text>
-                </v-card>
-
-                <v-card class="mt-6">
-                    <v-card-title>
-                        <v-icon large left>star</v-icon>
-                        Instrument Mode
-                    </v-card-title>
-                    <v-card-text>
-                        <v-radio-group
-                            v-model="misc.instrument_mode"
-                            @change="updateConfig()"
-                            >
-                            <v-radio value="simple_three" label="3 Strings"/>
-                            <v-radio value="simple_six" label="6 Strings"/>
-                            <v-radio value="nine_rows" label="9 Strings, grouped by number"/>
-                            <v-radio value="nine_cols" label="9 Strings, grouped by type"/>
-                            <v-radio value="old_mg" label="Old MidiGurdy Standard"/>
-                            <v-radio value="custom" label="Custom Setup"/>
-                        </v-radio-group>
-                    </v-card-text>
-                    <v-card-title v-if="misc.instrument_mode === 'custom'">
-                        Custom Instrument Setup
-                    </v-card-title>
-                    <v-card-text v-if="misc.instrument_mode === 'custom'">
-                        <v-radio-group
-                            label="Number of Strings"
-                            v-model="misc.features.string_count"
-                            @change="updateConfig()"
-                            >
-                            <v-radio label="3 Strings (1x Melody, 1x Drone, 1x Trompette)" :value="1"/>
-                            <v-radio label="6 Strings (2x Melody, 2x Drone, 2x Trompette)" :value="2"/>
-                            <v-radio label="9 Strings (3x Melody, 3x Drone, 3x Trompette)" :value="3"/>
-                        </v-radio-group>
-
-                        <v-radio-group
-                            label="String Grouping"
-                            v-model="misc.ui.string_group_by_type"
-                            @change="updateConfig()"
-                            :disabled="misc.features.string_count === 1"
-                            >
-                            <v-radio label="Group by String Number" :value="false"/>
-                            <v-radio label="Group by String Type" :value="true"/>
-                        </v-radio-group>
-
-                        <v-switch
-                            label="Separate chien sensitivities"
-                            hint="Enable this feature if you want to control the sensitivity of the chiens separately, disable for a single sensitivity."
-                            persistent-hint
-                            :disabled="misc.features.string_count === 1"
-                            v-model="misc.ui.multi_chien_threshold"
-                            @change="updateConfig()"
-                            />
-
-                        <v-select
-                            label="Mod1 Button Action"
-                            :items="modKeyModes"
-                            v-model="misc.ui.mod1_key_mode"
-                            @change="updateConfig()"
-                            />
-                        <v-select
-                            label="Mod2 Button Action"
-                            :items="modKeyModes"
-                            v-model="misc.ui.mod2_key_mode"
-                            @change="updateConfig()"
-                            />
-                        <v-switch
-                            label="Wrap groups (e.g. go to first after reaching end)"
-                            v-model="misc.ui.wrap_groups"
-                            :disabled="misc.features.string_count === 1"
-                            @change="updateConfig()"
-                            />
-                        <v-switch
-                            label="Wrap presets (e.g. go to first after reaching end)"
-                            v-model="misc.ui.wrap_presets"
-                            @change="updateConfig()"
-                            />
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <v-col cols="6">
-                <v-card>
                     <v-card-title>
                         <v-icon large left>timer</v-icon>
                         Keyboard Debounce Delays
@@ -240,33 +198,83 @@
                     </v-card-text>
                 </v-card>
 
+            </v-col>
+            <v-col cols="6">
                 <v-card class="mt-6">
-                    <v-card-title>
-                        <v-icon large left>star</v-icon>
-                        Features
+                    <v-card-title :class="{'text--disabled': misc.instrument_mode !== 'custom'}">
+                        Custom Instrument Setup
                     </v-card-title>
                     <v-card-text>
-                    </v-card-text>
-                    <v-card-text>
-                        <h4>Polyphonic Mode</h4>
+                        <v-radio-group
+                            label="Number of Strings"
+                            v-model="misc.features.string_count"
+                            @change="updateConfig()"
+                            :disabled="misc.instrument_mode !== 'custom'"
+                            >
+                            <v-radio label="3 Strings (1x Melody, 1x Drone, 1x Trompette)" :value="1"/>
+                            <v-radio label="6 Strings (2x Melody, 2x Drone, 2x Trompette)" :value="2"/>
+                            <v-radio label="9 Strings (3x Melody, 3x Drone, 3x Trompette)" :value="3"/>
+                        </v-radio-group>
+
+                        <v-radio-group
+                            label="String Grouping"
+                            v-model="misc.ui.string_group_by_type"
+                            @change="updateConfig()"
+                            :disabled="misc.features.string_count === 1 || misc.instrument_mode !== 'custom'"
+                            >
+                            <v-radio label="Group by String Number" :value="false"/>
+                            <v-radio label="Group by String Type" :value="true"/>
+                        </v-radio-group>
+
                         <v-switch
-                            label="Empty string in polyphonic mode"
-                            hint="Enable this feature if you want to hear the empty string when no key is pressed in polyphonic mode"
+                            label="Separate chien sensitivities"
+                            hint="Enable this feature if you want to control the sensitivity of the chiens separately, disable for a single sensitivity."
                             persistent-hint
-                            v-model="misc.features.poly_base_note"
+                            :disabled="misc.features.string_count === 1 || misc.instrument_mode !== 'custom'"
+                            v-model="misc.ui.multi_chien_threshold"
                             @change="updateConfig()"
                             />
 
-                        <v-switch
-                            label="Pitch bend in polyphonic mode"
-                            hint="Enable this feature if you want to use pitch bend in polyphonic mode"
-                            persistent-hint
-                            v-model="misc.features.poly_pitch_bend"
+                        <v-select
+                            label="Mod1 Button Action"
+                            :items="modKeyModes"
+                            v-model="misc.ui.mod1_key_mode"
                             @change="updateConfig()"
+                            :disabled="misc.instrument_mode !== 'custom'"
+                            class="mt-6"
                             />
 
+                        <v-select
+                            label="Mod2 Button Action"
+                            :items="modKeyModes"
+                            v-model="misc.ui.mod2_key_mode"
+                            @change="updateConfig()"
+                            :disabled="misc.instrument_mode !== 'custom'"
+                            />
+                        <v-switch
+                            label="Wrap groups (e.g. go to first after reaching end)"
+                            v-model="misc.ui.wrap_groups"
+                            :disabled="misc.features.string_count === 1 || misc.instrument_mode !== 'custom'"
+                            @change="updateConfig()"
+                            />
+                        <v-switch
+                            label="Wrap presets (e.g. go to first after reaching end)"
+                            v-model="misc.ui.wrap_presets"
+                            @change="updateConfig()"
+                            :disabled="misc.instrument_mode !== 'custom'"
+                            />
                     </v-card-text>
                 </v-card>
+                <v-card class="mt-6">
+                    <v-card-title>
+                        <v-icon large left>dvr</v-icon>
+                        Web-Interface
+                    </v-card-title>
+                    <v-card-text>
+                        <v-switch label="Dark Theme" v-model="darkTheme" />
+                    </v-card-text>
+                </v-card>
+
             </v-col>
         </v-row>
     </v-container>
@@ -358,6 +366,7 @@ const computed = {
             {value: 'preset', text: 'Short press: next preset, Long press: previous preset'},
             {value: 'group_next', text: 'Next group'},
             {value: 'group_prev', text: 'Previous group'},
+            {value: 'group', text: 'Short press: next group, Long press: previous group'},
             {value: 'group1', text: 'Group 2 while pressed'},
             {value: 'group2', text: 'Group 3 while pressed'},
         ]
