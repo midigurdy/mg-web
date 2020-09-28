@@ -75,27 +75,6 @@
                                     />
                             </v-col>
                         </v-row>
-                        <v-row align="center">
-                            <v-col>
-                                <v-radio-group
-                                    label="G2 / G3 Button Action"
-                                    v-model="misc.ui.group_button_mode"
-                                    @change="updateConfig()"
-                                    >
-                                    <v-radio
-                                        label="G2 / G3 toggle the second and third string groups"
-                                        value="groups"
-                                        />
-                                    <v-radio
-                                        label="G2 loads the previous preset, G3 loads the next preset"
-                                        value="presets"
-                                        />
-                                </v-radio-group>
-                            </v-col>
-                            <v-col cols="3">
-                                <v-img src="/buttons.jpg" class="mt-2" />
-                            </v-col>
-                        </v-row>
                     </v-card-text>
                 </v-card>
 
@@ -106,6 +85,83 @@
                     </v-card-title>
                     <v-card-text>
                         <v-switch label="Dark Theme" v-model="darkTheme" />
+                    </v-card-text>
+                </v-card>
+
+                <v-card class="mt-6">
+                    <v-card-title>
+                        <v-icon large left>star</v-icon>
+                        Instrument Mode
+                    </v-card-title>
+                    <v-card-text>
+                        <v-radio-group
+                            v-model="misc.instrument_mode"
+                            @change="updateConfig()"
+                            >
+                            <v-radio value="simple_three" label="3 Strings"/>
+                            <v-radio value="simple_six" label="6 Strings"/>
+                            <v-radio value="nine_rows" label="9 Strings, grouped by number"/>
+                            <v-radio value="nine_cols" label="9 Strings, grouped by type"/>
+                            <v-radio value="old_mg" label="Old MidiGurdy Standard"/>
+                            <v-radio value="custom" label="Custom Setup"/>
+                        </v-radio-group>
+                    </v-card-text>
+                    <v-card-title v-if="misc.instrument_mode === 'custom'">
+                        Custom Instrument Setup
+                    </v-card-title>
+                    <v-card-text v-if="misc.instrument_mode === 'custom'">
+                        <v-radio-group
+                            label="Number of Strings"
+                            v-model="misc.features.string_count"
+                            @change="updateConfig()"
+                            >
+                            <v-radio label="3 Strings (1x Melody, 1x Drone, 1x Trompette)" :value="1"/>
+                            <v-radio label="6 Strings (2x Melody, 2x Drone, 2x Trompette)" :value="2"/>
+                            <v-radio label="9 Strings (3x Melody, 3x Drone, 3x Trompette)" :value="3"/>
+                        </v-radio-group>
+
+                        <v-radio-group
+                            label="String Grouping"
+                            v-model="misc.ui.string_group_by_type"
+                            @change="updateConfig()"
+                            :disabled="misc.features.string_count === 1"
+                            >
+                            <v-radio label="Group by String Number" :value="false"/>
+                            <v-radio label="Group by String Type" :value="true"/>
+                        </v-radio-group>
+
+                        <v-switch
+                            label="Separate chien sensitivities"
+                            hint="Enable this feature if you want to control the sensitivity of the chiens separately, disable for a single sensitivity."
+                            persistent-hint
+                            :disabled="misc.features.string_count === 1"
+                            v-model="misc.ui.multi_chien_threshold"
+                            @change="updateConfig()"
+                            />
+
+                        <v-select
+                            label="Mod1 Button Action"
+                            :items="modKeyModes"
+                            v-model="misc.ui.mod1_key_mode"
+                            @change="updateConfig()"
+                            />
+                        <v-select
+                            label="Mod2 Button Action"
+                            :items="modKeyModes"
+                            v-model="misc.ui.mod2_key_mode"
+                            @change="updateConfig()"
+                            />
+                        <v-switch
+                            label="Wrap groups (e.g. go to first after reaching end)"
+                            v-model="misc.ui.wrap_groups"
+                            :disabled="misc.features.string_count === 1"
+                            @change="updateConfig()"
+                            />
+                        <v-switch
+                            label="Wrap presets (e.g. go to first after reaching end)"
+                            v-model="misc.ui.wrap_presets"
+                            @change="updateConfig()"
+                            />
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -190,24 +246,6 @@
                         Features
                     </v-card-title>
                     <v-card-text>
-                        <h4>Number of Strings</h4>
-                        <v-radio-group
-                            v-model="misc.features.string_count"
-                            @change="updateConfig()"
-                            >
-                            <v-radio label="3 Strings (1x Melody, 1x Drone, 1x Trompette)" :value="1"/>
-                            <v-radio label="6 Strings (2x Melody, 2x Drone, 2x Trompette)" :value="2"/>
-                            <v-radio label="9 Strings (3x Melody, 3x Drone, 3x Trompette)" :value="3"/>
-                        </v-radio-group>
-                        <v-switch
-                            label="Separate chien sensitivities"
-                            hint="Enable this feature if you want to control the sensitivity of the chiens separately, disable for a single sensitivity."
-                            persistent-hint
-                            :disabled="misc.features.string_count === 1"
-                            v-model="misc.ui.multi_chien_threshold"
-                            @change="updateConfig()"
-                            />
-
                     </v-card-text>
                     <v-card-text>
                         <h4>Polyphonic Mode</h4>
@@ -252,7 +290,11 @@ function data () {
                 brightness: 0,
                 chien_sens_reverse: false,
                 multi_chien_threshold: false,
-                group_button_mode: 'groups',
+                string_group_by_type: false,
+                mod1_key_mode: '',
+                mod2_key_mode: '',
+                wrap_groups: true,
+                wrap_presets: true,
             },
 
             features: {
@@ -260,6 +302,8 @@ function data () {
                 poly_pitch_bend: true,
                 string_count: 1,
             },
+
+            instument_mode: 'simple_three',
         }
     }
 }
@@ -303,7 +347,21 @@ const computed = {
         set (value) {
             this.$store.commit('uiUpdateDarkTheme', value)
         }
-    }
+    },
+
+    modKeyModes () {
+        return [
+            {value: 'group_preset_next', text: 'Short press: previous group, Long press: previous preset'},
+            {value: 'group_preset_prev', text: 'Short press: next group, Long press: next preset'},
+            {value: 'preset_next', text: 'Next preset'},
+            {value: 'preset_prev', text: 'Previous preset'},
+            {value: 'preset', text: 'Short press: next preset, Long press: previous preset'},
+            {value: 'group_next', text: 'Next group'},
+            {value: 'group_prev', text: 'Previous group'},
+            {value: 'group1', text: 'Group 2 while pressed'},
+            {value: 'group2', text: 'Group 3 while pressed'},
+        ]
+    },
 }
 
 export default {
