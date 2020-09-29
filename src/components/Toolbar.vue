@@ -6,6 +6,9 @@
     </slot>
     <v-toolbar-title>{{ title }}</v-toolbar-title>
     <slot></slot>
+    <template v-slot:extension v-if="extension">
+        <slot name="extension"></slot>
+    </template>
 </v-app-bar>
 
 </template>
@@ -30,6 +33,6 @@ const computed = {
 export default {
     name: 'mg-toolbar',
     computed,
-    props: ['title']
+    props: ['title', 'extension']
 }
 </script>
