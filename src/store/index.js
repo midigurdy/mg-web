@@ -54,6 +54,10 @@ const getters = {
         return (state.misc.features || {}).string_count || 1
     },
 
+    getMiscConfig (state) {
+        return state.misc
+    },
+
     firstChienThreshold (state) {
         return state.instrument.voices.trompette[0].chien_threshold
     },

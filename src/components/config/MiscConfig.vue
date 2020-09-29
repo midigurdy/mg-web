@@ -432,6 +432,10 @@ const computed = {
         }
     },
 
+    miscConfig () {
+        return this.$store.getters.getMiscConfig
+    },
+
     modKeyModes () {
         return [
             {value: 'group_preset_next', text: 'Short press: previous group, Long press: previous preset'},
@@ -448,10 +452,17 @@ const computed = {
     },
 }
 
+const watch = {
+    miscConfig (val) {
+        Object.assign(this.misc, val)
+    },
+}
+
 export default {
     data,
     methods,
     computed,
+    watch,
 
     created () {
         this.saveConfig = debounce(this.saveConfig, 250)
