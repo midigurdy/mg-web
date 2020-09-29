@@ -212,7 +212,7 @@ const methods = {
     },
 
     setSound (soundId) {
-        var baseNote = -1
+        var baseNote = null
         if (soundId) {
             var result = this.$store.getters.getSoundAndFont(soundId)
             if (result) {
@@ -228,16 +228,16 @@ const methods = {
                         this.$emit('update:mode', result.soundfont.mode)
                     }
                 }
-                baseNote = result.sound.note
+                if (result.sound.note !== -1) {
+                    baseNote = result.sound.note
+                }
             } else {
                 this.$emit('update:soundfont', null)
                 this.$emit('update:bank', 0)
                 this.$emit('update:program', 0)
                 this.$emit('update:mode', 'midigurdy')
-
-                if (this.octave === null || this.localNote === null) {
-                    baseNote = 60
-                }
+                baseNote = -1
+                this.showDetails = false
             }
         } else {
             this.$emit('update:soundfont', null)
@@ -247,7 +247,9 @@ const methods = {
             baseNote = -1
             this.showDetails = false
         }
-        this.$emit('update:note', baseNote)
+        if (baseNote !== null) {
+            this.$emit('update:note', baseNote)
+        }
     },
 
     updateBaseNote () {
