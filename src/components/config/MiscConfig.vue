@@ -11,9 +11,11 @@
             <template v-slot:extension>
                 <v-tabs v-model="tab" align-with-title >
                 <v-tabs-slider color="yellow"></v-tabs-slider>
-                    <v-tab v-for="item in tabItems" :key="item.id">
-                        {{ item.label }}
-                    </v-tab>
+                    <v-tab><v-icon left>account_circle</v-icon> Instrument Mode</v-tab>
+                    <v-tab><v-icon left>star</v-icon> Features</v-tab>
+                    <v-tab><v-icon left>timer</v-icon> Keyboard Timing</v-tab>
+                    <v-tab><v-icon left>settings_brightness</v-icon> Display</v-tab>
+                    <v-tab><v-icon left>dvr</v-icon> Web-Interface</v-tab>
                 </v-tabs>
             </template>
         </mg-toolbar>
@@ -24,7 +26,7 @@
                     <v-col cols="6">
                         <v-card>
                             <v-card-title>
-                                <v-icon large left>star</v-icon>
+                                <v-icon large left>account_circle</v-icon>
                                 Instrument Mode
                             </v-card-title>
                             <v-card-text>
@@ -209,7 +211,7 @@
                 <v-card>
                     <v-card-title>
                         <v-icon large left>timer</v-icon>
-                        Keyboard Debounce Delays
+                        Keyboard Timing
                     </v-card-title>
                     <v-card-text>
                         <v-row>
@@ -285,7 +287,7 @@
                 <v-card>
                     <v-card-title>
                         <v-icon large left>settings_brightness</v-icon>
-                        Instrument User-Interface
+                        Display Settings
                     </v-card-title>
                     <v-card-text>
                         <v-row>
@@ -421,16 +423,6 @@ const methods = {
 }
 
 const computed = {
-    tabItems () {
-        return [
-            {id: 'mode', label: 'Instrument Mode'},
-            {id: 'features', label: 'Features'},
-            {id: 'keyboard', label: 'Keyboard Timings'},
-            {id: 'display', label: 'Display'},
-            {id: 'web', label: 'Web Interface'},
-        ]
-    },
-
     darkTheme: {
         get () {
             return this.$store.state.ui.darkTheme
