@@ -433,7 +433,7 @@ const computed = {
     },
 
     miscConfig () {
-        return this.$store.getters.getMiscConfig
+        return JSON.parse(JSON.stringify(this.$store.getters.getMiscConfig))
     },
 
     modKeyModes () {
