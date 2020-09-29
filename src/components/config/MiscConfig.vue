@@ -198,7 +198,7 @@
                             label="Separate chien sensitivities"
                             hint="Enable this feature if you want to control the sensitivity of the chiens separately, disable for a single sensitivity."
                             persistent-hint
-                            :disabled="misc.features.string_count === 1 || misc.instrument_mode !== 'custom'"
+                            :disabled="misc.features.string_count === 1"
                             v-model="misc.ui.multi_chien_threshold"
                             @change="updateConfig()"
                             />
