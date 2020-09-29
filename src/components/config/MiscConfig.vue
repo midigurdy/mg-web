@@ -96,6 +96,7 @@
                         </v-card>
                     </v-col>
                     <v-col cols="6">
+                        <v-img src="/buttons.png"/>
                         <v-card>
                             <v-card-title :class="{'text--disabled': misc.instrument_mode !== 'custom'}">
                                 Custom Instrument Mode
