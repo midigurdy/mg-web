@@ -122,7 +122,7 @@
                                     <v-radio label="Group by String Type" :value="true"/>
                                 </v-radio-group>
 
-                                <h4>Mod1 Button Action</h4>
+                                <h4 :class="{'text--disabled': misc.instrument_mode !== 'custom'}">Mod1 Button Action</h4>
                                 <v-select
                                     :items="modKeyModes"
                                     v-model="misc.ui.mod1_key_mode"
@@ -131,7 +131,7 @@
                                     outlined
                                     />
 
-                                <h4>Mod2 Button Action</h4>
+                                <h4 :class="{'text--disabled': misc.instrument_mode !== 'custom'}">Mod2 Button Action</h4>
                                 <v-select
                                     :items="modKeyModes"
                                     v-model="misc.ui.mod2_key_mode"
