@@ -72,8 +72,8 @@
                                         the second all melody strings and the third all trompette strings.</p>
 
                                         <p>Press S1, S2, S3 to switch the first, second and third string of the current group on / off.
-                                        Switch between groups with short or long presses on Mod1.
-                                        Switch presets with short or long presses on Mod2.</p>
+                                        Switch between groups with short or long presses on Mod2.
+                                        Switch presets with short or long presses on Mod1.</p>
                                     </div>
 
                                     <v-radio value="old_mg">
@@ -86,7 +86,7 @@
                                         Hold Mod1 to select group 2, hold Mod2 to select group 3.</p>
                                     </div>
                                     <v-radio value="custom">
-                                        <template v-slot:label><h3 clas="text--primary">Custom Setup</h3></template>
+                                        <template v-slot:label><h3 clas="text--primary">Custom Instrument Mode</h3></template>
                                     </v-radio>
                                     <div class="text--secondary ml-8">
                                         <p>Use the form to the right to configure the strings and buttons exactly as you want them.</p>
@@ -98,7 +98,7 @@
                     <v-col cols="6">
                         <v-card>
                             <v-card-title :class="{'text--disabled': misc.instrument_mode !== 'custom'}">
-                                Custom Instrument Setup
+                                Custom Instrument Mode
                             </v-card-title>
                             <v-card-text>
                                 <v-radio-group
