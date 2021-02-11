@@ -63,7 +63,11 @@ function data () {
 const computed = {
     presets () {
         return this.$store.state.presets
-    }
+    },
+
+    stringCount () {
+        return this.$store.getters.stringCount
+    },
 }
 
 const methods = {
@@ -72,6 +76,7 @@ const methods = {
         var summary = []
         voices.forEach(name => {
             var notes = (preset.voices[name] || [])
+                .slice(0, this.stringCount)
                 .filter(el => el.soundfont)
                 .map(el => MidiFilters.filters.midiBaseNote(el.note))
             if (notes.length) {
