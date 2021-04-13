@@ -3,24 +3,21 @@
 <v-navigation-drawer v-model="navbar" fixed app stateless :mini-variant="mini" width="300">
 
     <div>
-        <v-card-title>
-            <div v-if="mini" :class="{'red--text': !connected }">
+        <v-card-title
+            class="mg-header"
+            :class="{'not-connected': !connected}"
+            :title="connected ? 'Connected to ' + info.name : 'You are not connected!'"
+            >
+            <div v-if="mini">
                 <v-icon v-if="connected" color="success">check_circle</v-icon>
                 <v-icon v-else color="error">warning</v-icon>
             </div>
             <div v-else>
+                <v-icon v-if="!connected" color="white" left dense>warning</v-icon>
                 <span class="font-weight-bold">MidiGurdy</span>
                 <span class="caption" id="version-string">{{ info.version }}</span>
             </div>
         </v-card-title>
-        <v-card-text v-if="!mini">
-            <v-alert type="error" :value="!connected" outlined>
-                You are not connected!
-            </v-alert>
-            <v-alert type="success" :value="connected" outlined>
-                Connected to {{ info.name }}
-            </v-alert>
-        </v-card-text>
     </div>
 
     <v-divider></v-divider>
@@ -107,4 +104,8 @@ export default {
         background: transparent;
     }
 
+    .mg-header.not-connected {
+        background: darkred;
+        color: white;
+    }
 </style>
