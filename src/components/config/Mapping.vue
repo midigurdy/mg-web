@@ -185,7 +185,11 @@ const mapConfig = {
         websocket: {
             name: 'keys',
             packetSize: 5,
-            packetIndex: 3
+            packetIndex: 3,
+            match: {
+                index: 4,
+                compare: 1,
+            },
         },
         rawLineColour: 'green',
         description: 'Controls the volume of the melody sounds in Keyboard mode.',
@@ -199,7 +203,11 @@ const mapConfig = {
         websocket: {
             name: 'keys',
             packetSize: 5,
-            packetIndex: 3
+            packetIndex: 3,
+            match: {
+                index: 4,
+                compare: 1,
+            },
         },
         rawLineColour: 'green',
         description: 'Controls the volume of the tangent noise sounds for melody strings.',
@@ -653,13 +661,19 @@ const methods = {
     onWebSocketData (msg) {
         var packetIndex = this.mapConfig.websocket.packetIndex
         var packetSize = this.mapConfig.websocket.packetSize
+        var match  = this.mapConfig.websocket.match
 
         var data = new Uint16Array(msg.data)
-        var val = 0
+        var val = undefined
         for (var i = 0; i < data.length; i += packetSize) {
+            if (match && (data[i + match.index] !== match.compare)) {
+                continue;
+            }
             val = data[i + packetIndex]
         }
-        this.updateSourceValue(val)
+        if (val !== undefined) {
+            this.updateSourceValue(val)
+        }
     },
 
     getStoreField (path) {
