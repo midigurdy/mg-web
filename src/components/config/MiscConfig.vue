@@ -51,7 +51,7 @@
                                         Group 1 contains Melody 1, Drone 1, Trompette 1;
                                         Group 2 contains Melody 2, Drone 2, Trompette 2.</p>
 
-                                        <p> Press S1, S2, S3 to switch the drone, melody and trompette strings of the crurrent group on / off.
+                                        <p> Press S1, S2, S3 to switch the drone, melody and trompette strings of the current group on / off.
                                         Switch presets with short and long presses on Mod1. Switch between groups by pressing Mod2.</p>
                                     </div>
 
@@ -61,7 +61,7 @@
                                     <div class="text--secondary ml-8">
                                         <p>This mode provides nine strings arranged in three groups, so one extra group compared to the 6 String mode.</p>
 
-                                        <p>Press S1, S2, S3 to switch the drone, melody and trompette strings of the crurrent group on / off.
+                                        <p>Press S1, S2, S3 to switch the drone, melody and trompette strings of the current group on / off.
                                         Switch between groups with short presses on Mod1 and Mod2.
                                         Switch presets with long presses on Mod1 and Mod2.</p>
                                     </div>
@@ -84,7 +84,7 @@
                                     <div class="text--secondary ml-8">
                                         <p>This is the way the MidiGurdy worked before Version 1.3.0. Nine strings, grouped by number.</p>
 
-                                        <p>Press S1, S2, S3 to switch the drone, melody and trompette strings of the crurrent group on / off.
+                                        <p>Press S1, S2, S3 to switch the drone, melody and trompette strings of the current group on / off.
                                         Hold Mod1 to select group 2, hold Mod2 to select group 3.</p>
                                     </div>
                                     <v-radio value="custom">
