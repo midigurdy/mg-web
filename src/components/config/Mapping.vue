@@ -24,13 +24,13 @@
             </v-card>
             <v-card class="mt-2 mb-2">
                 <v-card-text>
-                    <v-btn :loading="busy" text color="primary" :disabled="ranges.length === 0" @click="saveRanges">
+                    <v-btn text color="primary" :disabled="busy || ranges.length === 0" @click="saveRanges">
                         <v-icon left>done</v-icon> Save
                     </v-btn>
-                    <v-btn text :disabled="!dirty" @click="getMapping">
+                    <v-btn text :disabled="!dirty" @click="resetMapping">
                         <v-icon left>cached</v-icon> Discard Changes
                     </v-btn>
-                    <v-btn text @click="resetMapping">
+                    <v-btn text @click="factoryResetMapping">
                         <v-icon left>settings</v-icon> Reset To Factory Default
                     </v-btn>
                 </v-card-text>
@@ -253,7 +253,12 @@ function data () {
 const watch = {
     mapname: 'getMapping',
     ranges: {
-        handler: 'updateChart',
+        handler: function () {
+            this.updateChart()
+            if (this.dirty) {
+                this.setRanges()
+            }
+        },
         deep: true
     },
     storeValue (val) {
@@ -434,7 +439,10 @@ const methods = {
     getMapping () {
         this.disconnectWebsocket()
         API.getMapping(this.mapname)
-        .then(this.loadMapping)
+        .then((response) => {
+            this.loadMapping(response)
+            this.dirty = this.mapping.temporary
+        })
     },
 
     /* Copy ranges from store into local data, so we can edit locally and
@@ -464,6 +472,17 @@ const methods = {
         .then(this.loadMapping)
         .then(() => {
             this.$store.dispatch('snacks/add', {
+                message: 'Mapping has been reset to saved values',
+                timeout: 2000
+            })
+        })
+    },
+
+    factoryResetMapping () {
+        API.factoryResetMapping(this.mapname)
+        .then(this.loadMapping)
+        .then(() => {
+            this.$store.dispatch('snacks/add', {
                 message: 'Mapping has been reset to factory defaults',
                 timeout: 2000
             })
@@ -473,7 +492,7 @@ const methods = {
     /* Save local edits back to store */
     saveRanges () {
         this.busy = true
-        API.updateRanges(this.mapname, this.ranges)
+        API.saveRanges(this.mapname, this.ranges)
         .then(response => {
             this.busy = false
             this.dirty = false
@@ -483,6 +502,18 @@ const methods = {
                 message: 'Mapping has been saved',
                 timeout: 2000
             })
+        })
+        .catch(() => {
+            this.busy = false
+        })
+    },
+
+    setRanges () {
+        if (this.busy || this.ranges.length < 1) return
+        this.busy = true
+        API.updateRanges(this.mapname, this.ranges)
+        .then(() => {
+            this.busy = false
         })
         .catch(() => {
             this.busy = false
@@ -694,6 +725,7 @@ export default {
     created () {
         this.setRangeValue = throttle(this.setRangeValue, 30)
         this.onResize = debounce(this.onResize, 100)
+        this.setRanges = debounce(this.setRanges, 250)
     },
 
     mounted () {

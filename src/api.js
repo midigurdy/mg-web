@@ -116,6 +116,10 @@ export default {
         return API.get('mappings/' + name)
     },
 
+    factoryResetMapping (name) {
+        return API.delete('mappings/' + name + '?factory=1')
+    },
+
     resetMapping (name) {
         return API.delete('mappings/' + name)
     },
@@ -126,6 +130,10 @@ export default {
 
     updateRanges (name, ranges) {
         return API.put('mappings/' + name, { ranges })
+    },
+
+    saveRanges (name, ranges) {
+        return API.post('mappings/' + name, { ranges })
     },
 
     getPresets () {
