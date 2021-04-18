@@ -54,7 +54,23 @@
                     <v-flex xs4 class="text-center">{{ mapping.src.name }}</v-flex>
                     <v-flex xs4 class="text-center">{{ mapping.dst.name }}</v-flex>
                 </v-row>
-                <mapping-values :ranges="ranges"/>
+                <mapping-value-row
+                    v-for="(range, index) in ranges" :key="index"
+                    :range="range"
+                    :mapping="mapping"
+                    :index="index"
+                    @removeRange="removeRange(index)"
+                    @addRange="addRange(index)"
+                    @srcValueChange="onValueChange(index, 'src', $event)"
+                    @dstValueChange="onValueChange(index, 'dst', $event)"
+                    @mouseover.native="hoverIndex = index"
+                    @mouseleave.native="hoverIndex = -1"
+                    />
+                <v-row v-if="ranges.length === 0">
+                    <v-flex xs4>
+                        <v-btn icon @click="addRange(-1)"><v-icon>add</v-icon></v-btn>
+                    </v-flex>
+                </v-row>
                 </v-card-text>
             </v-card>
         </v-flex>
@@ -67,7 +83,7 @@ import * as d3 from 'd3'
 import API from '@/api'
 import { debounce, throttle } from 'lodash'
 
-import MappingValues from '@/components/config/MappingValues'
+import MappingValueRow from '@/components/config/MappingValueRow'
 
 const height = 400
 const margin = {
@@ -246,7 +262,8 @@ function data () {
         dirty: false,
         showDescription: true,
         mapConfig: null,
-        storeField: null
+        storeField: null,
+        hoverIndex: -1,
     }
 }
 
@@ -260,6 +277,9 @@ const watch = {
             }
         },
         deep: true
+    },
+    hoverIndex () {
+        this.updateChart()
     },
     storeValue (val) {
         this.updateSourceValue(val)
@@ -386,6 +406,51 @@ const computed = {
 }
 
 const methods = {
+
+    removeRange (idx) {
+        this.ranges.splice(idx, 1)
+    },
+
+    addRange (idx) {
+        if (this.ranges.length == 0) {
+            this.ranges.push({
+                src: this.mapping.src.min,
+                dst: this.mapping.dst.min,
+            })
+            this.dirty = true
+            return
+        }
+
+        let last = (idx == (this.ranges.length - 1))
+        let newRange = {
+            src: this.ranges[idx].src,
+            dst: this.ranges[idx].dst,
+        }
+
+        if (this.ranges.length == 1 || last) {
+            newRange.src = this.mapping.src.max
+        }
+        else {
+            newRange.src += Math.round((this.ranges[idx + 1].src - this.ranges[idx].src) / 2)
+            newRange.dst += Math.round((this.ranges[idx + 1].dst - this.ranges[idx].dst) / 2)
+        }
+
+        let exists = this.ranges.find(range => range.src == newRange.src)
+
+        if (exists) {
+            return
+        }
+
+        if (last) {
+            this.ranges.push(newRange)
+        }
+        else {
+            this.ranges.splice(idx + 1, 0, newRange)
+        }
+
+        this.dirty = true
+    },
+
     onResize () {
         this.setupChart()
     },
@@ -395,7 +460,7 @@ const methods = {
     },
 
     /* Callback for range input fields */
-    onValueChange (val, idx, side) {
+    onValueChange (idx, side, val) {
         val = this.updateValue(idx, side, val)
         this.ranges[idx][side] = val
     },
@@ -614,6 +679,13 @@ const methods = {
             .data(this.ranges)
             .attr('cx', function (d) { return scale.x(d.src) })
             .attr('cy', function (d) { return scale.y(d.dst) })
+            .attr('class', (d, idx) => {
+                if (idx === this.hoverIndex) {
+                    return 'point highlight'
+                } else {
+                    return 'point'
+                }
+            })
 
         var chartDragBehaviour = d3.drag().on('drag', (d, range) => {
             var i = this.ranges.indexOf(range)
@@ -716,7 +788,7 @@ const methods = {
 
 export default {
     name: 'mapping',
-    components: { MappingValues },
+    components: { MappingValueRow },
     watch,
     computed,
     methods,
@@ -764,5 +836,15 @@ svg {
 @keyframes fadeout {
   0% {opacity: 1; }
   100% { opacity: 0; }
+}
+
+>>> .point:hover,
+>>> .point.highlight {
+    fill: rgba(255, 0, 0, 0.5);
+}
+
+.theme--dark >>> .point:hover,
+.theme--dark >> .point.highlight {
+    fill: rgba(255, 118, 210, 0.5);
 }
 </style>
